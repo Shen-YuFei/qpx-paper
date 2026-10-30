@@ -1,0 +1,53 @@
+% Pandoc template for the Springer Nature LaTeX class (sn-jnl, December 2024).
+% Scientific Data is submitted through eJP, which needs the pdflatex option.
+\documentclass[pdflatex,sn-nature]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{xcolor}
+\usepackage{textcomp}
+
+% Macros that pandoc's LaTeX writer emits.
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\raggedbottom
+
+\begin{document}
+
+\title[$if(short-title)$$short-title$$else$$title$$endif$]{$title$}
+
+$for(authors)$
+\author$if(authors.corresponding)$*$endif$[$for(authors.affil)$$authors.affil$$sep$,$endfor$]{\fnm{$authors.first$} \sur{$authors.last$}}$if(authors.email)$\email{$authors.email$}$endif$
+$endfor$
+
+$for(affiliations)$
+\affil$if(affiliations.corresponding)$*$endif$[$affiliations.id$]{\orgname{$affiliations.name$}}
+$endfor$
+
+\abstract{$abstract$}
+
+\keywords{$for(keywords)$$keywords$$sep$, $endfor$}
+
+\maketitle
+
+$body$
+
+\bibliography{references}
+
+\end{document}

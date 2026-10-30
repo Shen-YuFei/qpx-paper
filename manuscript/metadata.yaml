@@ -1,0 +1,38 @@
+---
+title: "TODO: title (max. 110 characters including spaces)"
+short-title: "QPX proteomics corpus"
+# Plain author list for the docx build; the structured list below feeds the LaTeX template.
+author:
+  - "TODO: author list and order to be agreed"
+authors:
+  - first: Yufei
+    last: Shen
+    affil: [1]
+  - first: Timo
+    last: Sachsenberg
+    affil: [2]
+  - first: Jonas
+    last: Scheid
+    affil: [2]
+  - first: Yasset
+    last: Perez-Riverol
+    affil: [3]
+    corresponding: true
+    email: "TODO"
+affiliations:
+  - id: 1
+    name: "TODO"
+  - id: 2
+    name: "TODO"
+  - id: 3
+    name: "TODO"
+    corresponding: true
+keywords:
+  - proteomics
+  - mass spectrometry
+  - data reuse
+  - reanalysis
+  - Apache Parquet
+abstract: |
+  TODO: abstract (about 170 words, no references).
+---
