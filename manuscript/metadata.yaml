@@ -1,5 +1,7 @@
 ---
-title: "TODO: title (max. 110 characters including spaces)"
+# Alternative (105 characters): "QPX: an open columnar format and a corpus of 103 reprocessed
+# public mass spectrometry proteomics datasets"
+title: "QPX: a columnar format and a corpus of reprocessed public proteomics data for large-scale reuse"
 short-title: "QPX proteomics corpus"
 # Plain author list for the docx build; the structured list below feeds the LaTeX template.
 author:
@@ -34,5 +36,17 @@ keywords:
   - reanalysis
   - Apache Parquet
 abstract: |
-  TODO: abstract (about 170 words, no references).
+  Public repositories hold tens of thousands of mass spectrometry proteomics datasets, but
+  their identification and quantification results are scattered across tool-specific
+  formats that are hard to combine and slow to query. We present QPX, an open format that
+  stores peptide-spectrum matches, peptide features, protein groups, modification sites and
+  their sample, run and provenance metadata as typed Apache Parquet tables. Converters write QPX from DIA-NN, MaxQuant, FragPipe, Spectronaut and
+  OpenMS outputs. We also describe a corpus of 103 public datasets stored in QPX, with 23,204
+  samples, 51,023 MS runs and 568 million peptide-spectrum matches. Forty-six datasets were
+  reprocessed with quantms and DIA-NN workflows and carry peptide and protein
+  quantification; 57 provide identifications only. The samples of 96 datasets are annotated
+  in SDRF-Proteomics with ontology terms. The files are available over HTTP, can be explored in
+  the QPX Explorer of the quantms portal and can be queried with SQL; analytical queries run
+  up to several hundred times faster than on mzTab. The corpus supports expression
+  atlases, meta-analyses, method benchmarking and machine learning. [TODO: numbers provisional; update after regeneration.]
 ---

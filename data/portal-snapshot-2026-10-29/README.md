@@ -13,3 +13,12 @@ hash folder, so datasets with several versions are counted more than once.
 
 This is the portal as published, not the deposited data record: most folders were written
 with QPX 1.0.x and many do not record the acquisition method.
+
+## Acquisition method
+
+`acquisition_latest.csv` classifies the latest QPX version of each dataset, produced by
+`classify_acq.py` from SDRF files (in the dataset folders and in
+bigbio/sdrf-annotated-datasets), the PRIDE Archive API and the QPX run and dataset views.
+The SDRF value wins when present; disagreements with the QPX files or PRIDE are listed in
+the `conflict` column. The script reads the raw sources collected in the scratchpad
+(`acquisition_sources.json`, `acquisition_cache/`), which are not kept here.
