@@ -4,7 +4,11 @@
 
 QPX files are plain Parquet files and can be read by any Parquet reader, including DuckDB,
 pandas and PyArrow, Polars, Apache Spark and the R arrow package. [TODO: confirm that the
-nested columns, such as feature intensities, read correctly in Polars, Spark and R.] For
+nested columns, such as feature intensities, read correctly in Polars, Spark and R.] Files
+rewritten by `qpxc transform relayout` may store a score or parameter list as a structure
+with one field per name, which a generic reader sees as a structure (in DuckDB, for example,
+`additional_scores.diann_cscore`); the `qpx` package reads them back as lists, and the file
+metadata lists the columns stored this way. For
 anything beyond the small metadata views, we recommend downloading a dataset folder first:
 queries over HTTP work, but each read pays the network latency. The query below counts the
 confidently identified protein groups per run in one DIA dataset:
@@ -18,7 +22,8 @@ GROUP BY r.run_file_name
 ORDER BY protein_groups DESC;
 ```
 
-The `qpx` Python package (`pip install qpx`) opens a dataset folder as a single object, runs
+The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, also available
+as the container image `ghcr.io/bigbio/qpx:1.4.0` [TODO: check after the release]) opens a dataset folder as a single object, runs
 SQL across its views with DuckDB, converts tool outputs, validates files and exports
 quantification results to MuData. Its documentation (https://qpx.quantms.org) includes a
 plain-text version written for large language models (`llms.txt`).
@@ -32,6 +37,18 @@ protein groups and peptides and view per-protein details, and offers a gallery o
 queries. The same queries are available to AI agents through a Model Context Protocol (MCP)
 interface. [TODO (Yasset): screenshots for Fig. 5 and a short description of the portal
 around it.]
+
+## QPX UI
+
+QPX UI (https://github.com/bigbio/qpxui) is an open-source desktop viewer for QPX data, with
+installers for macOS, Windows and Linux. It opens a local file or dataset folder, an S3
+bucket or any dataset of the quantms portal, and runs every query on the user's machine with
+DuckDB; remote files are read lazily, fetching only the Parquet metadata and the column chunks
+a query needs. For each dataset it builds a report with identification and quality control
+charts, offers protein and peptide search, a protein × sample abundance matrix with sample
+correlation and principal component analysis, an annotated spectrum viewer for PSMs that
+store their peaks, a browser for the rows of every view and an SQL console. It does not yet
+display the AnnData and MuData files. [TODO: version cited; screenshots for Fig. 5.]
 
 ## Reuse
 
@@ -49,7 +66,8 @@ once immunopeptidomics datasets are included.]
 Datasets come from different laboratories, instruments, acquisition methods and labelling
 strategies, so quantities are not directly comparable across datasets without
 normalisation and correction for batch effects. Error rates are controlled within each
-dataset, at the PSM, peptide and protein-group levels recorded in the provenance view;
+dataset, at the levels and thresholds the workflow applied, which the provenance view records
+where the workflow reports them;
 combining datasets does not preserve these error rates, and users should filter on the
 q-value columns at the level their analysis needs. Intensities are reported as produced by
 each workflow (for example, DIA-NN or OpenMS label-free and TMT reporter intensities) and are

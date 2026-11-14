@@ -4,15 +4,21 @@
 
 [TODO: run `qpxc validate` on every deposited dataset with the cited QPX release and report
 the result. In the 29 October 2026 snapshot, all 1,198 Parquet files could be opened and
-their footers read, but 78 of the 103 latest versions were written with specification 1.0.1
-or 1.0.2 and are not expected to pass the current schemas; the 25 written with 1.1 have not
-been checked.]
+their footers read, but 78 of the 103 latest versions record `qpx_version` 1.0.1 or 1.0.2
+(the package version written by the qpx 1.0.x releases, read as specification 1.0) and are not
+expected to pass the current schemas; the 25 written with 1.1 have not been checked. The
+deposited files are to be converted again with QPX 1.4.0, or migrated where the tool outputs
+are no longer available.]
 
 ## Storage and query performance
 
 We compared QPX with the mzTab and CSV outputs of the same quantms analyses (Fig. 3)
-[TODO: rerun with the cited QPX release, a current DuckDB and the Zstandard default, add
-memory use and tool-native outputs, and report the hardware]. For a label-free DDA dataset
+[TODO: rerun `scripts/benchmark/benchmark.py` with QPX 1.4.0 and a current DuckDB, on both the
+default converter output (Zstandard, per-column encodings) and the output of
+`qpxc transform relayout` (sorted, renumbered, rounded, structure lists), state for each the
+codec, row-group sizes and layout, add memory use and tool-native outputs, and report the
+hardware. The numbers below come from Snappy-compressed files written by an earlier QPX
+release]. For a label-free DDA dataset
 (PXD007683, 11 runs, 538,000 PSMs and 500,000 features), counting PSMs took 2 ms on the QPX
 files and 1,031 ms on the mzTab file, a 424-fold difference; counting features was 304-fold
 faster, filtering PSMs by charge 241-fold, counting distinct proteins 28-fold and selecting

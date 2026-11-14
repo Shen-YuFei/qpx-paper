@@ -29,7 +29,8 @@ file, and files grow quickly with the number of runs.
 Here we describe QPX, an open format for MS-based proteomics results, and a corpus of public
 datasets reprocessed and stored in it. QPX splits results into views, each stored as an
 Apache Parquet table with a typed schema: PSMs, quantified peptide features, protein groups,
-a peptide-to-protein map, modification sites and proteoforms, together with sample, run,
+a peptide-to-protein map and protein annotations, modification sites and proteoforms, and
+fragment ion quantities and chromatograms of DIA analyses, together with sample, run,
 dataset, ontology and provenance metadata. Peptidoforms are written in ProForma notation
 [@LeDuc_2022], metadata fields are mapped to PSI-MS and other controlled vocabulary terms
 [@Mayer_2013], and the original SDRF is kept alongside the Parquet files. Expression results
@@ -47,7 +48,8 @@ The corpus contains 103 public datasets with 23,204 samples and 51,023 MS runs
 processed with DIA-NN and 19 (10 label-free and 9 TMT) processed with the OpenMS-based
 quantms workflows for DDA data. The remaining 57 datasets provide identification results
 only, about 500 million PSM records. All files are available over HTTP and can be explored in
-the browser with the QPX Explorer of the quantms portal or queried directly with SQL. We
+the browser with the QPX Explorer of the quantms portal, opened in the QPX UI desktop
+application or queried directly with SQL. We
 expect the corpus to support cross-study protein expression atlases, meta-analyses,
 benchmarking of quantification methods and the training of machine learning models for
 peptide property prediction and PSM rescoring.

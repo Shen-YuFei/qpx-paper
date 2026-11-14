@@ -5,7 +5,7 @@ citation.] The corpus is currently served at https://browse.quantms.org/quantms/
 with one folder per dataset accession. Each dataset folder holds one or more subfolders
 named by a hash of their content, so a reprocessed version of a dataset appears as a new
 subfolder next to the earlier ones. A QPX subfolder contains the views of that
-version, named `{accession}.{view}.parquet`, a `provenance.json` file describing how and when
+version, named `{PREFIX}.{view}.parquet` with the dataset accession as the prefix in most cases, a `provenance.json` file describing how and when
 the version was produced and, for 23 datasets, a MuData export (`.h5mu`) of the
 quantification results. The SDRF and the earlier quantms outputs (mzTab and MSstats input
 tables) are kept in separate subfolders of the same dataset. [TODO: decide which version of

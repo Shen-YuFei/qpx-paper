@@ -49,60 +49,96 @@ library-based search settings.] The identification-only datasets were produced w
 searched.] [TODO (Jonas Scheid): immunopeptidomics datasets processed with nf-core/mhcquant
 [@Bichmann_2019], including non-specific digestion searches and HLA annotation.]
 
-Every dataset records its processing chain in the QPX provenance view: the tools and
-versions, the parameters, and the FDR thresholds at PSM, peptide and protein level.
+Each dataset records its processing chain in the QPX provenance view: the tools and, where
+the source provides them, their versions, parameters and FDR thresholds.
 
 ## The QPX format
 
 QPX organises the results of one dataset into views (Table 2). Data views hold
 identification and quantification results: `psm` holds peptide-spectrum matches with scores
-and, optionally, fragment peak arrays; `feature` holds quantified peptide features per run
-with their intensities in every label channel; `pg` holds protein groups and their
-quantities; `pepmap` is a deduplicated peptide-to-protein map; `site` and `proteoform` hold
-modification-site and proteoform claims with their own error control; and `mz` holds MS1
-and MS2 spectra. Metadata views describe the samples (`sample`), the MS runs and their link
-to samples and channels (`run`), the project, search parameters and software (`dataset`),
-the ontology terms used in the dataset (`ontology`) and the processing chain
-(`provenance`). Absolute and differential expression results are stored as AnnData files
-(`.h5ad`) [@Virshup_2024], and quantification results of a dataset can be exported as a
-single MuData file (`.h5mu`) [@Bredikhin_2022]. The original SDRF is kept next to the views.
-Files follow the pattern `{PREFIX}.{view}.{format}`, for example
-`PXD014414.feature.parquet`.
+and, optionally, fragment peak arrays; `feature` holds identified and quantified peptide
+features per run, with a quantity for each label channel and the origin of each
+identification (direct or transferred between runs); `pg` holds protein groups and their
+quantities; `pepmap` is a deduplicated peptide-to-protein map and `protein` annotates the
+proteins from the sequence database; `site` and `proteoform` hold modification-site and
+proteoform claims with their own error control; `fragment` and `xic` hold fragment ion
+quantities and extracted ion chromatograms of DIA analyses; and `mz` holds MS1 and MS2
+spectra. Metadata views describe the samples (`sample`), the MS runs and their link to
+samples and channels (`run`), the project and its publication (`dataset`), the controlled
+vocabulary terms used in the dataset (`ontology`) and the processing chain (`provenance`).
+Absolute and differential expression results are stored as AnnData files (`.h5ad`)
+[@Virshup_2024], and the quantification results of a dataset can be exported as a single
+MuData file (`.h5mu`) [@Bredikhin_2022]. The original SDRF is kept next to the views. Parquet
+views are named `{PREFIX}.{view}.parquet`, for example `PXD014414.feature.parquet`.
 
-Data and metadata views are Apache Parquet files compressed with Zstandard by default.
 Each view has a schema, shipped with the QPX package as a YAML definition, that fixes the
 column names and types, including nested types: a feature's intensities, for example, are a
-list of (label, intensity) pairs that join to the label channels declared in the run view.
-Peptidoforms are written in ProForma 2.0 notation [@LeDuc_2022], and scores and
-tool-specific parameters carry PSI-MS controlled vocabulary accessions [@Mayer_2013]. The
-schema distinguishes three kinds of column: required columns must be present and non-null,
-nullable columns must be present but may be null, and optional columns may be left out of a
-file; readers add missing optional columns as nulls. Each Parquet file stores the
-specification version (`qpx_version`), the writing software and its version, the view type
-and the primary key in its file-level metadata, and a description of every column in the
-field metadata, so a file can be interpreted without the specification at hand.
+list of (label, intensity) pairs that join to the label channels declared in the run view,
+and a channel that was identified but not quantified has a null intensity. Peptidoforms are
+written in a canonical ProForma 2.0 form [@LeDuc_2022], with fixed modifications and labels
+written inline and modifications as Unimod accessions, so the same peptidoform has the same
+string whichever tool reported it. Scores and tool-specific parameters are stored as name-value
+pairs, and the ontology view maps their names to PSI-MS and other controlled vocabulary terms
+where a mapping exists [@Mayer_2013]. The schema distinguishes three kinds of column: required
+columns must be present and non-null, nullable columns must be present but may be null, and
+optional columns may be left out of a file. Each Parquet file stores the specification
+version (`qpx_version`) and the writing software in its file-level metadata, files of views
+with derived row identifiers also store the columns the identifiers are hashed from, and every
+column carries its description in the field metadata, so a file can be interpreted without the
+specification at hand.
+
+Converters write Parquet files compressed with Zstandard. The encoding of each column
+(dictionary, plain, byte-stream split or delta) is chosen from a sample of its values, and row
+groups hold at most 131,072 rows. Before publication, `qpxc transform relayout` can rewrite a
+dataset for faster selective reads: it sorts the feature, protein-group, PSM, spectrum and
+chromatogram views so that the rows of one peptide or protein are stored together and records
+the order in the file metadata; it numbers the feature, protein-group and PSM identifiers in
+the new row order and rewrites the columns that refer to them; it rounds measured
+intensities to 12 and retention times and ion mobilities to 16 significant bits, leaving
+scores, q-values and m/z values untouched; and it stores score and parameter lists whose
+entries have the same names in every row as structures with one field per name. Each of these
+steps is recorded in the file metadata, and the `qpx` package reads such files back in the
+logical layout.
 
 The specification uses a `{major}.{minor}` version. During the current stabilisation period
 on the 1.x line, a minor version may change the data model; readers check the
-`qpx_version` of each file. The specification, schemas, reference implementation and
-documentation are developed in the open on GitHub under the Apache 2.0 licence, and changes
-go through public pull requests and review. The `qpxc validate` command checks a dataset
-against the schemas: column presence and types, nulls in required columns, primary-key
-uniqueness and, for protein-group, site and proteoform views, their referential
-constraints.
+`qpx_version` of each file. This paper describes specification 1.3, written by QPX 1.4.0.
+Version 1.3 added the `fragment` and `protein` views (the `xic` view was added in QPX 1.3.0),
+typed q-value columns, the origin of feature identifications with match scores for
+transferred ones, and imputation flags. It also changed how rows are identified: peptidoforms
+are written in the canonical form, the PSM identifier is hashed from the run, scan,
+peptidoform and charge in that order, and DIA-NN features include their decoy flags, so files
+converted again with 1.4.0 have new identifiers. QPX 1.4.0 reads files of specification 1.2,
+and `qpxc migrate` rewrites an older dataset into a new folder under the current
+specification, with canonical peptidoforms and identifiers derived again; it cannot add
+information that the older files did not store, so converting again from the tool outputs is
+preferred where they exist. The specification, schemas, reference implementation and documentation are developed
+in the open on GitHub under the Apache 2.0 licence, and changes go through public pull
+requests and review. The `qpxc validate` command checks a dataset against the schemas:
+column presence and types, nulls in required columns and nested fields, primary-key
+uniqueness, value ranges such as those of q-values and probabilities, value rules such as
+the number of scan components a declared `scan_format` allows and the coordinates of sequence
+edits, the file metadata, and references between views. On request it also checks
+consistency across views (`--semantic`) and re-derives row identifiers from the columns they
+are hashed from (`--check-identity`); `--conformance` runs every check and fails on errors
+and warnings.
 
 ## Conversion from third-party tools
 
 The `qpxc convert` commands write QPX from the outputs of MaxQuant, FragPipe, DIA-NN,
-Spectronaut, OpenMS (consensusXML), CPTAC CDAP, mzIdentML and the quantms MSstats input
-table; OpenMS can also write QPX natively (Table 3). Converters map each tool's columns to
-QPX fields, rewrite modification notation into ProForma, convert units such as retention
-time in minutes to seconds, and take the sample and run metadata from an SDRF where one is
-given. When the source does not report a value, the field is left null rather than
-estimated: DIA-NN reports, for example, have no PSM-level table, so DIA-NN conversions have
-no `psm` view, and consensusXML records only the apex retention time of a feature, so its
-start and end times are null. The documentation lists, per converter, which views are
-written and where each field comes from.
+Spectronaut, Proteome Discoverer (text exports), OpenMS (consensusXML), CPTAC CDAP,
+mzIdentML and the quantms MSstats input table (Table 3); OpenMS can also write QPX directly.
+Converters map each tool's columns to QPX fields, rewrite modification notation into the
+canonical ProForma form, convert units such as retention time in minutes to seconds, and
+take the sample and run metadata from an SDRF where one is given. When the source does not
+report a value, the field is left null rather than estimated: DIA-NN reports, for example,
+have no PSM-level table, so DIA-NN conversions have no `psm` view, and consensusXML records
+only the apex retention time of a feature, so its start and end times are null. Values that a
+converter derives are labelled as such: when a consensusXML file reports no protein
+abundance, the protein-group intensity is the sum of its unique peptides and is marked with
+that quantification method. The documentation lists, per converter, which views are written
+and where each field comes from. MaxQuant site tables are converted to the `site` view; no
+converter writes the `proteoform` view, which producers write through the `qpx` Python API.
 
 ## Quality control
 
