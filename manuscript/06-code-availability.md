@@ -1,3 +1,8 @@
+# Data Availability
+
+[TODO: repository, accession and DOI of the deposited record, repeating the main points of the
+Data Records; the journal asks for this statement in addition to the Data Records section.]
+
 # Code Availability
 
 The QPX specification, schemas, converters and Python package are available at
