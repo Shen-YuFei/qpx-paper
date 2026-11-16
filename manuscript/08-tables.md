@@ -8,9 +8,9 @@ Table 2: QPX views in specification 1.3, written by QPX 1.4.0. Parquet views are
 | View | One row per | Primary key | Main content |
 |-----------|-----------|------------------|-------------------------|
 | `psm` | peptide-spectrum match | `psm_id` | peptidoform, charge, run, scan, scores and q-values, protein mappings, optional peak arrays and competing modification interpretations |
-| `feature` | peptide feature in a run (one multiplet for MS1 labels) | `feature_id` | peptidoform, charge, run, retention time, quantities per label channel, q-values, protein-group assignment, identification origin (direct or transferred) |
+| `feature` | peptide feature in a run (one multiplet for MS1 labels) | `feature_id` | peptidoform, charge, run, retention time, quantities per label channel, q-values, protein-group assignment, identification origin (direct, transferred or secondary) |
 | `pg` | protein group, quantification unit and label | `pg_id` | member accessions and genes, runs in the unit, primary and additional quantities, q-values, peptide counts |
-| `pepmap` | peptidoform | `peptidoform` | proteins and genes the peptidoform maps to, uniqueness flags, optional sequence edits relative to the reference protein |
+| `pepmap` | peptidoform | `peptidoform` | proteins the peptidoform maps to, with peptide positions, a uniqueness flag and optional sequence edits relative to the reference protein |
 | `protein` | protein accession | `accession` | entry name, description, gene, organism, length and sequence from the sequence database |
 | `site` | modification-site claim, quantification unit and label | `site_id` | protein, position, modification, q-value, localisation evidence, intensity and stoichiometry |
 | `proteoform` | protein-family member, quantification unit and label | `proteoform_id` | canonical, isoform, variant or processed-chain member, evidence, q-value and quantities |

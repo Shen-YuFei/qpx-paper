@@ -58,7 +58,8 @@ QPX organises the results of one dataset into views (Table 2). Data views hold
 identification and quantification results: `psm` holds peptide-spectrum matches with scores
 and, optionally, fragment peak arrays; `feature` holds identified and quantified peptide
 features per run, with a quantity for each label channel and the origin of each
-identification (direct or transferred between runs); `pg` holds protein groups and their
+identification (direct, transferred between runs, or secondary, from a co-fragmenting
+peptide of a chimeric spectrum); `pg` holds protein groups and their
 quantities; `pepmap` is a deduplicated peptide-to-protein map and `protein` annotates the
 proteins from the sequence database; `site` and `proteoform` hold modification-site and
 proteoform claims with their own error control; `fragment` and `xic` hold fragment ion
@@ -93,9 +94,10 @@ groups hold at most 131,072 rows. Before publication, `qpxc transform relayout` 
 dataset for faster selective reads: it sorts the feature, protein-group, PSM, spectrum and
 chromatogram views so that the rows of one peptide or protein are stored together and records
 the order in the file metadata; it numbers the feature, protein-group and PSM identifiers in
-the new row order and rewrites the columns that refer to them; it rounds measured
-intensities to 12 and retention times and ion mobilities to 16 significant bits, leaving
-scores, q-values and m/z values untouched; and it stores score and parameter lists whose
+the new row order and rewrites the columns that refer to them; it rounds measured values,
+keeping 12 mantissa bits for intensities and mass errors and 16 for retention times, ion
+mobilities and collisional cross sections (a relative error of at most 2^-13^ and 2^-17^),
+and leaves scores, q-values and m/z values untouched; and it stores score and parameter lists whose
 entries have the same names in every row as structures with one field per name. Each of these
 steps is recorded in the file metadata, and the `qpx` package reads such files back in the
 logical layout.

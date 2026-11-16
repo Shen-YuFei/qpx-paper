@@ -3,8 +3,8 @@
 ## Schema validation
 
 [TODO: run `qpxc validate` on every deposited dataset with the cited QPX release and report
-the result. In the 29 October 2026 snapshot, all 1,198 Parquet files could be opened and
-their footers read, but 78 of the 103 latest versions record `qpx_version` 1.0.1 or 1.0.2
+the result. In the 29 October 2026 snapshot, all 1,198 Parquet files in the 181 QPX folders
+(719 in the 103 latest versions) could be opened and their footers read, but 78 of the 103 latest versions record `qpx_version` 1.0.1 or 1.0.2
 (the package version written by the qpx 1.0.x releases, read as specification 1.0) and are not
 expected to pass the current schemas; the 25 written with 1.1 have not been checked. The
 deposited files are to be converted again with QPX 1.4.0, or migrated where the tool outputs
