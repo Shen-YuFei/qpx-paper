@@ -35,7 +35,9 @@ from the team.
     PXD004452 keeps the GluC part (154,347 PSMs) and drops the main part (5.5 million);
     PXD024364 keeps LysC and drops Trypsin (7.1 million); PXD019483 keeps RVFV (1,429 PSMs)
     and drops the main part (4.0 million); PXD000865 keeps LysC. Every corpus number depends
-    on this; "zebrafish" in Methods occurs only in dropped parts.
+    on this; "zebrafish" in Methods occurs only in dropped parts. If the parts do not overlap,
+    the rule leaves out 54 parts of 8 datasets with 626 samples, 2,269 runs and 25.4 million PSM
+    rows; the snapshot keeps no run file names, so overlap could not be checked.
   - *Truncated feature views.* The latest versions of PXD025864, PXD027008 and PXD028251 have
     exactly 500,000 feature rows, the signature of the quantms converter bug fixed in QPX
     1.1.0 (commit 77a79412: rows cut at 500,000 and duplicated). The benchmark numbers for
@@ -61,7 +63,10 @@ from the team.
     Fever", and the PXD054415 samples list strains that count up ("Escherichia coli K24",
     "K25", ...), which looks like a spreadsheet fill in the SDRF.
   - *Journal format.* Titles may not contain colons or self-constructed acronyms and are
-    limited to 110 characters; the abstract has 178 words against a recommended 170; summary
+    limited to 110 characters, so the title "QPX: a columnar format and a corpus of reprocessed
+    public proteomics data for large-scale reuse" was replaced (co-authors to confirm); the
+    abstract was cut below the recommended 170 words by dropping the query-speed claim, whose
+    numbers come from the defective PXD007683 conversion; summary
     statistics such as Table 1 belong in the optional Data Overview section (one paragraph and
     one or two tables or figures), not in Data Records; every input dataset is to be cited in
     the journal's data citation format; Data Availability and Funding sections are required

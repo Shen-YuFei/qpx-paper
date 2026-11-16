@@ -37,8 +37,8 @@ columns of each view to controlled vocabulary terms.
 ## Data processing workflows
 
 Datasets were processed with Nextflow workflows that follow nf-core practices
-[@Di_Tommaso_2017; @Ewels_2020] and run every tool from a versioned container, so that the
-same parameters yield the same results on a laptop, a cluster or the cloud.
+[@Di_Tommaso_2017; @Ewels_2020] and run every tool from a versioned container, which fixes the
+software version of each step and lets the same workflow run on a laptop, a cluster or the cloud.
 
 DDA datasets were processed with quantms [@Dai_2024], which is built on OpenMS
 [@Pfeuffer_2024]. [TODO: search engines, rescoring, FDR thresholds and quantification

@@ -1,7 +1,5 @@
 ---
-# Alternative (105 characters): "QPX: an open columnar format and a corpus of 103 reprocessed
-# public mass spectrometry proteomics datasets"
-title: "QPX: a columnar format and a corpus of reprocessed public proteomics data for large-scale reuse"
+title: "A columnar file format and a corpus of reprocessed public mass spectrometry proteomics data"
 short-title: "QPX proteomics corpus"
 # Plain author list for the docx build; the structured list below feeds the LaTeX template.
 author:
@@ -46,7 +44,6 @@ abstract: |
   reprocessed with quantms and DIA-NN workflows and carry peptide and protein
   quantification; 57 provide identifications only. The samples of 96 datasets are annotated
   in SDRF-Proteomics with ontology terms. The files are available over HTTP, can be explored in
-  the QPX Explorer of the quantms portal or the QPX UI desktop viewer and can be queried with SQL; analytical queries run
-  up to several hundred times faster than on mzTab. The corpus supports expression
+  the QPX Explorer of the quantms portal or the QPX UI desktop viewer and can be queried with SQL. The corpus supports expression
   atlases, meta-analyses, method benchmarking and machine learning. [TODO: numbers provisional; update after regeneration.]
 ---
