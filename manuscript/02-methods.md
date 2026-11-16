@@ -30,8 +30,9 @@ files are curated in the community repository of annotated datasets
 (https://github.com/bigbio/sdrf-pipelines). [TODO: confirm that every deposited dataset
 went through this route, and describe the curation and review process.] The SDRF drives
 both the processing workflows, which read search parameters and the experimental design
-from it, and the QPX sample and run views, which keep the curated values; the ontology terms
-used are listed in the ontology view.
+from it, and the QPX sample and run views, which keep the curated values as text; the run view also stores the
+ontology terms of run-level values such as the instrument, and the ontology view maps the
+columns of each view to controlled vocabulary terms.
 
 ## Data processing workflows
 
@@ -66,7 +67,7 @@ proteoform claims with their own error control; `fragment` and `xic` hold fragme
 quantities and extracted ion chromatograms of DIA analyses; and `mz` holds MS1 and MS2
 spectra. Metadata views describe the samples (`sample`), the MS runs and their link to
 samples and channels (`run`), the project and its publication (`dataset`), the controlled
-vocabulary terms used in the dataset (`ontology`) and the processing chain (`provenance`).
+vocabulary terms of its columns and scores (`ontology`) and the processing chain (`provenance`).
 Absolute and differential expression results are stored as AnnData files (`.h5ad`)
 [@Virshup_2024], and the quantification results of a dataset can be exported as a single
 MuData file (`.h5mu`) [@Bredikhin_2022]. The original SDRF is kept next to the views. Parquet

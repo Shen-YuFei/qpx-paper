@@ -20,7 +20,7 @@ Table 2: QPX views in specification 1.3, written by QPX 1.4.0. Parquet views are
 | `sample` | sample | `sample_accession` | organism, tissue or cell type, disease and other SDRF annotations |
 | `run` | MS run | `run_file_name` | samples and label channels in the run, fraction, instrument, acquisition method, gradient, acquisition start |
 | `dataset` | dataset (single row) | `project_accession` | title, description, publication, software |
-| `ontology` | field and view | `field_name`, `view` | controlled vocabulary terms mapped to the fields and values of the dataset |
+| `ontology` | field and view | `field_name`, `view` | controlled vocabulary terms of the columns, scores, parameters and intensity names the views write |
 | `provenance` | processing step | `step_order` | tool, version, parameters, configuration and FDR thresholds where available |
 | `ae` (`.h5ad`) | sample × protein or protein group | – | absolute expression (e.g. iBAQ) with sample annotations |
 | `de` (`.h5ad`) | protein and contrast | – | fold changes, test statistics and p-values per contrast |

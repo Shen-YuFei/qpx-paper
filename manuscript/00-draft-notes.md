@@ -38,9 +38,9 @@ from the team.
     on this; "zebrafish" in Methods occurs only in dropped parts.
   - *Truncated feature views.* The latest versions of PXD025864, PXD027008 and PXD028251 have
     exactly 500,000 feature rows, the signature of the quantms converter bug fixed in QPX
-    1.1.0 (commit 77a79412: rows cut at 500,000 and duplicated). The benchmark input
-    (PXD007683, "500,000 features"; the source has 425,594) has the same defect, and
-    PXD007683 is not in the corpus.
+    1.1.0 (commit 77a79412: rows cut at 500,000 and duplicated). The benchmark numbers for
+    PXD007683 ("500,000 features"; commit 77a79412 gives 425,594 for its source) fit the same
+    defect, and PXD007683 is not in the corpus.
   - *DIA-NN subset.* Seven DIA-NN datasets (PXD000672, PXD003497, PXD004684, PXD018830,
     PXD021394, PXD027817, PXD028618; 4.8 million rows) have a psm view with exactly as many
     rows as the feature view, written through the quantms route of qpx 1.0.2, whereas Methods
