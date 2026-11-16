@@ -2,8 +2,8 @@
 
 ## Dataset selection
 
-The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions), 8 from iProX,
-2 from the CPTAC Proteomic Data Commons, 1 from MassIVE and 3 from other sources
+The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions) [@Deutsch_2025], 8 from
+iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE and 3 from other sources
 [TODO: name the sources of the HuiYan and PMI datasets]. [TODO (Yasset, Chengxin): the
 criteria used to select datasets for reprocessing, e.g. availability of raw files, an SDRF
 annotation, supported instrument and acquisition type.] Eighty-two datasets include human
@@ -47,7 +47,7 @@ workflow (quantmsdiann) [@Demichev_2019]. [TODO: DIA-NN versions and library-fre
 library-based search settings.] The identification-only datasets were produced with the
 `quantms-msnet` recipe. [TODO (Yasset, Chengxin): describe MSNet and how these datasets were
 searched.] [TODO (Jonas Scheid): immunopeptidomics datasets processed with nf-core/mhcquant
-[@Bichmann_2019], including non-specific digestion searches and HLA annotation.]
+[@Bichmann_2019; @Scheid_2025], including non-specific digestion searches and HLA annotation.]
 
 Each dataset records its processing chain in the QPX provenance view: the tools and, where
 the source provides them, their versions, parameters and FDR thresholds.
@@ -128,8 +128,9 @@ and warnings.
 ## Conversion from third-party tools
 
 The `qpxc convert` commands write QPX from the outputs of MaxQuant, FragPipe, DIA-NN,
-Spectronaut, Proteome Discoverer (text exports), OpenMS (consensusXML), CPTAC CDAP,
-mzIdentML and the quantms MSstats input table (Table 3); OpenMS can also write QPX directly.
+Spectronaut [@Bruderer_2015], Proteome Discoverer (text exports) [@Orsburn_2021], OpenMS
+(consensusXML), CPTAC CDAP [@Rudnick_2016], mzIdentML [@Vizcaino_2017] and the quantms MSstats
+input table [@Kohler_2023] (Table 3); OpenMS can also write QPX directly.
 Converters map each tool's columns to QPX fields, rewrite modification notation into the
 canonical ProForma form, convert units such as retention time in minutes to seconds, and
 take the sample and run metadata from an SDRF where one is given. When the source does not
@@ -144,7 +145,7 @@ converter writes the `proteoform` view, which producers write through the `qpx` 
 
 ## Quality control
 
-[TODO: pmultiqc (https://github.com/bigbio/pmultiqc), a MultiQC [@Ewels_2016] plugin,
+[TODO: pmultiqc [@Yue_2026] (https://github.com/bigbio/pmultiqc), a MultiQC [@Ewels_2016] plugin,
 summarises identification rates, missing values, mass error and retention time per run.
 The dataset folders in the snapshot contain no pmultiqc reports; decide whether to generate
 them for every deposited dataset and describe the metrics here.]

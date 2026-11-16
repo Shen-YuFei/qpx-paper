@@ -3,7 +3,7 @@
 Mass spectrometry (MS)-based proteomics data are now routinely deposited in public
 repositories. The ProteomeXchange consortium coordinates submission and dissemination across
 its member resources, and PRIDE, its largest member, holds tens of thousands of datasets
-[@Deutsch_2022; @Perez_Riverol_2024]. Raw files are the most complete record of an
+[@Deutsch_2025; @Perez_Riverol_2024]. Raw files are the most complete record of an
 experiment, but they are rarely what a reuser needs. Most reuse, from building expression
 atlases to training machine learning models, starts from identified and quantified
 peptides and proteins, and these results are scattered across the native outputs of the

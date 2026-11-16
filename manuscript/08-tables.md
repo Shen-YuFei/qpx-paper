@@ -35,7 +35,7 @@ for DIA-NN chromatogram exports, and MS2 spectrum tables matched to the converte
 PDC: written from PDC study metadata by `qpxc pdc2qpx`. File: written when the mzIdentML file
 holds the information. –: not written. The run column stands for the sample and run views,
 and every converter also writes the dataset and provenance views. Outside this table, `qpxc convert mz` writes the `mz` view of full runs from
-mzML, `qpxc convert sdrf` writes the sample and run views, MaxQuant writes the `site` view
+mzML [@Martens_2011], `qpxc convert sdrf` writes the sample and run views, MaxQuant writes the `site` view
 from a sites table (`--sites-file`), and the `protein` view is written by MaxQuant from
 `proteinGroups.txt` and from a FASTA database by the DIA-NN and OpenMS consensusXML converters
 (`--fasta`) or by `qpxc transform protein-properties`. No converter writes the `proteoform`
