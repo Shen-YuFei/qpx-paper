@@ -73,17 +73,19 @@ from the team.
     (placeholders added).
 - **Software content trimmed (16 November 2026).** The software material was cut until two
   review agents, one reading as a data reuser and one as an editor, both judged it appropriate
-  for a Data Descriptor (five rounds; commits 06fd7a5 and 61b5363). Cut: the converter sentence
-  in the abstract and Background; the encoding details, the specification 1.3 changelog, the
-  open-development sentence, the `qpxc validate` options and the list of converters in Methods;
-  Table 3 (views per converter); the `llms.txt` and MCP sentences and the feature lists of the
-  two viewers in Usage Notes; the benchmark, now Supplementary Fig. 1 and still to be rerun, so
-  Figs 4 and 5 became Figs 3 and 4. Added: how the views join, and TODOs on the conversion
-  route, views, relayout, decoys, q-value levels and primary quantities of each subset.
-  Anything cut can be restored from a82ea5f. The abstract and Background no longer say that QPX
-  converts the outputs of many tools (co-authors to confirm). references.bib keeps
-  Bruderer_2015, Orsburn_2021, Rudnick_2016 and Vizcaino_2017, now uncited; cite them again or
-  delete them before submission. Once the TODOs are resolved, the relayout and `qpxc migrate`
+  for a Data Descriptor (five rounds; commits 06fd7a5 and 61b5363; the verdict applies to
+  5714e54). Cut: the converter sentence in the abstract; the encoding details, the
+  specification 1.3 changelog, the open-development sentence and the `qpxc validate` options in
+  Methods; the `llms.txt` and MCP sentences and the feature lists of the two viewers in Usage
+  Notes; the benchmark, now Supplementary Fig. 1 and still to be rerun, so Figs 4 and 5 became
+  Figs 3 and 4. Added: how the views join, and TODOs on the conversion route, views, relayout,
+  decoys, q-value levels and primary quantities of each subset. Anything cut can be restored
+  from a82ea5f. The agents had also cut the converters, which left no statement that the
+  outputs of other tools can be converted; at the drafting author's decision, and against both
+  round-3 reviewers, they were then brought back as a shorter sentence in Background, the list
+  of converters with its citations in Methods, and the former Table 3 as Supplementary Table 1.
+  The agents did not review this version. The abstract still does not name the converters
+  (co-authors to confirm). Once the TODOs are resolved, the relayout and `qpxc migrate`
   passages should say what was done to the deposited files, and views absent from the deposit
   could shrink to one sentence. Remarks not acted on: move the `qpxc validate` description to
   Technical Validation; say how `provenance.json` relates to the provenance view; add a second

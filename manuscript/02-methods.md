@@ -112,15 +112,18 @@ row identifiers again.
 ## Conversion from third-party tools
 
 [TODO: name the converter or writer and the QPX release that produced each subset of the
-deposited record.] Converters map each tool's columns to QPX fields, rewrite modification
-notation into the canonical ProForma form, convert units such as retention time in minutes to
-seconds, and take the sample and run metadata from an SDRF where one is given. When the source
-does not report a value, the field is left null rather than estimated: DIA-NN reports, for
-example, have no PSM-level table, so DIA-NN conversions have no `psm` view. Values that a
-converter derives are labelled as such: when a consensusXML file reports no protein abundance,
-the protein-group intensity is the sum of its unique peptides and is marked with that
-quantification method. The documentation lists, per converter, which views are written and
-where each field comes from.
+deposited record.] The `qpxc convert` commands of QPX 1.4.0 read the outputs of MaxQuant,
+FragPipe, DIA-NN, Spectronaut [@Bruderer_2015], Proteome Discoverer [@Orsburn_2021], OpenMS
+(consensusXML), CPTAC CDAP [@Rudnick_2016], mzIdentML [@Vizcaino_2017] and the quantms MSstats
+input table [@Kohler_2023]. Converters map each tool's columns to QPX fields, rewrite
+modification notation into the canonical ProForma form, convert units such as retention time in
+minutes to seconds, and take the sample and run metadata from an SDRF where one is given. When
+the source does not report a value, the field is left null rather than estimated: DIA-NN
+reports, for example, have no PSM-level table, so DIA-NN conversions have no `psm` view. Values
+that a converter derives are labelled as such: when a consensusXML file reports no protein
+abundance, the protein-group intensity is the sum of its unique peptides and is marked with
+that quantification method. Supplementary Table 1 lists the views that each converter writes,
+and the documentation lists where each field comes from.
 
 ## Quality control
 

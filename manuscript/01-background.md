@@ -27,20 +27,20 @@ of records across many studies: every query requires decompressing and parsing t
 file, and files grow quickly with the number of runs.
 
 Here we describe QPX, an open format for MS-based proteomics results, and a corpus of public
-datasets reprocessed and stored in it. QPX splits results into views, each stored as an
-Apache Parquet table with a typed schema: PSMs, quantified peptide features, protein groups,
-a peptide-to-protein map and protein annotations, modification sites and proteoforms, and
-fragment ion quantities and chromatograms of DIA analyses, together with sample, run,
-dataset, ontology and provenance metadata. Peptidoforms are written in ProForma notation
-[@LeDuc_2022], metadata fields are mapped to PSI-MS and other controlled vocabulary terms
-[@Mayer_2013], and the original SDRF is kept alongside the Parquet files. Expression results
-are exported as AnnData and MuData objects for use with single-cell and multi-omics analysis
-tools [@Virshup_2024; @Bredikhin_2022]. Because Parquet is a columnar format with
-per-column statistics, analytical engines such as DuckDB [@Raasveldt_2019] can answer typical
-queries by reading only the columns and row groups they need. QPX does
-not replace mzTab; it is a performance-oriented layer for integrating results across tools
-and studies, in the spirit of community data structures such as BIDS in neuroimaging
-[@Gorgolewski_2016] and of the FAIR principles [@Wilkinson_2016].
+datasets reprocessed and stored in it. QPX splits results into views, each stored as an Apache
+Parquet table with a typed schema: PSMs, quantified peptide features, protein groups, a
+peptide-to-protein map and protein annotations, modification sites and proteoforms, and
+fragment ion quantities and chromatograms of DIA analyses, together with sample, run, dataset,
+ontology and provenance metadata. Peptidoforms are written in ProForma notation [@LeDuc_2022],
+metadata fields are mapped to PSI-MS and other controlled vocabulary terms [@Mayer_2013], and
+the original SDRF is kept alongside the Parquet files. Expression results are exported as
+AnnData and MuData objects for use with single-cell and multi-omics analysis tools
+[@Virshup_2024; @Bredikhin_2022]. Because Parquet is a columnar format with per-column
+statistics, analytical engines such as DuckDB [@Raasveldt_2019] can answer typical queries by
+reading only the columns and row groups they need. Converters write QPX from the outputs of the
+main DDA and DIA tools. QPX does not replace mzTab; it is a performance-oriented layer for
+integrating results across tools and studies, in the spirit of community data structures such
+as BIDS in neuroimaging [@Gorgolewski_2016] and of the FAIR principles [@Wilkinson_2016].
 
 The corpus contains 103 public datasets with 23,204 samples and 51,023 MS runs
 [TODO: update after regeneration]. Forty-six datasets carry full quantification results: 27
