@@ -38,8 +38,7 @@ abstract: |
   their identification and quantification results are scattered across tool-specific
   formats that are hard to combine and slow to query. We present QPX, an open format that
   stores peptide-spectrum matches, peptide features, protein groups, modification sites and
-  their sample, run and provenance metadata as typed Apache Parquet tables. Converters write QPX from DIA-NN, MaxQuant, FragPipe, Spectronaut,
-  Proteome Discoverer and OpenMS outputs. We also describe a corpus of 103 public datasets stored in QPX, with 23,204
+  their sample, run and provenance metadata as typed Apache Parquet tables. We also describe a corpus of 103 public datasets stored in QPX, with 23,204
   samples, 51,023 MS runs and 568 million peptide-spectrum matches. Forty-six datasets were
   reprocessed with quantms and DIA-NN workflows and carry peptide and protein
   quantification; 57 provide identifications only. The samples of 96 datasets are annotated

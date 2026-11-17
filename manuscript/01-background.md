@@ -37,8 +37,7 @@ dataset, ontology and provenance metadata. Peptidoforms are written in ProForma 
 are exported as AnnData and MuData objects for use with single-cell and multi-omics analysis
 tools [@Virshup_2024; @Bredikhin_2022]. Because Parquet is a columnar format with
 per-column statistics, analytical engines such as DuckDB [@Raasveldt_2019] can answer typical
-queries by reading only the columns and row groups they need. Converters write QPX from the
-outputs of the main DDA and DIA tools, so the format is not tied to one workflow. QPX does
+queries by reading only the columns and row groups they need. QPX does
 not replace mzTab; it is a performance-oriented layer for integrating results across tools
 and studies, in the spirit of community data structures such as BIDS in neuroimaging
 [@Gorgolewski_2016] and of the FAIR principles [@Wilkinson_2016].

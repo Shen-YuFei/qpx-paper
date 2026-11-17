@@ -24,34 +24,3 @@ Table 2: QPX views in specification 1.3, written by QPX 1.4.0. Parquet views are
 | `provenance` | processing step | `step_order` | tool, version, parameters, configuration and FDR thresholds where available |
 | `ae` (`.h5ad`) | sample × protein or protein group | – | absolute expression (e.g. iBAQ) with sample annotations |
 | `de` (`.h5ad`) | protein and contrast | – | fold changes, test statistics and p-values per contrast |
-
-Table 3: Views written by the `qpxc convert` commands of QPX 1.4.0. Yes: written. In: written
-when the tool output for that level is given. Opt: written on request (fragment quantities from
-DIA-NN and Spectronaut reports, DIA-NN chromatogram exports, and MS2 spectra matched to the
-converted features). Ab: written when the PSM export has abundance columns. SDRF: written from
-an SDRF. PDC: written from PDC study metadata by `qpxc pdc2qpx`. File: written when the
-mzIdentML file holds the information. –: not written. The run column stands for the sample and
-run views, and every converter also writes the dataset and provenance views. Outside this
-table, `qpxc convert mz` writes the `mz` view of full runs from mzML [@Martens_2011], the
-`site` view is written from MaxQuant sites tables and the `protein` view from MaxQuant protein
-groups or a FASTA database; no converter writes the `proteoform` view.
-
-```{=latex}
-\begingroup\setlength{\tabcolsep}{3.5pt}
-```
-
-| Source | psm | feature | pg | pepmap | fragment | xic | mz | run |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| MaxQuant | In | In | In | In | – | – | – | SDRF |
-| FragPipe | In | In | In | In | – | – | – | SDRF |
-| DIA-NN | – | Yes | Yes | Yes | Opt | Opt | Opt | SDRF |
-| Spectronaut | – | Yes | Yes | – | Opt | – | – | SDRF |
-| Proteome Discoverer | Yes | Ab | In | Ab | – | – | – | SDRF |
-| OpenMS consensusXML | Yes | Yes | Yes | – | – | – | – | SDRF |
-| CPTAC CDAP | Yes | Yes | Yes | – | – | – | – | PDC |
-| mzIdentML | Yes | – | File | File | – | – | – | – |
-| quantms MSstats | – | Yes | – | – | – | – | – | SDRF |
-
-```{=latex}
-\endgroup
-```
