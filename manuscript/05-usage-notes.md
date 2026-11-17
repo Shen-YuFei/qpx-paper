@@ -22,33 +22,30 @@ GROUP BY r.run_file_name
 ORDER BY protein_groups DESC;
 ```
 
-The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, also available
-as the container image `ghcr.io/bigbio/qpx:1.4.0` [TODO: check after the release]) opens a dataset folder as a single object, runs
-SQL across its views with DuckDB, converts tool outputs, validates files and exports
-quantification results to MuData. Its documentation (https://qpx.quantms.org) includes a
-plain-text version written for large language models (`llms.txt`).
+The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, also available as
+the container image `ghcr.io/bigbio/qpx:1.4.0` [TODO: check after the release]) opens a dataset
+folder as a single object, runs SQL across its views with DuckDB, converts tool outputs,
+validates files and exports quantification results to MuData; its documentation is at
+https://qpx.quantms.org.
 
 ## QPX Explorer
 
-The QPX Explorer of the quantms portal (https://portal.quantms.org/apps/qpx-explore) opens
-one dataset version at a time and queries it with DuckDB on the server. It shows the files
-and their row counts, the organisms, instruments, runs and samples, lets users search
-protein groups and peptides and view per-protein details, and offers a gallery of curated
-queries. The same queries are available to AI agents through a Model Context Protocol (MCP)
-interface. [TODO (Yasset): screenshots for Fig. 5 and a short description of the portal
-around it.]
+The QPX Explorer of the quantms portal (https://portal.quantms.org/apps/qpx-explore) opens one
+dataset version at a time and queries it with DuckDB on the server. It shows the files and
+their row counts, the samples and runs, protein and peptide search and a gallery of curated
+queries. [TODO (Yasset): screenshots for Fig. 5 and a short description of the portal around
+it.]
 
 ## QPX UI
 
 QPX UI (https://github.com/bigbio/qpxui) is an open-source desktop viewer for QPX data, with
-installers for macOS, Windows and Linux. It opens a local file or dataset folder, an S3
-bucket or any dataset of the quantms portal, and runs every query on the user's machine with
-DuckDB; remote files are read lazily, fetching only the Parquet metadata and the column chunks
-a query needs. For each dataset it builds a report with identification and quality control
-charts, offers protein and peptide search, a protein × sample abundance matrix with sample
-correlation and principal component analysis, an annotated spectrum viewer for PSMs that
-store their peaks, a browser for the rows of every view and an SQL console. It does not yet
-display the AnnData and MuData files. [TODO: version cited; screenshots for Fig. 5.]
+installers for macOS, Windows and Linux. It opens a local file or dataset folder, an S3 bucket
+or any dataset of the quantms portal and runs queries on the user's machine with DuckDB; from
+remote files it fetches only the Parquet metadata and the column chunks a query needs. It
+builds a report for each dataset with identification and quality control charts and offers
+protein and peptide search, a protein × sample abundance matrix, a spectrum viewer for PSMs
+that store their peaks and an SQL console; it does not yet display the AnnData and MuData
+files. [TODO: version cited; screenshots for Fig. 5.]
 
 ## Reuse
 
