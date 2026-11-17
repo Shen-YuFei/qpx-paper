@@ -24,7 +24,7 @@ from the team.
   DOI, and check the views, converters and options described here against the released
   documentation. QPX 1.2.0 (30 October 2026) and 1.3.0 (7 November 2026) write specification
   1.2; 1.3.0 added the `xic` view.
-- **QPX UI.** The desktop viewer is described in the Usage Notes and Fig. 5; decide the
+- **QPX UI.** The desktop viewer is described in the Usage Notes and Fig. 4; decide the
   version cited and whether its authors join the author list.
 - **Check of 16 November 2026.** Reading the draft against the journal's referee questions and
   the 29 October snapshot turned up the following; each needs a decision or the regenerated
@@ -40,9 +40,9 @@ from the team.
     rows; the snapshot keeps no run file names, so overlap could not be checked.
   - *Truncated feature views.* The latest versions of PXD025864, PXD027008 and PXD028251 have
     exactly 500,000 feature rows, the signature of the quantms converter bug fixed in QPX
-    1.1.0 (commit 77a79412: rows cut at 500,000 and duplicated). The benchmark numbers for
-    PXD007683 ("500,000 features"; commit 77a79412 gives 425,594 for its source) fit the same
-    defect, and PXD007683 is not in the corpus.
+    1.1.0 (commit 77a79412: rows cut at 500,000 and duplicated). The earlier benchmark numbers for
+    PXD007683 (500,000 features, see a82ea5f; commit 77a79412 gives 425,594 for its source) fit the
+    same defect, and PXD007683 is not in the corpus.
   - *DIA-NN subset.* Seven DIA-NN datasets (PXD000672, PXD003497, PXD004684, PXD018830,
     PXD021394, PXD027817, PXD028618; 4.8 million rows) have a psm view with exactly as many
     rows as the feature view, written through the quantms route of qpx 1.0.2, whereas Methods
@@ -71,3 +71,20 @@ from the team.
     one or two tables or figures), not in Data Records; every input dataset is to be cited in
     the journal's data citation format; Data Availability and Funding sections are required
     (placeholders added).
+- **Software content trimmed (16 November 2026).** The software material was cut until two
+  review agents, one reading as a data reuser and one as an editor, both judged it appropriate
+  for a Data Descriptor (five rounds; commits 06fd7a5 and 61b5363). Cut: the converter sentence
+  in the abstract and Background; the encoding details, the specification 1.3 changelog, the
+  open-development sentence, the `qpxc validate` options and the list of converters in Methods;
+  Table 3 (views per converter); the `llms.txt` and MCP sentences and the feature lists of the
+  two viewers in Usage Notes; the benchmark, now Supplementary Fig. 1 and still to be rerun, so
+  Figs 4 and 5 became Figs 3 and 4. Added: how the views join, and TODOs on the conversion
+  route, views, relayout, decoys, q-value levels and primary quantities of each subset.
+  Anything cut can be restored from a82ea5f. The abstract and Background no longer say that QPX
+  converts the outputs of many tools (co-authors to confirm). references.bib keeps
+  Bruderer_2015, Orsburn_2021, Rudnick_2016 and Vizcaino_2017, now uncited; cite them again or
+  delete them before submission. Once the TODOs are resolved, the relayout and `qpxc migrate`
+  passages should say what was done to the deposited files, and views absent from the deposit
+  could shrink to one sentence. Remarks not acted on: move the `qpxc validate` description to
+  Technical Validation; say how `provenance.json` relates to the provenance view; add a second
+  SQL example that joins feature intensities to samples.
