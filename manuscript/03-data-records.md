@@ -1,16 +1,52 @@
 # Data Records
 
 [TODO: repository and DOI of the deposited record, e.g. PRIDE or Zenodo, cited as a data
-citation.] The corpus is currently served at https://browse.quantms.org/quantms/datasets/,
-with one folder per dataset accession. Each dataset folder holds one or more subfolders
-named by a hash of their content, so a reprocessed version of a dataset appears as a new
-subfolder next to the earlier ones. A QPX subfolder contains the views of that
-version, named `{PREFIX}.{view}.parquet` with the dataset accession as the prefix in most cases, a `provenance.json` file describing how and when
-the version was produced and, for 23 datasets, a MuData export (`.h5mu`) of the
-quantification results. The SDRF and the earlier quantms outputs (mzTab [@Griss_2014] and MSstats input tables [@Kohler_2023]) are kept in separate subfolders of the same dataset. [TODO: decide which version of
-each dataset is deposited; 19 datasets currently have more than one QPX version.]
+citation, and its folder layout where it differs from the one described here.] The corpus is
+currently served at https://browse.quantms.org/quantms/datasets/, with one folder per dataset.
+Each dataset folder holds one or more subfolders named by a hash of their content, so a
+reprocessed version of a dataset appears as a new subfolder next to the earlier ones. A QPX
+subfolder contains the views of that version, a `provenance.json` file describing how and when
+the version was produced and, for 23 datasets, a MuData export (`.h5mu`) of the quantification
+results. The SDRF and the earlier quantms outputs (mzTab [@Griss_2014] and MSstats input tables
+[@Kohler_2023]) are kept in the same subfolder or in another subfolder of the dataset. The folder
+of PXD048538, for example, holds two versions of the dataset:
 
-Table 1 summarises the corpus [TODO: provisional numbers from the 29 October 2026 snapshot,
+```text
+PXD048538/
+|-- 41b03dd48c8b/
+`-- e60b9e9aa4c8/
+    |-- PXD048538.dataset.parquet
+    |-- PXD048538.feature.parquet
+    |-- PXD048538.ontology.parquet
+    |-- PXD048538.pg.parquet
+    |-- PXD048538.provenance.parquet
+    |-- PXD048538.run.parquet
+    |-- PXD048538.sample.parquet
+    |-- PXD048538.h5mu
+    |-- PXD048538.sdrf.tsv
+    |-- PXD048538_msstats_in.csv.gz
+    `-- provenance.json
+```
+
+Table 2 explains the folder and file names. [TODO: decide which version of each dataset is
+deposited; 19 datasets currently have more than one QPX version. In the snapshot, the latest QPX
+folder holds the SDRF for 40 datasets, another subfolder holds it for 25, and 38 have none on the
+portal; 18 latest versions keep their views in a `qpx/` subfolder and 2 use the prefix
+`openms` instead of the accession.]
+
+Table 2: Folder and file names in the corpus.
+
+| Element | Example | Meaning |
+|-----------------|---------------|------------------|
+| Dataset folder | `PXD048538/` | Repository accession of the dataset, or a project name for datasets without one |
+| Version folder | `e60b9e9aa4c8/` | Hash of the content of one processed version of the dataset |
+| `{PREFIX}` | `PXD048538` | Usually the accession; a suffix marks a view of a subset processed separately (`PXD004452-GluC`) or a part of a view split into several files (`IPX0002031000-P2`) |
+| `{PREFIX}.{view}.parquet` | `PXD048538.pg.parquet` | One view (Table 1) |
+| `{PREFIX}.h5mu` | `PXD048538.h5mu` | MuData export of the quantification results |
+| `{PREFIX}.sdrf.tsv` | `PXD048538.sdrf.tsv` | SDRF-Proteomics annotation of the samples and runs |
+| `provenance.json` | | How and when the version was produced |
+
+Table 3 summarises the corpus [TODO: provisional numbers from the 29 October 2026 snapshot,
 latest QPX version of each dataset; update after regeneration]. In total it holds 23,204
 samples, 51,023 MS runs, 568 million PSM records, 435 million peptide feature records and 47
 million protein-group quantity records, in 1.54 TB of files. Within each dataset, the
@@ -19,7 +55,7 @@ identification-only datasets account for most of the PSM records (499 million) a
 volume (1.44 TB). The 46 quantitative datasets account for nearly all feature and
 protein-group records, and their files total 96 GB.
 
-Table 1: Summary of the QPX corpus by processing workflow. ID only: identification-only
+Table 3: Summary of the QPX corpus by processing workflow. ID only: identification-only
 datasets from the `quantms-msnet` recipe; DIA-NN: DIA datasets processed with DIA-NN;
 OpenMS: label-free and TMT DDA datasets processed with the OpenMS-based quantms workflows.
 PSMs, Features and PGs (protein-group records) in millions; GB, total file size.
@@ -35,7 +71,7 @@ Provisional: latest QPX version of each dataset on browse.quantms.org on 29 Octo
 Each data view has one row per entity: one PSM in `psm`; one peptide feature per run in
 `feature`, with the intensities of its label channels nested in the row; and, in `pg`, one
 protein group per quantification unit (a run or a group of fractionated runs) and label. Table
-2 lists the views and their key columns. The views join through shared columns: `run_file_name`
+1 lists the views and their key columns. The views join through shared columns: `run_file_name`
 links `psm`, `feature` and `mz` to the run view, whose sample entries resolve a run and label
 channel to a `sample_accession`; `pg.grouped_runs` lists the runs of a quantification unit;
 `psm.feature_id`, where present, points to the feature of a PSM; `psm` and `feature` share the
@@ -51,7 +87,8 @@ or dataset) and can be read in full; the data views are split into row groups wi
 statistics, so that readers can skip the parts a query does not touch (Supplementary Fig. 1).
 
 [TODO: state which views each subset holds, including peak arrays in `psm`, the `site`,
-`fragment`, `xic` and `mz` views and the `.h5ad` files, for example as columns of Table 1, and
+`fragment`, `xic` and `mz` views and the `.h5ad` files, for example as columns of Table 3, and
 whether the deposited files were rewritten with `qpxc transform relayout`, which rounds
 intensities and renumbers identifiers. In the snapshot, the PSM records of the DIA-NN subset
 come from seven datasets whose psm view was written through the quantms route of qpx 1.0.2.]
+Supplementary Fig. 2 shows which views each dataset holds in the snapshot.

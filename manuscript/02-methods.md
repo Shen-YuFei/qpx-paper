@@ -11,6 +11,11 @@ annotation, supported instrument and acquisition type.] Eighty-two datasets incl
 samples and seven mouse samples; the others cover plants, yeast, *Drosophila*, zebrafish,
 other vertebrates, bacteria and viruses. The most common instruments are Orbitrap Fusion,
 Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X (Fig. 2c,d).
+Supplementary Table 1 lists every dataset with its accession, hosting repository and original
+publication, and the deposited data of each dataset are cited individually [@ds_MSV000085836; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TODO: data
+citations for the ten datasets whose repository records could not be retrieved: HuiYan-E480,
+HuiYanAstralMouse and PMID23933261 have no repository accession, the iProX server could not be
+reached for five iProX datasets, and the PDC records of PDC000127 and PDC000219 name no contacts.]
 
 According to the acquisition method annotated in their SDRF files, 60 datasets were acquired
 in data-dependent mode (52 label-free, 7 TMT-labelled and 1 with both label-free and TMT
@@ -56,7 +61,7 @@ the source provides them, their versions, parameters and FDR thresholds.
 
 ## The QPX format
 
-QPX organises the results of one dataset into views (Table 2). Data views hold identification
+QPX organises the results of one dataset into views (Table 1). Data views hold identification
 and quantification results: `psm` holds peptide-spectrum matches with scores and, optionally,
 fragment peak arrays; `feature` holds identified and quantified peptide features per run, with
 a quantity for each label channel and the origin of each identification (direct, transferred
@@ -70,8 +75,8 @@ MS2 spectra, for example from mzML files [@Martens_2011]. Metadata views describ
 publication (`dataset`), the controlled vocabulary terms of its columns and scores (`ontology`)
 and the processing chain (`provenance`). Absolute and differential expression results are
 stored as AnnData files (`.h5ad`) [@Virshup_2024], and the quantification results of a dataset
-can be exported as a single MuData file (`.h5mu`) [@Bredikhin_2022]. The original SDRF is kept
-next to the views. Parquet views are named `{PREFIX}.{view}.parquet`, for example
+can be exported as a single MuData file (`.h5mu`) [@Bredikhin_2022]. `qpxc convert` copies the
+SDRF next to the views as `{PREFIX}.sdrf.tsv`. Parquet views are named `{PREFIX}.{view}.parquet`, for example
 `PXD014414.feature.parquet`.
 
 Each view has a schema, shipped with the QPX package as a YAML definition, that fixes the
@@ -83,11 +88,12 @@ inline and modifications as Unimod accessions, so the same peptidoform has the s
 whichever tool reported it. Scores and tool-specific parameters are stored as name-value pairs,
 and the ontology view maps their names to PSI-MS and other controlled vocabulary terms where a
 mapping exists [@Mayer_2013]. The schema distinguishes three kinds of column: required columns
-must be present and non-null, nullable columns must be present but may be null, and optional
+must be present and, unless declared nullable, non-null, nullable columns must be present but may be null, and optional
 columns may be left out of a file. Each Parquet file stores the specification version
 (`qpx_version`) and the writing software in its file-level metadata, and every column carries
 its description in the field metadata, so a file can be interpreted without the specification
-at hand.
+at hand. Supplementary Table 2, generated from the schemas, lists every column of every view with
+its type, requirement and description.
 
 Converters write Parquet files compressed with Zstandard, in row groups of at most 131,072
 rows. Before publication, `qpxc transform relayout` can rewrite a dataset for faster selective
@@ -127,7 +133,7 @@ the source does not report a value, the field is left null rather than estimated
 reports, for example, have no PSM-level table, so DIA-NN conversions have no `psm` view. Values
 that a converter derives are labelled as such: when a consensusXML file reports no protein
 abundance, the protein-group intensity is the sum of its unique peptides and is marked with
-that quantification method. Supplementary Table 1 lists the views that each converter writes,
+that quantification method. Supplementary Table 3 lists the views that each converter writes,
 and the documentation lists where each field comes from.
 
 ## Quality control

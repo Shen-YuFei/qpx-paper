@@ -1,6 +1,6 @@
 # Tables
 
-Table 2: QPX views in specification 1.3, written by QPX 1.4.0. Parquet views are named
+Table 1: QPX views in specification 1.3, written by QPX 1.4.0. Parquet views are named
 `{PREFIX}.{view}.parquet`; absolute and differential expression results are AnnData files
 (`.h5ad`), and a dataset's quantification results can be exported as one MuData file
 (`{PREFIX}.h5mu`).

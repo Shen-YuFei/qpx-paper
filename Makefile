@@ -5,7 +5,7 @@ TECTONIC ?= tectonic
 
 META     := manuscript/metadata.yaml
 SECTIONS := $(sort $(wildcard manuscript/[0-9]*.md))
-BIB      := references.bib
+BIB      := references.bib data/dataset_citations.bib
 OUT      := build/qpx-paper
 FIGS     := $(wildcard figures/*)
 
@@ -19,11 +19,11 @@ $(OUT).docx: $(META) $(SECTIONS) $(BIB) $(FIGS) templates/nature.csl
 	@mkdir -p build
 	$(PANDOC) $(META) $(SECTIONS) --resource-path=.:figures --citeproc \
 		--default-image-extension=png \
-		--bibliography=$(BIB) --csl=templates/nature.csl -o $@
+		$(addprefix --bibliography=,$(BIB)) --csl=templates/nature.csl -o $@
 
 $(OUT).tex: $(META) $(SECTIONS) $(BIB) templates/sn-template.tex
 	@mkdir -p build
-	$(PANDOC) $(META) $(SECTIONS) --natbib --bibliography=$(BIB) \
+	$(PANDOC) $(META) $(SECTIONS) --natbib $(addprefix --bibliography=,$(BIB)) \
 		--default-image-extension=pdf \
 		--template=templates/sn-template.tex -s -o $@
 

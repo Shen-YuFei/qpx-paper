@@ -17,7 +17,10 @@ Reprocessing public data with a uniform workflow removes much of this heterogene
 efforts reanalysed public datasets to build baseline protein expression resources and
 integrate them into Expression Atlas [@Jarnuczak_2021; @Walzer_2022], and the quantms
 workflow made such reanalysis practical at scale by running DDA and DIA analyses
-reproducibly on high-performance and cloud infrastructure [@Dai_2024]. Sample metadata
+reproducibly on high-performance and cloud infrastructure [@Dai_2024]. Other resources released
+reprocessed results for particular uses, such as a nine-species benchmark of annotated spectra
+for machine learning [@Wen_2024] and the MaxQuant results of 7,444 HeLa control runs
+[@Webel_2024], each in the output files of its own pipeline. Sample metadata
 annotated in the SDRF-Proteomics format link each MS run to its biological sample and
 experimental design [@Dai_2021]. The remaining bottleneck is the representation of the
 results. The community standard for reporting final results, mzTab [@Griss_2014], is a

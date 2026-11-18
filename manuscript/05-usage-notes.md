@@ -26,7 +26,9 @@ The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, als
 the container image `ghcr.io/bigbio/qpx:1.4.0` [TODO: check after the release]) opens a dataset
 folder as a single object, runs SQL across its views with DuckDB, converts tool outputs,
 validates files and exports quantification results to MuData; its documentation is at
-https://qpx.quantms.org.
+https://qpx.quantms.org. Example Python scripts that build a protein-group by sample matrix, join
+feature intensities to the sample annotations and assign peptides to the folds described below
+are in the `examples` folder of the repository of this paper (see Code Availability).
 
 ## QPX Explorer
 
@@ -45,6 +47,46 @@ dataset (Fig. 4b). [TODO: cite a release. The screenshot shows the main branch a
 fff2999 (10 November 2026), which is newer than the only release, v0.2.0 (7 November 2026),
 and looks different from it.]
 
+## Error rates and decoys
+
+Every `psm`, `feature` and `pg` row has an `is_decoy` flag, and the q-values are stored as the
+workflow computed them: `psm.qvalue` for PSMs, `feature.precursor_qvalue` and
+`feature.global_qvalue` for precursors within a run and across the dataset, and `pg.pg_qvalue`
+and `pg.global_qvalue` for protein groups within a run and across the dataset. A null q-value
+means that the source reported none. To use the rows at a given error rate, drop the decoys and
+filter on the q-value of the level the analysis needs; the `confident()` methods of the `qpx`
+package do this for PSMs and features. [TODO: for each subset, the threshold at which the
+workflow exported its results and whether decoys are kept; in the trial conversions, the
+identification-only PSMs carry neither q-values nor decoys.]
+
+## Quantities and missing values
+
+A feature row holds one primary intensity per label channel (`intensities`), and a `pg` row one
+primary `intensity` for its label; further quantities reported by the tool, such as normalised,
+LFQ or iBAQ values, are kept under their tool names in `additional_intensities`. Several
+quantities can therefore exist for the same row, and analyses should state which one they used.
+[TODO: the tool output that fills the primary feature and protein-group intensity in each
+subset.] Missing values take three forms. A null intensity in an existing row means that the
+peptide or protein group was identified in that run or channel but not quantified; a missing row
+means that it was neither identified nor quantified there, as the converters add no zero or null
+placeholders; and a null in any other column means that the source did not report the value.
+[TODO: in the trial conversion of the TMT dataset PXD014145, 16% of the protein-group and 19%
+of the feature channel intensities are 0; check whether the zeros come from the tool output and
+say how to read them.]
+
+## Numerical precision and identifiers
+
+Files rewritten by `qpxc transform relayout` keep 12 mantissa bits for intensities and mass
+errors and 16 for retention times, ion mobilities and collisional cross sections, a relative error
+of at most 1.2 × 10^-4^ for intensities, well below the variation between repeated measurements of
+a precursor; the file metadata key `qpx.mantissa_bits` lists the rounded columns. Scores, q-values
+and m/z values are not rounded, so the rows that pass a threshold do not change, but intensities
+should be compared with a tolerance rather than for equality. Row identifiers (`psm_id`,
+`feature_id`, `pg_id`) are unique within a dataset version only: relayout renumbers them, and
+older specifications derive them differently. To match records across versions or datasets, use
+the content columns, such as the peptidoform, charge, run file name and protein accessions.
+[TODO: state whether the deposited files were rewritten with relayout.]
+
 ## Reuse
 
 The corpus suits several kinds of reuse without returning to the raw files. Protein-group
@@ -56,16 +98,45 @@ charges, retention times and scores, provide training and evaluation data for re
 time and fragment spectrum prediction and for PSM rescoring. [TODO: HLA-binding models,
 once immunopeptidomics datasets are included.]
 
-## Caveats
+## Splits for machine learning
+
+Models of peptide properties overestimate their accuracy when the same peptide occurs in the
+training and the test data, including in another modified form or another dataset
+[@Wen_2024]. We recommend assigning peptides to ten folds by sequence: take the unmodified
+`sequence`, replace isoleucine by leucine, compute the MD5 digest of the upper-case string, read
+it as a big-endian integer and take the remainder modulo 10. All peptidoforms and PSMs of a
+sequence then fall in the same fold, in every dataset and every version of the corpus, without a
+separate split file; we suggest folds 8 and 9 for validation and testing. The example scripts
+implement this rule.
+
+## Combining datasets
 
 Datasets come from different laboratories, instruments, acquisition methods and labelling
-strategies, so quantities are not directly comparable across datasets without
-normalisation and correction for batch effects. Error rates are controlled within each
-dataset, at the levels and thresholds the workflow applied, which the provenance view records
-where the workflow reports them;
-combining datasets does not preserve these error rates, and users should filter on the
-q-value columns at the level their analysis needs. Intensities are reported as produced by
-each workflow (for example, DIA-NN or OpenMS label-free and TMT reporter intensities) and are
-not normalised across datasets. Several datasets have more than one QPX version: each version
-lives in its own content-addressed folder, and the `qpx_version` and `provenance.json` of each
-folder tell which specification and workflow produced it.
+strategies, so quantities are not directly comparable across datasets without normalisation and
+correction for batch effects. Intensities are reported as produced by each workflow (for
+example, DIA-NN or OpenMS label-free and TMT reporter intensities) and are not normalised across
+datasets. Error rates are controlled within each dataset, at the levels and thresholds the
+workflow applied, which the provenance view records where the workflow reports them; combining
+datasets does not preserve these error rates.
+
+The workflows read the enzyme, modifications and labels of each dataset from its SDRF but apply
+one search and quantification strategy per route. Studies whose design calls for a specialised
+analysis, such as cross-linking, glycoproteomics, open modification searches or non-specific
+digestion, are represented only by what this strategy finds, which can differ from the results of
+the original publication; the SDRF allows such datasets to be reprocessed with other settings.
+[TODO: list the deposited datasets to which this applies.]
+
+## Known issues
+
+Known issues of individual datasets are listed in the `known_issues` column of Supplementary
+Table 1. [TODO: update after regeneration; the snapshot lists conflicting acquisition
+annotations and datasets with several QPX versions. Name where users can report issues.]
+
+## Versions and citation
+
+Each processed version of a dataset is a folder named by its content hash, added next to the
+earlier versions rather than replacing them, and each file records its specification version
+(`qpx_version`). Users should report the accession and version folder of every dataset they
+use, cite this paper and the deposited record [TODO: DOI and versioning of the deposited record],
+and cite the original data of each dataset, given in Supplementary Table 1, since the results
+derive from the submitters' raw files.

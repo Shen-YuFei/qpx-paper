@@ -50,7 +50,7 @@ def main():
     text(ax, x + 2, 25.5, "SDRF-Proteomics files\nlinking runs to samples,\nlabels and ontology terms",
          va="top")
 
-    # Column 2: one box per processing route, in the order of Table 1.
+    # Column 2: one box per processing route, in the order of Table 3.
     x, w = cols[1]
     routes = [
         ("ID only", "quantms-msnet recipe", "Identification only"),

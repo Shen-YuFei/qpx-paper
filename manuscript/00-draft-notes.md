@@ -113,3 +113,22 @@ from the team.
   could shrink to one sentence. Remarks not acted on: move the `qpxc validate` description to
   Technical Validation; say how `provenance.json` relates to the provenance view; add a second
   SQL example that joins feature intensities to samples.
+- **Practices from highly cited Data Descriptors (18 November 2026).** At the drafting author's
+  request, practices from highly cited Scientific Data papers were adopted: a per-dataset
+  Supplementary Table 1 with data citations of the input datasets; a folder and file naming table
+  (Table 2), a directory tree in Data Records and a data dictionary generated from the schemas
+  (Supplementary Table 2); Usage Notes split into error rates and decoys, quantities and missing
+  values, precision and identifiers, splits for machine learning, combining datasets, known issues,
+  and versions and citation; the Wen and Noble 2024 and Webel et al. 2024 resources in Background;
+  validation methods after Walzer et al. (comparison with reported results), Wen and Noble (PSM
+  metrics), Webel et al. (missingness by abundance) and a comparison with older versions, as
+  scripts in `scripts/validation` tried on four trial conversions, with TODOs in Technical
+  Validation; Supplementary Fig. 2 (views per dataset); a peptide-level split rule for machine
+  learning (MD5 of the upper-case sequence with I replaced by L, modulo 10; the rule only, no
+  split file); and example scripts in `examples/`. Tables were renumbered by first citation:
+  views Table 1, names Table 2, corpus summary Table 3, converters Supplementary Table 3. Wen and
+  Noble's acceptance rate cannot be computed, since the views do not record MS2 spectrum counts.
+  The trial conversions showed: the TMT dataset PXD014145 has one pg unit per fraction (12 per
+  plex) rather than per plex, and 16% of its protein-group and 19% of its feature channel
+  intensities are 0; its features carry no q-values; and the identification-only PSMs of
+  PXD028735 carry neither q-values nor decoys.

@@ -49,7 +49,14 @@
   <macro name="access-data">
     <choose>
       <if type="dataset software" match="any">
-        <text variable="DOI" prefix="https://doi.org/"/>
+        <choose>
+          <if variable="DOI">
+            <text variable="DOI" prefix="https://doi.org/"/>
+          </if>
+          <else>
+            <text variable="URL"/>
+          </else>
+        </choose>
       </if>
     </choose>
   </macro>

@@ -20,7 +20,7 @@ MM = 1 / 25.4
 SINGLE = 89 * MM
 DOUBLE = 183 * MM
 
-# Processing routes, in the order and with the names of Table 1.
+# Processing routes, in the order and with the names of Table 3.
 ROUTES = ["ID only", "DIA-NN", "OpenMS"]
 ROUTE_COLOURS = {"ID only": "#0072B2", "DIA-NN": "#E69F00", "OpenMS": "#009E73"}
 

@@ -2,7 +2,7 @@
 
 Reads the corpus inventory and the public release dates of the datasets and plots the
 datasets by repository, release year, organism, instrument, acquisition and size, coloured by
-processing route. The totals are checked against Table 1 before plotting.
+processing route. The totals are checked against Table 3 before plotting.
 
 data/dataset_public_dates.csv (collected 17 November 2026) gives, per dataset, the hosting
 repository and the date of the first public announcement in ProteomeCentral, or the release
@@ -25,7 +25,7 @@ from qpxfig import (DOUBLE, MM, MUTED, ROOT, ROUTE_COLOURS, ROUTES, label_panels
 SNAPSHOT = ROOT / "data" / "portal-snapshot-2026-10-29"
 DATES = ROOT / "data" / "dataset_public_dates.csv"
 
-# Table 1 totals and the acquisition counts given in the text; update together with them.
+# Table 3 totals and the acquisition counts given in the text; update together with them.
 EXPECTED = {"datasets": 103, "samples": 23204, "runs": 51023,
             "routes": {"ID only": 57, "DIA-NN": 27, "OpenMS": 19},
             "acquisition": {"DDA": 60, "DIA": 24, "DDA and DIA": 4, "Not annotated": 15}}
@@ -77,7 +77,7 @@ def check(df):
            "routes": df["route"].value_counts().to_dict(),
            "acquisition": acq.value_counts().to_dict()}
     if got != EXPECTED:
-        raise SystemExit(f"corpus totals differ from Table 1: {got}")
+        raise SystemExit(f"corpus totals differ from Table 3: {got}")
 
 
 def organism(species):
