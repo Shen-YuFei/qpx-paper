@@ -101,14 +101,18 @@ file metadata, and the `qpx` package reads such files back in the logical layout
 
 The specification uses a `{major}.{minor}` version. During the current stabilisation period on
 the 1.x line, a minor version may change the data model; readers check the `qpx_version` of
-each file. This paper describes specification 1.3, written by QPX 1.4.0, which changed how
-peptidoforms are written and row identifiers derived, so files converted again with 1.4.0 have
-new identifiers. `qpxc migrate` rewrites an older dataset into a new folder under the current
-specification, but it cannot add information that the older files did not store. The `qpxc
-validate` command checks a dataset against the schemas: column presence and types, nulls in
-required columns and nested fields, primary-key uniqueness, value ranges, file metadata and
-references between views; on request it also checks consistency across views and derives the
-row identifiers again.
+each file. This paper describes specification 1.3, written by QPX 1.4.0; all files in the
+deposited record follow it. Specification 1.3 introduced the canonical peptidoform described
+above and derives row identifiers differently, so the peptidoform strings and row identifiers
+of the deposited files can differ from those of older versions of the same dataset on the
+quantms portal, and these columns cannot be used to join the two. [TODO: name the deposited
+datasets that were rewritten with `qpxc migrate` because their tool outputs are no longer
+available, and the information they lack; if every dataset was converted again, drop this and
+at most point users holding older files to `qpxc migrate` in Usage Notes.] The `qpxc validate`
+command checks a dataset against the schemas: column presence and types, nulls in required
+columns and nested fields, primary-key uniqueness, value ranges, file metadata and references
+between views; on request it also checks consistency across views and derives the row
+identifiers again.
 
 ## Conversion from third-party tools
 
