@@ -1,7 +1,7 @@
 """Supplementary Table 1: the datasets of the corpus, one row per dataset.
 
 Combines the portal snapshot of 29 October 2026 (latest QPX version of each dataset), the
-public release dates collected on 17 November 2026 and the dataset citations collected from the
+public release dates collected on 17 and 18 November 2026 and the dataset citations collected from the
 repositories (data/dataset_citations.csv, written by fetch_dataset_citations.py). The totals are
 checked against Table 3 before writing. Known issues are those found in the snapshot: conflicting
 acquisition annotations and several QPX versions on the portal.

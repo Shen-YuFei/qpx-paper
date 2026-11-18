@@ -14,6 +14,7 @@ PRIDE = "https://www.ebi.ac.uk/pride/ws/archive/v3/projects/"
 PX = "https://proteomecentral.proteomexchange.org"
 MASSIVE = "https://massive.ucsd.edu/ProteoSAFe/"
 PDC = "https://pdc.cancer.gov/graphql"
+IPROX = "https://www.iprox.cn/"
 HTTP = {
     "headers": {"User-Agent": "QPX-dataset-citations/1.0", "Cache-Control": "no-cache"},
     "timeout": (20, 35),
@@ -237,11 +238,40 @@ def massive_metadata(accession: str, record: dict) -> Metadata:
     return meta
 
 
-def iprox_metadata(record, announcement, px_source) -> Metadata:
+def iprox_project(project_id: str) -> Metadata:
+    """Citation from the iProX project record, for projects ProteomeCentral does not list."""
+    response = requests.post(
+        IPROX + "PMD009Controller/findByProjectId.jsonp",
+        data={"projectId": project_id},
+        **HTTP,
+    )
+    response.raise_for_status()
+    data = response.json()["data"]
+    info = data["projectInfo"]
+    meta = Metadata(
+        title=clean(info["projectTitleEnglish"]),
+        authors=unique(
+            name(display=contact["contactName"])
+            for contact in data["submittersInfo"] + data["labHeadsInfo"]
+        ),
+        year=info["submitTime"][:4],
+        url=f"{IPROX}page/project.html?id={project_id}",
+        source=f"{IPROX}PMD009Controller/findByProjectId.jsonp?projectId={project_id}",
+        notes=[
+            "Not in ProteomeCentral; title, contacts and the year of the iProX submission "
+            "are from the iProX project record."
+        ],
+    )
+    meta.add_publications(
+        (clean(pub["pubmedId"]), doi_in(pub["doi"] or pub["reference"]))
+        for pub in data["publicationInfo"]
+    )
+    return meta
+
+
+def iprox_metadata(accession, record, announcement, px_source) -> Metadata:
     if not record:
-        return Metadata(
-            notes=[f"ProteomeCentral returned no matching record ({px_source})."]
-        )
+        return iprox_project(accession)
     native_id = term_value(record["identifiers"], "MS:1002836")
     authors = unique(
         name(display=term_value(terms, "MS:1000586"))
@@ -306,7 +336,7 @@ def lookup(accession: str, repository: str, input_date: str) -> Metadata:
     if repository == "MassIVE":
         return massive_metadata(accession, record)
     if repository == "iProX":
-        return iprox_metadata(record, announcement, source)
+        return iprox_metadata(accession, record, announcement, source)
     raise ValueError(f"Unknown repository {repository!r} for {accession}")
 
 

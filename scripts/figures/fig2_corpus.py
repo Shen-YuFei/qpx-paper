@@ -4,7 +4,7 @@ Reads the corpus inventory and the public release dates of the datasets and plot
 datasets by repository, release year, organism, instrument, acquisition and size, coloured by
 processing route. The totals are checked against Table 3 before plotting.
 
-data/dataset_public_dates.csv (collected 17 November 2026) gives, per dataset, the hosting
+data/dataset_public_dates.csv (collected 17 and 18 November 2026) gives, per dataset, the hosting
 repository and the date of the first public announcement in ProteomeCentral, or the release
 recorded by MassIVE or the PDC (date_kind announced or publication), with its source. Rows
 without such a date, including one dated only by its paper, count as having no date.
