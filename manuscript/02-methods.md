@@ -3,19 +3,19 @@
 ## Dataset selection
 
 The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions) [@Deutsch_2025], 8 from
-iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE and 3 from other sources
-[TODO: name the sources of the HuiYan and PMI datasets]. By hosting repository, 87 datasets
-are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TODO (Yasset, Chengxin): the
+iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE, 1 named after the PubMed ID of its paper
+(PMID23933261, whose runs are in the PRIDE projects PXD005942 and PXD005946) and 2 with no
+repository accession [TODO: name the source of the two HuiYan datasets]. By hosting
+repository, 88 datasets are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TODO (Yasset, Chengxin): the
 criteria used to select datasets for reprocessing, e.g. availability of raw files, an SDRF
 annotation, supported instrument and acquisition type.] Eighty-two datasets include human
 samples and seven mouse samples; the others cover plants, yeast, *Drosophila*, zebrafish,
 other vertebrates, bacteria and viruses. The most common instruments are Orbitrap Fusion,
 Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X (Fig. 2c,d).
 Supplementary Table 1 lists every dataset with its accession, hosting repository and original
-publication, and the deposited data of each dataset are cited individually [@ds_IPX0000937000; @ds_MSV000085836; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011821; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014404; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD031498; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TODO: data
-citations for the five datasets whose repository records could not be retrieved: HuiYan-E480,
-HuiYanAstralMouse and PMID23933261 have no repository accession, and the PDC records of
-PDC000127 and PDC000219 name no contacts.]
+publication, and the deposited data of each dataset are cited individually [@ds_IPX0000937000; @ds_MSV000085836; @ds_PDC000219; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD005942; @ds_PXD005946; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011821; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014404; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD031498; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TODO: data
+citations for three datasets: HuiYan-E480 and HuiYanAstralMouse have no repository accession,
+and the PDC gives no release year for PDC000127.]
 
 According to the acquisition method annotated in their SDRF files, 60 datasets were acquired
 in data-dependent mode (52 label-free, 7 TMT-labelled and 1 with both label-free and TMT

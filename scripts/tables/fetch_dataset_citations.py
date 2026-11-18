@@ -48,7 +48,7 @@ LATEX = str.maketrans({char: "\\" + char for char in "&%_#$"})
 HONORIFIC = re.compile(r"^(?:(?:Dr|Prof)\b\.?\s*)+", re.I)
 PDC_QUERY = """
 query($id: String!) {
-  uiStudySummary(pdc_study_id:$id) { pdc_study_id study_name contacts { name } }
+  uiStudySummary(pdc_study_id:$id) { pdc_study_id study_name program_name contacts { name } }
   uiPublication(pdc_study_id:$id) { pubmed_id doi title }
 }
 """
@@ -298,16 +298,20 @@ def pdc_metadata(accession: str, year: str) -> Metadata:
     response.raise_for_status()
     data = response.json()["data"]
     study = next(x for x in data["uiStudySummary"] if x["pdc_study_id"] == accession)
+    contacts = unique(name(display=contact["name"]) for contact in study["contacts"])
     meta = Metadata(
         title=clean(study["study_name"]),
-        authors=unique(name(display=contact["name"]) for contact in study["contacts"]),
+        # Braces keep the program one corporate name in BibTeX.
+        authors=contacts or ("{" + clean(study["program_name"]) + "}",),
         year=year,
         url="https://pdc.cancer.gov/pdc/study/" + accession,
         source=response.url,
     )
     meta.add_publications(repository_references(data["uiPublication"]))
-    if not meta.authors:
-        meta.notes.append("PDC uiStudySummary provides no registered study contacts.")
+    if not contacts:
+        meta.notes.append(
+            "PDC uiStudySummary provides no registered study contacts; its program_name is given as author."
+        )
     if len(meta.pmids) > 1:
         meta.notes.append(
             "PDC uiPublication lists multiple associated papers without identifying the original."
@@ -384,6 +388,11 @@ def output_row(row: dict, meta: Metadata) -> dict:
     }
 
 
+def combine(parts: list[dict]) -> dict:
+    """One row for a dataset whose runs are deposited under several accessions."""
+    return {key: "; ".join(unique(part[key] for part in parts)) for key in FIELDS}
+
+
 def bibtex(row: dict) -> str:
     authors = " and ".join(row["authors"].split("; ")).translate(LATEX)
     title = row["title"].translate(LATEX)
@@ -404,10 +413,16 @@ def main() -> None:
         encoding="utf-8", newline=""
     ) as stream:
         dates = list(csv.DictReader(stream))
+    # accession_used lists several accessions, separated by "; ", for a dataset whose
+    # runs are deposited in more than one repository record; each is cited on its own.
     keys = [
-        (row["accession_used"], row["repository"], row["public_date"]) for row in dates
+        [
+            (accession, row["repository"], row["public_date"])
+            for accession in row["accession_used"].split("; ")
+        ]
+        for row in dates
     ]
-    unique_keys = list(dict.fromkeys(keys))
+    unique_keys = list(dict.fromkeys(key for row_keys in keys for key in row_keys))
     with ThreadPoolExecutor(max_workers=4) as pool:
         metadata = dict(
             zip(
@@ -416,10 +431,20 @@ def main() -> None:
                 strict=True,
             )
         )
-    rows = [
-        output_row(row, metadata[key]) for row, key in zip(dates, keys, strict=True)
+    parts = [
+        [
+            output_row({**row, "accession_used": key[0]}, metadata[key])
+            for key in row_keys
+        ]
+        for row, row_keys in zip(dates, keys, strict=True)
     ]
-    entries = {row["cite_key"]: bibtex(row) for row in rows if row["cite_key"]}
+    entries = {
+        part["cite_key"]: bibtex(part)
+        for row_parts in parts
+        for part in row_parts
+        if part["cite_key"]
+    }
+    rows = [combine(row_parts) for row_parts in parts]
     with (DATA / "dataset_citations.csv").open(
         "w", encoding="utf-8", newline=""
     ) as stream:

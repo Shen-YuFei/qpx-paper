@@ -34,10 +34,11 @@ from the team.
   - Fig. 1 is final apart from wording. Fig. 2 is drawn from the snapshot; panel f shows runs,
     not samples, because six identification-only datasets record one sample for up to 1,460
     runs. Its repositories and release dates are in `data/dataset_public_dates.csv`, with
-    sources. Nine datasets have no date: the two HuiYan datasets, PMID23933261 (dated only by
-    its 2013 paper), PDC000127 (first released on the former CPTAC Data Portal) and five iProX
-    subprojects whose release iProX does not return. Methods count datasets by accession (89
-    PXD), Fig. 2a by hosting repository (87 PRIDE, 2 of the PXD datasets in MassIVE).
+    sources. Five datasets have no date: the two HuiYan datasets, PDC000127 (first released on
+    the former CPTAC Data Portal) and the two subprojects of IPX0000937000, whose release iProX
+    does not record. Methods count datasets by accession (89 PXD), Fig. 2a by hosting
+    repository (88 PRIDE: 87 PXD datasets and PMID23933261, whose runs are in PXD005942 and
+    PXD005946; 2 of the PXD datasets in MassIVE).
   - Fig. 3 (`qc_stats.py`, then `fig3_quality.py`) needs the regenerated corpus. It was tried
     on four datasets migrated to specification 1.3 (one per route, plus TMT). Two choices to
     confirm: rows are cut at q <= 0.01 where q-values exist, because the pipelines export at 1%
