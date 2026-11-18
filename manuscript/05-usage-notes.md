@@ -33,8 +33,7 @@ https://qpx.quantms.org.
 The QPX Explorer of the quantms portal (https://portal.quantms.org/apps/qpx-explore) opens one
 dataset version at a time and queries it with DuckDB on the server. It shows the files and
 their row counts, the samples and runs, protein and peptide search and a gallery of curated
-queries. [TODO (Yasset): screenshots for Fig. 4 and a short description of the portal around
-it.]
+queries (Fig. 4a). [TODO (Yasset): a short description of the portal around it.]
 
 ## QPX UI
 
@@ -42,7 +41,9 @@ QPX UI (https://github.com/bigbio/qpxui) is an open-source desktop viewer for ma
 and Linux that opens a local dataset folder, an S3 bucket or any dataset of the quantms portal.
 It queries the data with DuckDB on the user's machine, reading only the parts of remote files a
 query needs, and builds a report with identification and quality control charts for each
-dataset. [TODO: version cited; screenshots for Fig. 4.]
+dataset (Fig. 4b). [TODO: cite a release. The screenshot shows the main branch at commit
+fff2999 (10 November 2026), which is newer than the only release, v0.2.0 (7 November 2026),
+and looks different from it.]
 
 ## Reuse
 

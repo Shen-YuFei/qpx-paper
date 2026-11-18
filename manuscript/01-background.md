@@ -48,7 +48,7 @@ processed with DIA-NN and 19 (10 label-free and 9 TMT) processed with the OpenMS
 quantms workflows for DDA data. The remaining 57 datasets provide identification results
 only, about 500 million PSM records. All files are available over HTTP and can be explored in
 the browser with the QPX Explorer of the quantms portal, opened in the QPX UI desktop
-application or queried directly with SQL. We
+application or queried directly with SQL (Fig. 1). We
 expect the corpus to support cross-study protein expression atlases, meta-analyses,
 benchmarking of quantification methods and the training of machine learning models for
 peptide property prediction and PSM rescoring.

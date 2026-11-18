@@ -4,17 +4,18 @@
 
 The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions) [@Deutsch_2025], 8 from
 iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE and 3 from other sources
-[TODO: name the sources of the HuiYan and PMI datasets]. [TODO (Yasset, Chengxin): the
+[TODO: name the sources of the HuiYan and PMI datasets]. By hosting repository, 87 datasets
+are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TODO (Yasset, Chengxin): the
 criteria used to select datasets for reprocessing, e.g. availability of raw files, an SDRF
 annotation, supported instrument and acquisition type.] Eighty-two datasets include human
 samples and seven mouse samples; the others cover plants, yeast, *Drosophila*, zebrafish,
 other vertebrates, bacteria and viruses. The most common instruments are Orbitrap Fusion,
-Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X.
+Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X (Fig. 2c,d).
 
 According to the acquisition method annotated in their SDRF files, 60 datasets were acquired
 in data-dependent mode (52 label-free, 7 TMT-labelled and 1 with both label-free and TMT
 runs) and 24 in data-independent mode; 4 datasets contain both DDA and DIA runs, and 15
-have no acquisition method annotated. None of the SDRF files describes an MHC enrichment,
+have no acquisition method annotated (Fig. 2e). None of the SDRF files describes an MHC enrichment,
 so the snapshot contains no dataset that can be identified as immunopeptidomics. [TODO:
 provisional counts from the 29 October 2026 snapshot; 8 datasets have conflicting
 annotations between SDRF versions or between the SDRF and the repository metadata, listed in

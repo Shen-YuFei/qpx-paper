@@ -23,5 +23,9 @@ reprocessing with those reported in the original publications.]
 
 ## Quality metrics across the corpus
 
-[TODO: distribution of pmultiqc metrics across datasets (Fig. 3), once reports exist for the
-deposited datasets.]
+Identification and quantification statistics were computed for each dataset from its QPX views
+(Fig. 3): the distinct target peptidoforms per run, the protein groups quantified per
+quantification unit, the completeness of the protein group by unit matrix and the median
+precursor mass error. Because the pipelines export results at different thresholds, rows with
+a q-value above 0.01 were dropped where the views carry q-values. [TODO: describe the distributions once the
+corpus is regenerated.]

@@ -25,7 +25,29 @@ from the team.
   documentation. QPX 1.2.0 (30 October 2026) and 1.3.0 (7 November 2026) write specification
   1.2; 1.3.0 added the `xic` view.
 - **QPX UI.** The desktop viewer is described in the Usage Notes and Fig. 4; decide the
-  version cited and whether its authors join the author list.
+  version cited and whether its authors join the author list. Fig. 4b shows the main branch at
+  commit fff2999 (10 November 2026), newer than and different from the only release, v0.2.0;
+  a release from main is needed before it can be cited.
+- **Figures (17 November 2026).** Scripts in `scripts/figures/` draw every figure in one style
+  (Liberation Sans, 5.5-8 pt, Okabe-Ito colours for the three routes, embedded TrueType fonts).
+  - Fig. 1 is final apart from wording. Fig. 2 is drawn from the snapshot; panel f shows runs,
+    not samples, because six identification-only datasets record one sample for up to 1,460
+    runs. Its repositories and release dates are in `data/dataset_public_dates.csv`, with
+    sources. Nine datasets have no date: the two HuiYan datasets, PMID23933261 (dated only by
+    its 2013 paper), PDC000127 (first released on the former CPTAC Data Portal) and five iProX
+    subprojects whose release iProX does not return. Methods count datasets by accession (89
+    PXD), Fig. 2a by hosting repository (87 PRIDE, 2 of the PXD datasets in MassIVE).
+  - Fig. 3 (`qc_stats.py`, then `fig3_quality.py`) needs the regenerated corpus. It was tried
+    on four datasets migrated to specification 1.3 (one per route, plus TMT). Two choices to
+    confirm: rows are cut at q <= 0.01 where q-values exist, because the pipelines export at 1%
+    or 5% (TMT PSMs and DIA-NN precursors and protein groups reach 0.05); and the mass error
+    leaves out DIA-NN, whose feature view has no psm and whose `mass_error_ppm` is near zero, as
+    is that of the OpenMS feature view.
+  - Fig. 4 uses screenshots taken by the Portal session (scripts and notes in
+    `/data/shenyufei/Bigbio_data/qpx_paper_figures/fig4/`). At 183 mm they are 289 dpi; retake
+    at 3x scale for the final version. The Explorer shows a notice that the portal catalogue
+    lists PXD048538/41b03dd48c8b as the current version, while the corpus takes e60b9e9aa4c8,
+    published later on 28 September 2026; the two disagree on which version is current.
 - **Check of 16 November 2026.** Reading the draft against the journal's referee questions and
   the 29 October snapshot turned up the following; each needs a decision or the regenerated
   corpus.

@@ -7,6 +7,7 @@ META     := manuscript/metadata.yaml
 SECTIONS := $(sort $(wildcard manuscript/[0-9]*.md))
 BIB      := references.bib
 OUT      := build/qpx-paper
+FIGS     := $(wildcard figures/*)
 
 .PHONY: all docx tex pdf clean
 all: docx pdf
@@ -14,18 +15,21 @@ docx: $(OUT).docx
 tex: $(OUT).tex
 pdf: $(OUT).pdf
 
-$(OUT).docx: $(META) $(SECTIONS) $(BIB) templates/nature.csl
+$(OUT).docx: $(META) $(SECTIONS) $(BIB) $(FIGS) templates/nature.csl
 	@mkdir -p build
 	$(PANDOC) $(META) $(SECTIONS) --resource-path=.:figures --citeproc \
+		--default-image-extension=png \
 		--bibliography=$(BIB) --csl=templates/nature.csl -o $@
 
 $(OUT).tex: $(META) $(SECTIONS) $(BIB) templates/sn-template.tex
 	@mkdir -p build
 	$(PANDOC) $(META) $(SECTIONS) --natbib --bibliography=$(BIB) \
+		--default-image-extension=pdf \
 		--template=templates/sn-template.tex -s -o $@
 
-$(OUT).pdf: $(OUT).tex templates/sn-jnl.cls templates/sn-nature.bst
+$(OUT).pdf: $(OUT).tex $(FIGS) templates/sn-jnl.cls templates/sn-nature.bst
 	cp templates/sn-jnl.cls templates/sn-nature.bst $(BIB) build/
+	cp -r figures build/
 	cd build && $(TECTONIC) --keep-logs qpx-paper.tex
 
 clean:
