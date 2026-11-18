@@ -29,7 +29,8 @@ from the team.
   commit fff2999 (10 November 2026), newer than and different from the only release, v0.2.0;
   a release from main is needed before it can be cited.
 - **Figures (17 November 2026).** Scripts in `scripts/figures/` draw every figure in one style
-  (Liberation Sans, 5.5-8 pt, Okabe-Ito colours for the three routes, embedded TrueType fonts).
+  (Liberation Sans, 5.5-6.5 pt with panel letters at the size of the panel titles, as the
+  journal asks, Okabe-Ito colours for the three routes, embedded TrueType fonts).
   - Fig. 1 is final apart from wording. Fig. 2 is drawn from the snapshot; panel f shows runs,
     not samples, because six identification-only datasets record one sample for up to 1,460
     runs. Its repositories and release dates are in `data/dataset_public_dates.csv`, with

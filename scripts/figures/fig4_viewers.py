@@ -12,7 +12,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from qpxfig import DOUBLE, MM, RULE, save
+from qpxfig import DOUBLE, LABEL_SIZE, MM, RULE, save
 
 SHOTS = Path("/data/shenyufei/Bigbio_data/qpx_paper_figures/fig4")
 PANELS = [("fig4a_explorer.png", None), ("fig4b_qpxui.png", 1264)]  # file, rows kept
@@ -32,7 +32,7 @@ def main():
 
     top = total
     for letter, im, h in zip("ab", images, heights):
-        fig.text(0, (top - 3.6) / total, letter, fontsize=8, fontweight="bold", va="baseline")
+        fig.text(0, (top - 3.6) / total, letter, fontsize=LABEL_SIZE, fontweight="bold", va="baseline")
         top -= LABEL_SPACE
         ax = fig.add_axes([0, (top - h) / total, 1, h / total])
         ax.imshow(im, interpolation="none")

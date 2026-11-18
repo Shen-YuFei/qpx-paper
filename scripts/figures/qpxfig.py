@@ -1,7 +1,9 @@
 """Shared style for the QPX paper figures.
 
 Scientific Data / Nature figure rules: sans-serif type (Arial metrics via Liberation Sans),
-5-7 pt text, 8 pt bold lower-case panel labels, white background, editable embedded fonts,
+5-7 pt text, bold lower-case panel letters in the type size of the panel titles (Scientific
+Data: "in the same type-size as used elsewhere in the figure"), white background, editable
+embedded fonts,
 an accessible palette (Okabe-Ito, Wong 2011), axis lines with ticks and units in parentheses.
 """
 
@@ -26,12 +28,13 @@ INK = "#1a1a1a"
 MUTED = "#595959"
 RULE = "#bfbfbf"
 PANEL_FILL = "#f2f2f2"
+LABEL_SIZE = 6.5  # panel letters and panel titles
 
 mpl.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["Liberation Sans", "Arial", "Helvetica"],
     "font.size": 6,
-    "axes.titlesize": 6.5,
+    "axes.titlesize": LABEL_SIZE,
     "axes.labelsize": 6,
     "xtick.labelsize": 5.5,
     "ytick.labelsize": 5.5,
@@ -71,8 +74,8 @@ def label_panels(fig, axes, titles, letters="abcdefgh"):
     for ax, letter, title in zip(axes, letters, titles):
         x0 = inv.transform(ax.get_tightbbox(renderer).p0)[0]
         y = ax.get_position().y1 + 2.5 / height
-        fig.text(x0, y, letter, fontsize=8, fontweight="bold", va="baseline")
-        fig.text(x0 + 3.2 / width, y, title, fontsize=6.5, va="baseline")
+        fig.text(x0, y, letter, fontsize=LABEL_SIZE, fontweight="bold", va="baseline")
+        fig.text(x0 + 2.8 / width, y, title, fontsize=LABEL_SIZE, va="baseline")
 
 
 def route_strip(ax, values, note=None, seed=1):
