@@ -131,4 +131,10 @@ from the team.
   The trial conversions showed: the TMT dataset PXD014145 has one pg unit per fraction (12 per
   plex) rather than per plex, and 16% of its protein-group and 19% of its feature channel
   intensities are 0; its features carry no q-values; and the identification-only PSMs of
-  PXD028735 carry neither q-values nor decoys.
+  PXD028735 carry neither q-values nor decoys. All of these are already in the 1.0.x files that
+  the trial migrated, so they come from the source output or the 1.0.x converter, not from
+  `qpxc migrate`; a new conversion with 1.4.0 has not been tried. The year of the data citations
+  (the PRIDE publication date, or the DataCite or Crossref record for the nine DOIs) differs from
+  the year of the first ProteomeCentral announcement in Supplementary Table 1 for eight datasets:
+  PXD004242, PXD004701, PXD016986, PXD020109, PXD020248, PXD024364, PXD028735 and PXD062529;
+  which date to cite is open.

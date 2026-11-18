@@ -26,9 +26,10 @@ The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, als
 the container image `ghcr.io/bigbio/qpx:1.4.0` [TODO: check after the release]) opens a dataset
 folder as a single object, runs SQL across its views with DuckDB, converts tool outputs,
 validates files and exports quantification results to MuData; its documentation is at
-https://qpx.quantms.org. Example Python scripts that build a protein-group by sample matrix, join
-feature intensities to the sample annotations and assign peptides to the folds described below
-are in the `examples` folder of the repository of this paper (see Code Availability).
+https://qpx.quantms.org. An example Python script in the repository of this paper
+(`examples/read_dataset.py`; see Code Availability) attaches the sample of each quantification
+unit to the protein-group quantities, joins feature intensities to the sample annotations and
+assigns peptides to the folds described below.
 
 ## QPX Explorer
 
@@ -56,8 +57,8 @@ and `pg.global_qvalue` for protein groups within a run and across the dataset. A
 means that the source reported none. To use the rows at a given error rate, drop the decoys and
 filter on the q-value of the level the analysis needs; the `confident()` methods of the `qpx`
 package do this for PSMs and features. [TODO: for each subset, the threshold at which the
-workflow exported its results and whether decoys are kept; in the trial conversions, the
-identification-only PSMs carry neither q-values nor decoys.]
+workflow exported its results and whether decoys are kept; the identification-only PSMs of
+PXD028735 carry neither q-values nor decoys, in its 1.0.x files as in the trial migration.]
 
 ## Quantities and missing values
 
@@ -70,9 +71,9 @@ subset.] Missing values take three forms. A null intensity in an existing row me
 peptide or protein group was identified in that run or channel but not quantified; a missing row
 means that it was neither identified nor quantified there, as the converters add no zero or null
 placeholders; and a null in any other column means that the source did not report the value.
-[TODO: in the trial conversion of the TMT dataset PXD014145, 16% of the protein-group and 19%
-of the feature channel intensities are 0; check whether the zeros come from the tool output and
-say how to read them.]
+[TODO: in the trial migration of the TMT dataset PXD014145, 16% of the protein-group and 19% of
+the feature channel intensities are 0, as in its 1.0.x files; check whether the zeros come from
+the tool output or from the 1.0.x converter, and say how to read them.]
 
 ## Numerical precision and identifiers
 
