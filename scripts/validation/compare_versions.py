@@ -1,7 +1,8 @@
 """Compare two versions of the same dataset, such as an older portal version and the deposited one.
 
 For the psm, feature and pg views present in both version folders, it reports the target
-records, the distinct peptide sequences with charge (psm, feature) or protein groups (pg), the
+records (for pg, the quantities, one per protein group, run or unit and label, so that the two
+layouts are comparable), the distinct peptide sequences with charge (psm, feature) or protein groups (pg), the
 Jaccard index of these sets, and, for feature and pg, the agreement of log2 intensities on the
 shared keys: their Pearson correlation and the median absolute log2 ratio. Peptidoform strings
 and row identifiers changed between specifications, so features are matched on sequence, charge,
@@ -31,20 +32,24 @@ def columns(con, paths):
     return {r[0] for r in con.execute(f"DESCRIBE SELECT * FROM read_parquet({paths})").fetchall()}
 
 
+def count(con, source):
+    return con.execute(f"SELECT count(*) FROM ({source})").fetchall()[0][0]
+
+
 def psm_keys(con, paths):
-    return con.execute(f"""
-        SELECT DISTINCT sequence, charge FROM read_parquet({paths}) WHERE NOT is_decoy
-    """).df(), None
+    source = f"SELECT sequence, charge FROM read_parquet({paths}) WHERE NOT is_decoy"
+    return count(con, source), con.execute(f"SELECT DISTINCT * FROM ({source})").df(), None
 
 
 def feature_keys(con, paths):
+    source = f"""SELECT sequence, charge, run_file_name, intensities
+                 FROM read_parquet({paths}) WHERE NOT is_decoy"""
     quant = con.execute(f"""
         SELECT sequence, charge, run_file_name, i.label AS label, sum(i.intensity) AS intensity
-        FROM (SELECT sequence, charge, run_file_name, unnest(intensities) AS i
-              FROM read_parquet({paths}) WHERE NOT is_decoy)
+        FROM (SELECT sequence, charge, run_file_name, unnest(intensities) AS i FROM ({source}))
         GROUP BY ALL
     """).df()
-    return quant[["sequence", "charge"]].drop_duplicates(), quant
+    return count(con, source), quant[["sequence", "charge"]].drop_duplicates(), quant
 
 
 def pg_keys(con, paths):
@@ -59,10 +64,12 @@ def pg_keys(con, paths):
                sum(intensity) AS intensity
         FROM ({source}) GROUP BY ALL
     """).df()
-    return quant[["protein_group"]].drop_duplicates(), quant
+    return count(con, source), quant[["protein_group"]].drop_duplicates(), quant
 
 
 KEYS = {"psm": psm_keys, "feature": feature_keys, "pg": pg_keys}
+COLUMNS = ["view", "old_records", "new_records", "old_keys", "new_keys", "jaccard",
+           "matched_quantities", "log2_correlation", "median_abs_log2_ratio"]
 
 
 def agreement(old, new):
@@ -82,17 +89,16 @@ def compare(con, old, new):
         old_files, new_files = files(old, view), files(new, view)
         if not old_files or not new_files:
             continue
-        (old_set, old_q), (new_set, new_q) = keys(con, old_files), keys(con, new_files)
+        (old_n, old_set, old_q), (new_n, new_set, new_q) = (keys(con, old_files),
+                                                             keys(con, new_files))
         shared = len(old_set.merge(new_set))
-        row = {"view": view,
-               "old_records": con.execute(f"SELECT count(*) FROM read_parquet({old_files}) WHERE NOT is_decoy").fetchall()[0][0],
-               "new_records": con.execute(f"SELECT count(*) FROM read_parquet({new_files}) WHERE NOT is_decoy").fetchall()[0][0],
+        row = {"view": view, "old_records": old_n, "new_records": new_n,
                "old_keys": len(old_set), "new_keys": len(new_set),
                "jaccard": shared / (len(old_set) + len(new_set) - shared)}
         if old_q is not None:
             row |= agreement(old_q, new_q)
         rows.append(row)
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=COLUMNS)
 
 
 def main():
