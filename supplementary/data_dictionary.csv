@@ -1,0 +1,402 @@
+table,column,type,required,nullable,minimum,maximum,description
+psm,psm_id,int64,yes,no,,,"Opaque identity of the psm (int64), supplied by the producer or derived from the identity_composite declared in the footer; the primary key of this view."
+psm,sequence,string,yes,no,,,Unmodified peptide sequence
+psm,peptidoform,string,yes,no,,,ProForma notation
+psm,modifications,list<modification>,no,,,,Structured modifications
+psm,modification_candidates,list<modification_candidate>,optional,,,,"Every modification the evidence considers, the ones the peptidoform places (assigned) and the ones they compete with, each with its marginal probability given this identification. Candidates that share an alternative_group are mutually exclusive explanations of one event (acetyl or trimethyl on one Lys; one phosphate on S4 or T5) and their probabilities sum to at most 1; a candidate without a group can co-occur with others (a SILAC label and an acetyl on one Lys). Null when the producer reports no alternatives; modifications keeps what the peptidoform says."
+psm,charge,int16,yes,no,,,Precursor charge
+psm,posterior_error_probability,float64,no,,0,1,PEP - probability PSM is incorrect (lower is better)
+psm,is_decoy,bool,yes,no,,,Decoy match flag; false when the identification did not use a target-decoy database search
+psm,calculated_mz,float32,yes,yes,,,Theoretical m/z; null when it cannot be calculated from the reported peptidoform
+psm,observed_mz,float32,yes,yes,,,Experimental m/z; null when the producer reports no measured precursor m/z
+psm,mass_error_ppm,float32,no,,,,Mass error in ppm: 1e6 * (observed_mz - calculated_mz) / calculated_mz
+psm,additional_scores,list<score>,no,,,,Search engine scores
+psm,qvalue,float64,optional,,0,1,"PSM-level q-value, filled from additional_scores at write time (scores.md); null when the source has none"
+psm,predicted_rt,float32,no,,,,Predicted RT (seconds)
+psm,run_file_name,string,yes,no,,,Run file containing this PSM
+psm,cv_params,list<cv_param>,no,,,,CV parameters
+psm,scan,list<int32>,yes,no,,,Scan ID (array of int components)
+psm,rt,float32,no,,,,Retention time (seconds)
+psm,ion_mobility,float32,optional,,,,Ion mobility
+psm,ccs,float32,optional,,,,"Collisional cross section in square angstroms (MS:1002954), when the producer reports one"
+psm,missed_cleavages,int16,no,,,,Number of missed enzymatic cleavages (MS:1003044)
+psm,protein_accessions,list<string>,no,,,,Protein accessions the peptide maps to
+psm,cross_links,list<cross_link>,optional,,,,Cross-link information for XL-MS experiments
+psm,crosslinked_peptidoform,string,optional,,,,"The whole linked species in ProForma 2.0: PEPK[XLMOD:02001#XL1]R//SEK[#XL1]R for two peptides, peptidoform alone naming only the alpha peptide"
+psm,protein_starts,list<int32>,optional,,,,For a cross-linked PSM: first residue of the peptide in each of protein_accessions (1-indexed)
+psm,partner_protein_accessions,list<string>,optional,,,,Proteins of the partner peptide of an inter-peptide cross-link or noncovalent pair
+psm,partner_protein_starts,list<int32>,optional,,,,"First residue of the partner peptide in each of partner_protein_accessions (1-indexed), for placing the linked residue in the protein"
+psm,crosslink_decoy_class,string,optional,,,,"Target or decoy origin of the two peptides: target_target, target_decoy or decoy_decoy"
+psm,pass_threshold,bool,optional,,,,Whether the search engine or validator marks the PSM as passing its threshold
+psm,mz_array,list<float32>,optional,,,,Spectrum m/z values
+psm,intensity_array,list<float32>,optional,,,,Spectrum intensity values
+psm,charge_array,list<int32>,optional,,,,Fragment charge values
+psm,ion_type_array,list<string>,optional,,,,"Fragment ion type annotations (e.g., b1, y2, a2)"
+psm,ion_mobility_array,list<float32>,optional,,,,Fragment ion mobility values
+psm,label,string,optional,,,,"MS1-labelled experiments (SILAC, dimethyl, mTRAQ): the channel label of the identified precursor, whose label modifications the peptidoform carries. Null otherwise."
+psm,feature_id,int64,optional,,,,Optional reference to the feature this PSM maps to (feature.feature_id); null when unlinked.
+feature,feature_id,int64,yes,no,,,"Opaque identity of the feature (int64), supplied by the producer or derived from the identity_composite declared in the footer; the primary key of this view."
+feature,sequence,string,yes,no,,,Unmodified peptide sequence
+feature,peptidoform,string,yes,no,,,ProForma notation
+feature,modifications,list<modification>,no,,,,Structured modifications
+feature,modification_candidates,list<modification_candidate>,optional,,,,"Every modification the evidence considers, the ones the peptidoform places (assigned) and the ones they compete with, each with its marginal probability given this identification. Candidates that share an alternative_group are mutually exclusive explanations of one event (acetyl or trimethyl on one Lys; one phosphate on S4 or T5) and their probabilities sum to at most 1; a candidate without a group can co-occur with others (a SILAC label and an acetyl on one Lys). Null when the producer reports no alternatives; modifications keeps what the peptidoform says."
+feature,charge,int16,yes,no,,,Charge state
+feature,posterior_error_probability,float64,no,,0,1,PEP for the peptide match
+feature,peptide_qvalue,float64,optional,,0,1,Peptide-level q-value; null/absent when the search engine does not provide one
+feature,precursor_qvalue,float64,optional,,0,1,"Run-level precursor q-value, filled from additional_scores at write time (scores.md); null when the source has none"
+feature,global_qvalue,float64,optional,,0,1,"Experiment-level precursor q-value, filled from additional_scores at write time (scores.md); null when the source has none"
+feature,is_decoy,bool,yes,no,,,Decoy flag; false when the identification did not use a target-decoy database search
+feature,is_library_decoy,bool,optional,,,,Whether a decoy was searched from the spectral library rather than generated by the search engine (DIA-NN 2.x marks it with ^; its sequence is the decoy generated from the same parent); part of the DIA-NN identity composite
+feature,calculated_mz,float32,yes,yes,,,Theoretical m/z; null when it cannot be calculated from the reported peptidoform
+feature,observed_mz,float32,yes,yes,,,Experimental m/z; null when the producer reports no measured precursor m/z (e.g. a DIA-NN report without Precursor.Mz)
+feature,mass_error_ppm,float32,no,,,,Mass error in ppm: 1e6 * (observed_mz - calculated_mz) / calculated_mz
+feature,additional_scores,list<score>,no,,,,Search engine scores
+feature,predicted_rt,float32,no,,,,Predicted RT (seconds)
+feature,run_file_name,string,yes,no,,,Run file name
+feature,quantification_unit_id,string,optional,,,,Producer-reported or QPX-mapped quantification unit; used when one quantity can aggregate multiple raw runs
+feature,cv_params,list<cv_param>,no,,,,CV parameters
+feature,scan,list<int32>,yes,no,,,Scan ID (array of int components)
+feature,rt,float32,no,,,,Retention time (seconds); may participate in a producer-specific identity composite when it identifies the upstream Feature entity
+feature,rt_aligned,float32,optional,,,,Retention time after the tool's alignment between runs (seconds); rt is the time on this run's own clock
+feature,irt,float32,optional,,,,"Indexed retention time, in the tool's iRT scale; filled at write time from the cv_params irt and empirical_irt"
+feature,consensus_rt,float32,optional,,,,Parent ConsensusFeature retention time; populated by the OpenMS consensusXML converter
+feature,ion_mobility,float32,no,,,,Ion mobility
+feature,ccs,float32,optional,,,,"Collisional cross section in square angstroms (MS:1002954), when the producer reports one"
+feature,compensation_voltage,float32,optional,,,,FAIMS compensation voltage; 0 for a producer's non-FAIMS quantification unit when used in its identity composite
+feature,missed_cleavages,int16,no,,,,Number of missed enzymatic cleavages (MS:1003044)
+feature,intensities,list<intensity>,no,,,,Primary intensities per label
+feature,additional_intensities,list<additional_intensity>,no,,,,"Tool-provided intensities (normalized, LFQ, iBAQ) read from upstream output"
+feature,identified_labels,list<string>,optional,,,,"MS1-label multiplets (SILAC, dimethyl, mTRAQ): the labels whose partner was identified by MS/MS. Null when not reported or for a feature that is not a multiplet."
+feature,pg_accessions,list<pg_protein>,no,,,,"Full membership of the peptide's protein group; its position fields are reserved, pg_positions holds positions. For a peptide shared by several groups, the group the producer assigned it to (e.g. MaxQuant's razor group). Null under the same conditions as anchor_protein."
+feature,anchor_protein,string,yes,yes,,,"Representative protein of the peptide's protein group. Null when no protein mapping was performed, or when the peptide's protein evidence spans more than one inferred protein group (a shared peptide the producer did not assign); the feature's intensities are kept either way."
+feature,unique,bool,no,,,,"True when the peptide resolves to a protein group of exactly one protein, False when that group has several members. A shared peptide the producer assigns to one of its groups (MaxQuant's razor group) carries that group and is False. Null when the group is unresolved, including a shared peptide whose evidence spans more than one inferred group and that the producer did not assign."
+feature,pg_group_id,int64,optional,,,,"Hash of the sorted pg_accessions, equal to pg.pg_group_id, for grouping and joining without comparing lists; null without a protein group"
+feature,pg_global_qvalue,float64,optional,,0,1,Global q-value of PG
+feature,channel_details,list<channel_detail>,optional,,,,"What was measured of each channel of a multiplet row: its m/z, retention time, q-value and the tool's evidence score"
+feature,representative_label,string,optional,,,,"The channel whose row gave the row's scores, retention time and other scalars, when a tool reports one row per channel"
+feature,pg_positions,list<protein_position>,optional,,,,"One-based peptide positions, one entry per protein occurrence: on the members of the resolved protein group, or on every evidence protein when the peptide is shared across groups and pg_accessions is null."
+feature,ion_mobility_start,float32,no,,,,Start ion mobility
+feature,ion_mobility_stop,float32,no,,,,Stop ion mobility
+feature,gg_accessions,list<string>,optional,,,,Gene group identifiers (gene symbols; Ensembl IDs when available)
+feature,gg_names,list<string>,optional,,,,Gene group names (gene symbols from tool output)
+feature,id_run_file_name,string,no,,,,Run file containing best PSM
+feature,identification_type,string,optional,,,,"How the tool identified the feature in this run: direct (its own MS/MS), transferred (matched from another run), secondary (a co-fragmenting peptide of a chimeric spectrum); null when the tool does not say"
+feature,match_score,float32,optional,,,,The tool's score for the match of a transferred identification
+feature,match_qvalue,float32,optional,,,,The tool's q-value for the match of a transferred identification
+feature,match_rt_delta,float32,optional,,,,Retention-time difference of a transferred identification from its donor (seconds)
+feature,match_mz_delta,float32,optional,,,,m/z difference of a transferred identification from its donor (Th)
+feature,imputed_labels,list<string>,optional,,,,Labels of intensities whose value the tool imputed instead of measuring; null when none are or the tool does not say
+feature,parent_ion_fraction,float32,optional,,,,Fraction of the isolation window's signal from the target precursor (0-1); isolation interference is one minus this
+feature,quant_scan,list<int32>,optional,,,,"Scan the reporter intensities were read from, as the integer components scan uses, when the producer records it; differs from scan under SPS-MS3"
+feature,quant_ms_level,int32,optional,,,,"MS level of the scan the reporter intensities were read from (2 or 3), when the producer records it"
+feature,rt_start,float32,no,,,,RT window start
+feature,rt_stop,float32,no,,,,RT window end
+feature,psm_ids,list<int64>,optional,,,,"Optional producer-supplied hardlink to the psm rows this feature maps to (list of psm_id). NOT materialized by qpx's own converters — when absent (null), use the computed inverse softlink: Dataset.link_feature_psm(), the inverse of the authoritative psm.feature_id foreign key (group by feature_id to recover this list, bigbio/qpx#267). See docs/spec/psm.md -> feature_id."
+feature,pg_ids,list<int64>,optional,,,,"Optional producer-supplied hardlink to the pg rows this feature maps to (list of pg_id). NOT materialized by qpx's own converters — when absent (null), use the computed softlink: Dataset.link_feature_pg(), a label-aware read-side join of feature and pg on canonical(pg_accessions) + run_file_name in pg.grouped_runs + label in feature.intensities (bigbio/qpx#269). See docs/spec/pg.md -> Protein group semantics."
+pg,pg_id,int64,yes,no,,,"Opaque identity of the pg (int64), supplied by the producer or derived from the identity_composite declared in the footer; the primary key of this view."
+pg,pg_accessions,list<string>,yes,no,,,"Protein accessions within this group. Part of the default identity composite: the FULL group membership (not just the leader) keys the pg_id, so two distinct groups that happen to share a leading protein get distinct ids. Hashed order-independently (membership is a set)."
+pg,pg_group_id,int64,optional,,,,"Hash of the sorted pg_accessions, equal for all rows of a group and to feature.pg_group_id, for grouping and joining without comparing lists"
+pg,pg_names,list<string>,no,,,,Protein group names
+pg,gg_accessions,list<string>,no,,,,Gene group identifiers (gene symbols; Ensembl IDs when available)
+pg,gg_names,list<string>,no,,,,Gene group names (gene symbols from tool output)
+pg,gg_qvalue,float64,no,,0,1,"Gene group q-value (e.g., DIA-NN GG.Q.Value)"
+pg,anchor_protein,string,yes,no,,,"Anchor/leading protein of the group — a descriptive representative for display only. NOT part of the pg_id identity (which keys on the full pg_accessions membership), and MUST NOT be used for feature->pg joins or per-protein statistics: it is not unique across groups that share a leading protein. Join feature->pg via feature.pg_ids/pg_id or full pg_accessions. See docs/spec/pg.md -> Protein group semantics."
+pg,grouped_runs,list<string>,yes,no,,,Raw files grouped into this quantification unit (fractions aggregated together; single-element for unfractionated/DIA)
+pg,global_qvalue,float64,no,,0,1,Global q-value at experiment level
+pg,pg_qvalue,float64,no,,0,1,Protein group q-value at run level
+pg,label,string,no,,,,"Channel/label of this quantification; retained for identified groups without a quantity, null only when identification-only input has no label context. Part of the default identity composite."
+pg,intensity,float32,no,,0,,"Primary intensity for this label; null when the identified group has no reported quantity. Without identification or quantification evidence for this unit, omit the row instead of adding a zero or null placeholder."
+pg,additional_intensities,list<additional_intensity>,no,,,,"Tool-provided intensities (normalized, LFQ, iBAQ) for this row's label, read from upstream output"
+pg,is_decoy,bool,yes,no,,,Decoy flag
+pg,contaminant,bool,no,,,,Contaminant flag
+pg,peptides,list<peptide_per_protein>,yes,no,,,Peptide counts per protein in the group
+pg,peptide_counts,peptide_counts,no,,,,Unique/total peptide sequence counts
+pg,feature_counts,feature_counts,no,,,,Unique/total feature counts
+pg,sequence_coverage,float32,no,,0,100,Sequence coverage percentage
+pg,molecular_weight,float32,no,,,,Molecular weight (kDa)
+pg,additional_scores,list<score>,no,,,,Additional scores
+pg,is_imputed,bool,optional,,,,Whether the tool imputed this quantity instead of measuring it; null when the tool does not say
+pg,cv_params,list<cv_param>,no,,,,CV parameters
+pepmap,sequence,string,yes,no,,,Unmodified peptide sequence
+pepmap,peptidoform,string,yes,no,,,ProForma notation
+pepmap,pg_accessions,list<pg_protein>,no,,,,"Protein accessions with optional peptide positions (start, end, pre, post)"
+pepmap,sequence_edits,list<peptide_sequence_edit>,optional,,,,"Sequence changes the peptide carries relative to a reference protein it maps to: substitutions, multi-residue replacements, deletions and insertions, in reference coordinates. Null for a peptide that matches its proteins as they are."
+pepmap,is_unique,bool,no,,,,True if peptide maps to exactly one protein
+protein,accession,string,yes,no,,,Protein accession as the other views name it
+protein,entry_name,string,optional,,,,"Entry name of the database, such as ALBU_HUMAN"
+protein,description,string,optional,,,,Protein name from the FASTA header
+protein,gene_name,string,optional,,,,Gene symbol from the FASTA header (GN=)
+protein,organism,string,optional,,,,Organism from the FASTA header (OS=)
+protein,taxonomy_id,int32,optional,,,,NCBI taxonomy id from the FASTA header (OX=)
+protein,length,int32,optional,,,,Sequence length in residues
+protein,sequence,string,optional,,,,Amino acid sequence
+site,site_id,int64,yes,no,,,"Opaque identity of the site (int64), supplied by the producer or derived from the identity_composite declared in the footer; the primary key of this view."
+site,protein_accession,string,yes,no,,,Accession of the protein the position refers to
+site,family,string,no,,,,"Protein family the protein belongs to (the canonical entry of an isoform, variant or chain); equal to protein_accession for a canonical entry"
+site,position,int32,yes,no,,,"Position in the protein, with the psm.modifications convention: 1-based for a residue (its side chain), 0 for the protein N-terminus and protein length + 1 for the protein C-terminus. N-terminal acetylation of Met1 is position 0; acetylation of a Lys1 side chain is position 1."
+site,amino_acid,string,yes,yes,,,Residue at the position (one letter); null for a protein terminus (position 0 or length + 1)
+site,modification_name,string,yes,no,,,"Modification name (e.g. Phospho, Acetyl)"
+site,modification_accession,string,no,,,,Modification accession (e.g. UNIMOD:21)
+site,mass_delta,float64,yes,no,,,"Monoisotopic mass shift of the modification (Da). Not part of the identity: modifications of equal mass (e.g. dimethyl and ethyl) are distinct rows, told apart by modification_name."
+site,grouped_runs,list<string>,yes,no,,,Runs whose PSMs support the site (all runs of the dataset for a dataset-level estimate)
+site,pg_id,int64,no,,,,"The protein group (pg.pg_id) that holds the protein, for the same grouped_runs: the pg row with a null label (identification) when one exists. Null when the site spans several pg rows (several labels, or runs grouped differently in pg); join through pg_accessions membership then."
+site,prior_evidence,string,no,,,,"Where the claim comes from before the search, e.g. curated (reviewed annotation), catalogue, sample (the sample's own calls), or null for a site found without a prior. An open vocabulary: producers name their own evidence classes."
+site,site_qvalue,float64,no,,0,1,"q-value over the site-modification claims of this view: the estimated proportion of false claims among the rows at least as well supported. A claim is false when the residue does not carry this modification in the sample, whatever the reason (wrong peptide, wrong protein, wrong residue, wrong modification). The counting unit is the distinct row (protein, position, modification, grouped_runs), not the PSM. A set-level statistic, not the probability that this row is correct. Null when the producer has no estimate at this unit; the method and the population it was estimated over belong in provenance."
+site,modified_probability,float64,no,,0,1,"Probability that the residue carries some modification, from the spectra of the peptides that cover it. Not stoichiometry (the fraction of the protein's copies that are modified), which the `stoichiometry` field holds."
+site,evidence_fraction,float64,no,,0,1,"Share of the residue's modification evidence that supports this modification: each spectrum's explanations (the candidate peptidoforms of that spectrum) are mutually exclusive and get posterior probabilities; the probability mass that places a modification on the residue is summed over spectra, and this is the part placing this modification. Together with the alternatives it sums to 1; a row without alternatives holds the whole pool, so its fraction is 1. A relative share, not the probability that the modification is present: two modifications that both occur on the residue (on different molecules or in different runs) are two rows, each with its own site_qvalue, and can each have a fraction near 0.5."
+site,alternatives,list<site_alternative>,no,,,,"The other modifications the same evidence places on the residue, with their evidence fractions, largest first (e.g. trimethyl 0.29 beside acetyl 0.71)"
+site,psm_count,int32,no,,,,PSMs passing the PSM-level cutoff that place the modification at the residue
+site,best_psm_id,int64,no,,,,The best of those PSMs (psm.psm_id)
+site,is_decoy,bool,yes,no,,,"Decoy or knockoff site, written when a reader should be able to recompute site_qvalue"
+site,label,string,optional,,,,Channel of this quantification; null for a claim without one. Part of the identity composite
+site,intensity,float32,optional,,0,,Quantity of the modified site in this label and these runs
+site,stoichiometry,float64,optional,,0,1,"Fraction of the protein's copies at this residue that carry the modification, in this label and these runs (MaxQuant Occupancy)"
+site,additional_scores,list<score>,no,,,,Additional scores (e.g. a localization probability)
+site,cv_params,list<cv_param>,no,,,,CV parameters
+proteoform,proteoform_id,int64,yes,no,,,"Opaque identity of the proteoform (int64), supplied by the producer or derived from the identity_composite declared in the footer; the primary key of this view."
+proteoform,family,string,yes,no,,,Protein family: the canonical entry (e.g. the UniProt accession) shared by all its members
+proteoform,accession,string,yes,no,,,"Accession of this member (canonical, isoform, variant or chain entry)"
+proteoform,kind,string,yes,no,,,"canonical, isoform, variant or chain (a closed vocabulary, checked by strict validation)"
+proteoform,description,string,no,,,,"What distinguishes the member, e.g. a variant in HGVS protein notation (p.Arg175His), an isoform identifier, or a chain range"
+proteoform,edits,list<sequence_edit>,optional,,,,"For a variant, the sequence changes that make it from the canonical entry, in canonical coordinates; null for other kinds"
+proteoform,pg_id,int64,no,,,,"The protein group row (pg.pg_id) that holds the family for this row's grouped_runs and label. pg_id identifies one pg row, so a member quantified in several labels links each label row to the pg row of that label."
+proteoform,grouped_runs,list<string>,yes,no,,,Runs grouped into this quantification unit (as in pg)
+proteoform,source,string,no,,,,"Database or annotation the member comes from (e.g. UniProt, a variant catalogue, the sample's own calls)"
+proteoform,prior_evidence,string,no,,,,"Prior evidence class of the member before the search (e.g. curated, catalogue, sample). An open vocabulary: producers name their own evidence classes."
+proteoform,specific_peptides,int32,no,,,,"Peptides that no other member of the family explains. Specificity is within the family only: such a peptide can also map to another family, and whether it counts for this family is decided by the protein inference behind pg_id."
+proteoform,shared_peptides,int32,no,,,,Peptides the member shares with other members of its family
+proteoform,psm_count,int32,no,,,,PSMs passing their cutoff that support the member
+proteoform,evidence,string,no,,,,"specific: the member has peptides specific to it within the family; shared: only peptides shared within the family support it (a closed vocabulary, checked by strict validation). A shared-only row establishes support for the family, not the presence of this member."
+proteoform,proteoform_qvalue,float64,no,,0,1,"q-value over member claims: the estimated proportion of false members among the members of this view at least as well supported, where a member is false when it is not present in the sample. Estimated at the member level (each member counted once, e.g. by target-decoy or knockoff competition between members); the method belongs in provenance. A PSM-level q-value, even of the member's best PSM, does not control error over members: leave this null and keep PSM-level values in additional_scores."
+proteoform,best_psm_id,int64,no,,,,"A PSM that supports the member, the best one (psm.psm_id); supporting evidence, not the source of proteoform_qvalue"
+proteoform,is_decoy,bool,yes,no,,,Decoy or knockoff member
+proteoform,label,string,no,,,,Channel/label of this quantification; null for identification-only output. Part of the identity composite.
+proteoform,intensity,float32,no,,0,,"Quantity of the member for this label, from peptides specific to it within the family that the protein inference assigns to its protein group (pg_id); null when not quantified"
+proteoform,additional_intensities,list<additional_intensity>,no,,,,Other quantities for this row's label
+proteoform,additional_scores,list<score>,no,,,,Additional scores
+proteoform,cv_params,list<cv_param>,no,,,,CV parameters
+fragment,fragment_id,int64,yes,no,,,"Opaque identity of the row, derived from the identity_composite"
+fragment,feature_id,int64,yes,no,,,The feature (feature.feature_id) the fragment belongs to
+fragment,run_file_name,string,yes,no,,,Run the fragment was measured in
+fragment,peptidoform,string,yes,no,,,Peptidoform of the precursor
+fragment,charge,int16,yes,no,,,Charge of the precursor
+fragment,label,string,optional,,,,Channel of the fragment
+fragment,fragment_index,int32,optional,,,,"1-based position in the tool's fragment list, where it names fragments by position (DIA-NN)"
+fragment,ion_type,string,optional,,,,"Ion series and number, such as y8; null where the tool does not name the fragment"
+fragment,fragment_charge,int32,optional,,,,Charge of the fragment
+fragment,neutral_loss,string,optional,,,,"Neutral loss of the fragment, such as H2O; null for none"
+fragment,mz,float64,optional,,,,Theoretical m/z of the fragment
+fragment,observed_mz,float64,optional,,,,Measured m/z of the fragment
+fragment,intensity,float32,optional,,0,,Raw quantity of the fragment; null for not measured
+fragment,corrected_intensity,float32,optional,,0,,"Quantity after the tool's correction: DIA-NN Fragment.Quant.Corrected, Spectronaut F.NormalizedPeakArea"
+fragment,peak_height,float32,optional,,0,,Peak height of the fragment
+fragment,correlation,float32,optional,,,,Correlation of the fragment's elution with the precursor's other fragments
+fragment,excluded,bool,optional,,,,Whether the tool left the fragment out of the precursor's quantity
+fragment,rt_array,list<float32>,optional,,,,Retention times of the extracted ion chromatogram (seconds)
+fragment,intensity_array,list<float32>,optional,,,,"Intensities of the extracted ion chromatogram, parallel to rt_array"
+fragment,additional_scores,list<score>,optional,,,,Other per-fragment values of the tool
+xic,xic_id,string,yes,no,,,Opaque identifier of one chromatogram trace. Producer-supplied (e.g. <run_file_name>|<precursor_id>|<transition>|<isotope>|<compensation_voltage>) and unique within the file; the primary key of this view.
+xic,run_file_name,string,yes,no,,,"Raw data file containing the trace (without extension); links to run_file_name in the run, feature, psm, and mz views."
+xic,label,string,yes,no,,,"Channel label. Use 'LFQ' for label-free DIA, or the reporter/plex channel name (e.g. 'TMT126') for multiplexed traces. Matches feature.intensities[].label."
+xic,feature_ids,list<int64>,optional,,,,"Optional links to the feature.feature_id rows this trace supports. A trace is precursor-level evidence and can support several candidate peak groups, so this is a list rather than one feature id."
+xic,feature_scores,list<feature_score>,optional,,,,"Per-feature scores for this trace, for producers whose fragment scores depend on the feature (e.g. area, apex intensity/RT, mass error or shape scores). Use trace-level additional_scores for scores that do not depend on a feature."
+xic,compensation_voltage,float32,optional,,,,"FAIMS compensation voltage of the trace, when the acquisition uses FAIMS; part of the trace identity because one precursor can be traced at several voltages."
+xic,precursor_id,string,yes,no,,,"The producer's precursor identifier (DIA-NN pr: modified sequence plus charge, e.g. 'PEPTM(UniMod:35)IDEK2'). Preserved as reported so a trace can be traced back to the source file."
+xic,peptidoform,string,yes,no,,,Precursor peptidoform in ProForma notation; links to feature.peptidoform and psm.peptidoform.
+xic,charge,int16,yes,no,,,Precursor charge state.
+xic,transition,string,yes,no,,,"Transition annotation: 'ms1' for the precursor trace, or a fragment label such as 'y7^1' or 'b4^2'. Fragment annotations should follow mzPAF (the PSI peak annotation format) where the producer supports it; ms1 is reserved for the precursor trace."
+xic,transition_type,string,yes,no,,,"Kind of trace: 'ms1' for the precursor (MS1) trace, 'fragment' for a fragment-ion (MS2) trace."
+xic,fragment_type,string,optional,,,,"Fragment-ion series (e.g. 'b', 'y'). Null for an ms1 trace or a fragment the producer did not annotate."
+xic,fragment_number,int16,optional,,,,Fragment-ion ordinal measured from its terminus (y7 -> 7). Null when the transition carries no fragment annotation.
+xic,fragment_charge,int16,optional,,,,Charge of the traced fragment ion (y7^1 -> 1). Null when the producer does not report it.
+xic,neutral_loss,string,optional,,,,Neutral-loss annotation of the traced ion (e.g. '-H2O'). Null when the trace has no neutral loss.
+xic,isotope,int16,optional,,,,"Isotope index of the traced ion: 0 is monoisotopic, 1 is M+1, and so on. Applies to both precursor (ms1) and fragment traces; null when the producer does not report isotope resolution."
+xic,target_mz,float32,optional,,,,"m/z the trace was extracted at: the precursor m/z for an ms1 trace, or the product-ion m/z for a fragment trace. Null when the producer does not report it."
+xic,target_rt,float32,optional,,,,"Expected/target retention time of the trace in seconds, when the producer reports one (e.g. the library or predicted apex)."
+xic,rt_start,float32,optional,,,,Start of the extraction window in seconds. Null when the producer does not report the window or the whole run was extracted.
+xic,rt_stop,float32,optional,,,,End of the extraction window in seconds. Null when the producer does not report the window or the whole run was extracted.
+xic,target_ion_mobility,float32,optional,,,,"Target ion-mobility value of the trace (1/K0), when the acquisition is ion-mobility coupled and the producer reports it."
+xic,ion_mobility_start,float32,optional,,,,"Start of the ion-mobility extraction window (1/K0), when applicable."
+xic,ion_mobility_stop,float32,optional,,,,"End of the ion-mobility extraction window (1/K0), when applicable."
+xic,library_intensity,float32,optional,,,,"Library or predicted relative intensity of this fragment, when available; useful as an ML feature or for transition prioritisation."
+xic,used_for_quantification,bool,optional,,,,"True when the producer used this trace for quantification or scoring, false when it was only extracted for inspection. Null when the producer does not mark it."
+xic,rt,list<float32>,yes,no,,,"Raw retention times of the trace in seconds, strictly increasing and in acquisition order. Not aligned or iRT-corrected. MUST have the same length as intensity and, when present, mz."
+xic,intensity,list<float32>,yes,no,,,"Raw intensity at each retention time, as exported by the producer; zero-intensity points are kept and QPX does not smooth them. MUST have the same length as rt; element i corresponds to rt[i]."
+xic,mz,list<float32>,optional,,,,"Optional observed m/z at each retention time, aligned with rt; enables mass-error traces. Null when the producer does not report a per-point m/z."
+xic,is_decoy,bool,optional,,,,Decoy flag for the precursor when the producer reports one; null when the trace is not classified.
+xic,additional_scores,list<score>,optional,,,,Trace-level scores reported by the producer. Feature-by-trace score tables (several candidate features sharing one trace) are outside this view.
+xic,cv_params,list<cv_param>,optional,,,,"Controlled-vocabulary parameters for trace-specific metadata. Settings that are constant for a run (m/z tolerance, extraction-window width, smoothing method) belong in run/provenance metadata, not repeated on every row."
+mz,id,string,yes,no,,,Unique scan/spectrum identifier
+mz,run_file_name,string,optional,,,,Run file containing this spectrum (links to PSM/feature run_file_name)
+mz,scan,list<int32>,optional,,,,Scan ID from native ID (array of int components; links to PSM/feature scan)
+mz,ms_level,int32,yes,no,,,"MS level (1=MS1, 2=MS2)"
+mz,centroid,bool,yes,no,,,Centroided (true) or profile (false)
+mz,scan_start_time,float32,yes,no,,,Scan start time (minutes)
+mz,inverse_ion_mobility,float32,optional,,,,Inverse ion mobility (TIMS)
+mz,drift_time,float32,optional,,,,"Ion mobility drift time in milliseconds (MS:1002476), for drift-tube and travelling-wave instruments"
+mz,compensation_voltage,float32,optional,,,,FAIMS compensation voltage in volts (MS:1001581)
+mz,ion_injection_time,float32,optional,,,,Ion injection time (ms); null when the source does not record it
+mz,total_ion_current,float32,yes,no,,,Total ion current
+mz,precursors,list<precursor>,optional,,,,Precursor ions
+mz,mz,list<float32>,yes,no,,,m/z values
+mz,intensity,list<float32>,yes,no,,,Intensity values
+mz,ion_mobility_array,list<float32>,optional,,,,"Ion mobility of each peak, for a spectrum whose peaks span a mobility range"
+mz,ion_mobility_array_unit,string,optional,,,,Unit of ion_mobility_array: 'Vs/cm^2' (1/K0) or 'ms' (drift time)
+mz,cv_params,list<cv_param>,optional,,,,CV parameters
+sample,sample_accession,string,yes,no,,,Unique sample identifier (SDRF source name)
+sample,organism,string,yes,no,,,Species (e.g. Homo sapiens)
+sample,organism_part,string,yes,no,,,Tissue or organ (e.g. Brain; Frontal cortex)
+sample,disease,string,optional,,,,Disease state (omitted when absent from SDRF)
+sample,cell_line,string,optional,,,,Cell line name (omitted when absent from SDRF)
+sample,cell_type,string,optional,,,,Cell type (omitted when absent from SDRF)
+sample,sex,string,optional,,,,Biological sex (omitted when absent from SDRF)
+sample,age,string,optional,,,,Age of specimen (omitted when absent from SDRF)
+sample,developmental_stage,string,optional,,,,Developmental stage (omitted when absent from SDRF)
+sample,ancestry,string,optional,,,,Ancestry category (omitted when absent from SDRF)
+sample,individual,string,optional,,,,Individual/patient identifier (omitted when absent from SDRF)
+sample,sample_description,string,optional,,,,Free-text sample description (omitted when absent from SDRF)
+run,run_accession,string,yes,no,,,Run identifier; converters write the run file stem. The primary key is run_file_name
+run,run_file_name,string,yes,no,,,Raw data file name (without extension)
+run,file_name,string,optional,,,,Original file name with extension (e.g. S1_Frontal_1.raw)
+run,samples,list<sample_channel>,yes,no,,,Sample-channel mappings with replicate info
+run,fraction,string,optional,,,,Fraction identifier
+run,instrument,string,optional,,,,Mass spectrometer name
+run,enzymes,list<string>,optional,,,,Proteolytic enzyme names
+run,dissociation_method,string,optional,,,,"Fragmentation method name (HCD, CID, ETD)"
+run,acquisition_method,string,optional,,,,"Data acquisition method name (e.g. DDA, DIA); from comment[proteomics data acquisition method]"
+run,additional_terms,list<ontology_term>,optional,,,,"Other ontology-backed run terms (acquisition method, labeling, etc.)"
+run,modification_parameters,list<modification_param>,optional,,,,Modifications configured in database search for this run
+run,label_definitions,list<label_definition>,optional,,,,"The label modifications of each MS1 label of this run, as the SDRF declares them"
+run,gradient_length,float32,optional,,,,"Length of the LC gradient (seconds), from comment[gradient length]"
+run,acquisition_start,string,optional,,,,"Run acquisition start, verbatim from comment[acquisition date] or mzML startTimeStamp; no timezone conversion"
+dataset,project_accession,string,yes,no,,,"Project accession (e.g., PXD014414)"
+dataset,project_title,string,no,,,,Title of the project
+dataset,project_description,string,no,,,,Project description
+dataset,pubmed_id,string,no,,,,PubMed ID
+dataset,software_name,string,no,,,,Software that generated the data
+dataset,software_version,string,no,,,,Software version
+dataset,analysis_id,string,optional,,,,Identifies this analysis among others of the same project: ids and accessions alone do not (see Row Identity)
+dataset,creation_date,string,yes,no,,,ISO 8601 date when dataset was created
+dataset,file_checksums,"map<string, string>",no,,,,SHA-256 hex digests keyed by file name (relative to dataset root)
+dataset,file_row_counts,"map<string, int64>",no,,,,Row counts keyed by file name
+dataset,file_sizes_bytes,"map<string, int64>",no,,,,File sizes in bytes keyed by file name
+dataset,total_structures,int32,no,,,,Number of Parquet structures in this dataset
+dataset,packaged_at,string,no,,,,ISO 8601 timestamp when integrity was computed
+ontology,field_name,string,yes,no,,,snake_case QPX field or score name
+ontology,ontology_name,string,no,,,,Proper ontology term name
+ontology,ontology_accession,string,no,,,,"Ontology accession identifier (e.g., MS:1002252)"
+ontology,ontology_source,string,no,,,,"Ontology prefix (MS, UBERON, UNIMOD, etc.)"
+ontology,ontology_version,string,no,,,,"Version of the ontology used for resolution (e.g., 4.1.235)"
+ontology,view,string,yes,no,,,"QPX view this field belongs to (psm, feature, pg, etc.)"
+ontology,description,string,no,,,,Human-readable description
+ontology,source_column_name,string,no,,,,"Original column name in the tool output (e.g., Precursor.Quantity)"
+ontology,source_tool,string,no,,,,"Tool name that produced this field (e.g., DIA-NN)"
+provenance,step_order,int32,yes,no,,,"Execution order (1, 2, 3, ...)"
+provenance,step_category,string,yes,no,,,"Broad category (workflow, database_search, quantification, etc.)"
+provenance,step_name,string,yes,no,,,"Specific name (sequence_search, psm_rescoring, etc.)"
+provenance,tool_name,string,yes,no,,,Tool that performed this step
+provenance,tool_version,string,no,,,,Tool version
+provenance,tool_uri,string,no,,,,Container URI or tool URL
+provenance,parameters,list<parameter>,no,,,,Key-value pairs of important settings
+provenance,config,string,no,,,,Full tool configuration as JSON string
+provenance,output_views,list<string>,no,,,,"QPX views this step generated (e.g., ['psm', 'feature'])"
+type score,score_name,string,,no,,,
+type score,score_value,float64,,no,,,
+type score,higher_better,bool,,yes,,,
+type feature_score,feature_id,int64,,no,,,
+type feature_score,scores,list<score>,,no,,,
+type cv_param,cv_name,string,,no,,,
+type cv_param,cv_value,string,,no,,,
+type modification_position,position,int32,,no,,,
+type modification_position,amino_acid,string,,yes,,,
+type modification_position,scores,list<score>,,yes,,,
+type modification,name,string,,no,,,
+type modification,accession,string,,yes,,,
+type modification,positions,list<modification_position>,,no,,,
+type intensity,label,string,,no,,,
+type intensity,intensity,float32,,yes,0,,
+type intensity_pair,intensity_name,string,,no,,,
+type intensity_pair,intensity_value,float32,,no,,,
+type additional_intensity,label,string,,no,,,
+type additional_intensity,intensities,list<intensity_pair>,,no,,,
+type pg_protein,accession,string,,no,,,
+type pg_protein,start,int32,,yes,,,
+type pg_protein,end,int32,,yes,,,
+type pg_protein,pre,string,,yes,,,
+type pg_protein,post,string,,yes,,,
+type channel_detail,label,string,,no,,,
+type channel_detail,mz,float64,,yes,,,
+type channel_detail,rt,float32,,yes,,,
+type channel_detail,qvalue,float64,,yes,,,
+type channel_detail,evidence,float64,,yes,,,
+type protein_position,protein_accession,string,,no,,,
+type protein_position,start,int32,,no,,,
+type protein_position,end,int32,,no,,,
+type ontology_property,key,string,,no,,,
+type ontology_property,value,string,,no,,,
+type ontology_term,accession,string,,no,,,
+type ontology_term,name,string,,yes,,,
+type ontology_term,properties,list<ontology_property>,,yes,,,
+type sample_channel,sample_accession,string,,no,,,
+type sample_channel,label,string,,no,,,
+type sample_channel,biological_replicate,int32,,yes,,,
+type sample_channel,technical_replicate,int32,,yes,,,
+type sample_channel,channel_role,string,,yes,,,
+type sample_channel,mixture,string,,yes,,,
+type modification_param,accession,string,,no,,,
+type modification_param,name,string,,yes,,,
+type modification_param,fixed,bool,,yes,,,
+type modification_param,position,string,,yes,,,
+type modification_param,target_amino_acid,string,,yes,,,
+type modification_param,mass_delta,float64,,yes,,,
+type label_definition,label,string,,no,,,
+type label_definition,modifications,list<modification_param>,,no,,,
+type modification_candidate,position,int32,,no,,,
+type modification_candidate,amino_acid,string,,yes,,,
+type modification_candidate,name,string,,no,,,
+type modification_candidate,accession,string,,yes,,,
+type modification_candidate,mass_delta,float64,,yes,,,
+type modification_candidate,probability,float64,,yes,,,
+type modification_candidate,assigned,bool,,no,,,
+type modification_candidate,alternative_group,int32,,yes,,,
+type modification_candidate,scores,list<score>,,yes,,,
+type sequence_edit,start,int32,,no,,,
+type sequence_edit,end,int32,,no,,,
+type sequence_edit,reference,string,,no,,,
+type sequence_edit,alternative,string,,no,,,
+type sequence_edit,name,string,,yes,,,
+type sequence_edit,accession,string,,yes,,,
+type peptide_sequence_edit,protein_accession,string,,no,,,
+type peptide_sequence_edit,start,int32,,no,,,
+type peptide_sequence_edit,end,int32,,no,,,
+type peptide_sequence_edit,reference,string,,no,,,
+type peptide_sequence_edit,alternative,string,,no,,,
+type peptide_sequence_edit,name,string,,yes,,,
+type peptide_sequence_edit,accession,string,,yes,,,
+type site_alternative,name,string,,no,,,
+type site_alternative,accession,string,,yes,,,
+type site_alternative,mass_delta,float64,,no,,,
+type site_alternative,evidence_fraction,float64,,no,,,
+type peptide_per_protein,protein_name,string,,no,,,
+type peptide_per_protein,peptide_count,int32,,no,,,
+type peptide_counts,unique_sequences,int32,,no,,,
+type peptide_counts,total_sequences,int32,,no,,,
+type feature_counts,unique_features,int32,,no,,,
+type feature_counts,total_features,int32,,no,,,
+type precursor,selected_ion_mz,float32,,no,,,
+type precursor,selected_ion_charge,int32,,yes,,,
+type precursor,selected_ion_intensity,float32,,yes,,,
+type precursor,isolation_window_target,float32,,yes,,,
+type precursor,isolation_window_lower,float32,,yes,,,
+type precursor,isolation_window_upper,float32,,yes,,,
+type precursor,spectrum_ref,string,,yes,,,
+type parameter,key,string,,no,,,
+type parameter,value,string,,no,,,
+type cross_link,xl_type,string,,no,,,
+type cross_link,partner_sequence,string,,yes,,,
+type cross_link,partner_peptidoform,string,,yes,,,
+type cross_link,donor_position,int32,,yes,,,
+type cross_link,acceptor_position,int32,,yes,,,
+type cross_link,linker_name,string,,no,,,
+type cross_link,linker_accession,string,,yes,,,
+type cross_link,linker_mass,float64,,no,,,
