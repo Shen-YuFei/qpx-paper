@@ -15,7 +15,7 @@ Explorer of the quantms portal, the QPX UI desktop viewer, SQL engines such as D
 Figure 2: Composition of the corpus. The 103 datasets by hosting repository (a), year of first
 public release (b), organism (c), instrument family (d), acquisition and labelling as annotated
 in the SDRF (e) and number of runs (f), coloured by processing route. Release dates are those
-of the first announcement in ProteomeCentral or of the release by MassIVE or the PDC; nine
+of the first announcement in ProteomeCentral or of the release by MassIVE or the PDC; six
 datasets have none. Datasets with several organisms or instrument families are counted once,
 under Several. In f, each point is a dataset and the vertical bars mark the route medians.
 Numbers are from the 29 October 2026 snapshot and provisional until the corpus is regenerated.
