@@ -28,9 +28,9 @@ identified at 1% FDR with the numbers reported there and in the original publica
 following Walzer et al., the coefficient of variation and the correlation of protein-group
 intensities between repeated measurements of a sample. PXD004452 and PXD028735 belong to the
 identification-only subset, which has no protein groups or quantities; for them we compare the
-identified peptides. [TODO: collect the reported numbers with their sources and report the
-comparison after regeneration; `scripts/validation/quant_metrics.py` computes the replicate
-metrics. The identification-only PSMs of PXD028735 carry no q-values, in its 1.0.x files as in
+identified peptides. [TODO: report the comparison after regeneration against the
+numbers collected, with their sources, in `data/original_reported.csv`;
+`scripts/validation/quant_metrics.py` computes the replicate metrics. The identification-only PSMs of PXD028735 carry no q-values, in its 1.0.x files as in
 the trial migration, so the error rate of the peptides to compare is to be decided.]
 
 ## Identification quality
