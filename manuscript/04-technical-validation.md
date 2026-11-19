@@ -27,16 +27,17 @@ benchmark and the 1,391,060 channel intensities of the TMT dataset PXD014145 [@d
 including its 269,710 zeros, matched; the converter combines the channels of a precursor into
 one feature row, giving 126,460 rows for PXD014145. In the MaxQuant output deposited with
 PXD014145, the 95,187 PSMs and 107,260 features left after removing reverse and contaminant hits
-matched; the protein groups of this output sum the twelve fractions of the plex into one unnamed
-experiment, cannot be assigned to runs, and are rejected by the converter. The 582,972 non-zero
-reporter intensities of these features, in the eight TMT channels the search was set up with,
-also matched. In the FragPipe output deposited with PXD041421, the 67,775 PSMs of one complete
-run, the 2,231,022 features of the 48 runs, with 96,288 precursors and 78,461 peptidoforms, and
+matched, as did the 582,972 non-zero reporter intensities of these features in the eight TMT
+channels the search was set up with. The search names no experiments, so its protein groups hold
+the totals of one experiment, the twelve fractions of the plex, which the converter assigns to
+these twelve runs; after removing reverse, contaminant and only-identified-by-site groups, the
+51,344 intensities of 6,693 protein groups matched. In the FragPipe output deposited with
+PXD041421, the 67,775 PSMs of one complete run, the 2,231,022 features of the 48 runs, with 96,288 precursors and 78,461 peptidoforms, and
 the 253,323 intensities of 7,290 protein groups matched; for the 5,141 of the 101,738 ions whose
 `Assigned Modifications` leave out a modification given in `Modified Sequence`, the converter
 takes it from `Modified Sequence`. Where intensities matched, the largest relative difference
 between paired values was 6 × 10^-8^, the precision of the 32-bit floating-point values QPX
-stores. The conversions used QPX development commit 213e0e19. [TBD: rerun with the QPX 1.4.0 release]
+stores. The conversions used QPX development commit f8fde490. [TBD: rerun with the QPX 1.4.0 release]
 
 ## Comparison with the originally reported results
 

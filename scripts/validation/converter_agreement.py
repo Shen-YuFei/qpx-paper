@@ -761,7 +761,6 @@ def check_diann(audit, inputs, output):
 MQ_COORDINATES = ["rt_start", "rt_stop", "scan"]
 MQ_FLAGS = ["Reverse", "Potential contaminant"]
 MQ_REPORTER = "Reporter intensity"
-MQ_PG_ERROR = "proteinGroups.txt has no per-experiment intensity columns; the total Intensity cannot be assigned to grouped_runs"
 
 
 @cache
@@ -912,15 +911,17 @@ def maxquant_groups(audit, path, reporters, evidence, output):
     values["label"] = values["label"].map(reporters)
     values["intensity"] = values["intensity"].where(values["intensity"].gt(0))
     note = (
-        f"Exclude Reverse, Potential contaminant, and Only identified by site from {len(raw)} input groups. "
-        "The one unnamed experiment aggregates twelve fractions. "
-        f"CLI error on this export: {MQ_PG_ERROR}."
+        f"Exclude Reverse, Potential contaminant, and Only identified by site from {len(raw)} input groups on both sides. "
+        "The one unnamed experiment aggregates the twelve fractions of evidence.txt."
     )
-    qpx = (
-        qpx_proteins(output)
-        if (output / "bench.pg.parquet").exists()
-        else values.iloc[:0]
+    qpx = qpx_proteins(output, ["is_decoy", "contaminant", "cv_params"])
+    site_only = qpx.pop("cv_params").map(
+        lambda params: (
+            params is not None
+            and any(param["cv_name"] == "only_identified_by_site" for param in params)
+        )
     )
+    qpx = qpx.loc[~(qpx.pop("is_decoy") | qpx.pop("contaminant") | site_only)]
     audit.keys(
         "pg",
         "protein_groups",
@@ -1037,19 +1038,7 @@ def convert(converter, accession, inputs, output):
     if converter == "diann":
         command.extend(["--qvalue-threshold", str(DIANN_QVALUE)])
     print(" ".join(command), flush=True)
-    if converter == "maxquant":
-        result = subprocess.run(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            check=False,
-        )
-        print(result.stdout, end="", flush=True)
-        if MQ_PG_ERROR not in result.stdout:
-            result.check_returncode()
-    else:
-        subprocess.run(command, check=True)
+    subprocess.run(command, check=True)
 
 
 def main():
