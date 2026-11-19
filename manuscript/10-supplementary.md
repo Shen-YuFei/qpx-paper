@@ -56,4 +56,5 @@ Supplementary Figure 1: Query time and storage of QPX compared with mzTab and CS
 Supplementary Figure 2: Views and files held by each dataset. Each row is a dataset, grouped by
 processing route; a filled cell marks a view or file present in the latest QPX version of the
 dataset, except for the SDRF column, which marks an SDRF anywhere in the dataset folder. The
-bottom row gives the number of datasets holding each view or file. [TBD: figure]
+row under each route gives the number of its datasets holding each view or file, and the last
+row the number over all datasets. [TBD: figure]

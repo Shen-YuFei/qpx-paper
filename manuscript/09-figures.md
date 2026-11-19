@@ -5,10 +5,11 @@
 Figure 1: Overview of the corpus and of the QPX format. Public datasets from ProteomeXchange
 repositories and other sources, annotated with SDRF-Proteomics files, were processed along
 three routes (identification only with the `quantms-msnet` recipe, DIA with quantmsdiann and
-DDA with quantms) and written as one QPX folder per dataset, holding the Parquet views, grouped
-here by content, together with the SDRF and expression files. The data are read with the QPX
-Explorer of the quantms portal, the QPX UI desktop viewer, SQL engines such as DuckDB or the
-`qpx` Python package. Colours mark the processing routes, as in Fig. 2.
+DDA with quantms) and written as one QPX folder per dataset, holding the Parquet views together with the SDRF and
+expression files; lines between views name the columns that join them, and dashed outlines mark
+views and files that no dataset holds. The data are read with the QPX Explorer of the quantms
+portal, the QPX UI desktop viewer, SQL engines such as DuckDB or the `qpx` Python package.
+Colours mark the processing routes, as in Fig. 2. [TBD: numbers]
 
 ![](figures/fig2){width=100%}
 

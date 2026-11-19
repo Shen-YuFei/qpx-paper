@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.patches import Patch
+from matplotlib.ticker import MaxNLocator
 
 from qpxfig import (DOUBLE, MM, MUTED, ROOT, ROUTE_COLOURS, ROUTES, label_panels, log_axis,
                     route_strip, save)
@@ -95,13 +96,20 @@ def instrument(models):
     return families.pop() if len(families) == 1 else "Several"
 
 
-def stacked_barh(ax, df, column, order, italic=()):
+def slot_mm(ax, n):
+    """Height in mm that n categories get on the y axis of ax."""
+    return ax.get_position().height * ax.figure.get_size_inches()[1] * 25.4 / n
+
+
+def stacked_barh(ax, df, column, order, bar_mm, italic=()):
+    """Horizontal bars stacked by route, bar_mm thick whatever the number of categories."""
     counts = df.groupby([column, "route"]).size().unstack(fill_value=0)
     counts = counts.reindex(index=order, columns=ROUTES, fill_value=0)
     y = np.arange(len(order))[::-1]
     left = np.zeros(len(order))
     for route in ROUTES:
-        ax.barh(y, counts[route], left=left, height=0.72, color=ROUTE_COLOURS[route],
+        ax.barh(y, counts[route], left=left, height=bar_mm / slot_mm(ax, len(order)),
+                color=ROUTE_COLOURS[route],
                 edgecolor="white", linewidth=0.4)
         left += counts[route].to_numpy()
     for yi, total in zip(y, left):
@@ -132,12 +140,26 @@ def main():
     released = df["date_kind"].isin(["announced", "publication"])
     df["year"] = pd.to_numeric(df["public_date"].str[:4]).where(released)
 
+    orders = {
+        "repo": by_count(df["repo"], last=["Not identified"]),
+        "organism": by_count(df["organism"], last=["Other species", "Several species",
+                                                   "Not annotated"]),
+        "family": by_count(df["family"], last=["Orbitrap, model not given", "Several"]),
+        "acquisition": ["DDA, label-free", "DDA, TMT", "DDA, TMT and label-free", "DIA",
+                        "DDA and DIA", "Not annotated"],
+    }
+    # Row heights follow the longest category list in each row, so that bars keep one
+    # thickness across panels.
+    rows = [max(len(orders["repo"]), len(orders["organism"])),
+            max(len(orders["family"]), len(orders["acquisition"]))]
     fig = plt.figure(figsize=(DOUBLE, 112 * MM))
     gs = fig.add_gridspec(2, 3, left=0.135, right=0.975, bottom=0.08, top=0.88, wspace=0.75,
-                          hspace=0.55)
+                          hspace=0.45, height_ratios=rows)
     axes = [fig.add_subplot(gs[i, j]) for i in range(2) for j in range(3)]
+    bar_panels = {0: "repo", 2: "organism", 3: "family", 4: "acquisition"}
+    bar_mm = 0.72 * min(slot_mm(axes[i], len(orders[c])) for i, c in bar_panels.items())
 
-    stacked_barh(axes[0], df, "repo", by_count(df["repo"], last=["Not identified"]))
+    stacked_barh(axes[0], df, "repo", orders["repo"], bar_mm)
 
     ax = axes[1]
     years = np.arange(int(df["year"].min()), int(df["year"].max()) + 1)
@@ -151,22 +173,15 @@ def main():
     ax.set_xticks(years[::2])
     ax.set_xlabel("Year of public release")
     ax.set_ylabel("Datasets")
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     undated = int(df["year"].isna().sum())
     if undated:
         ax.text(0.02, 0.98, f"No date: {undated}", transform=ax.transAxes, va="top",
                 fontsize=5.5, color=MUTED)
 
-    stacked_barh(axes[2], df, "organism",
-                 by_count(df["organism"], last=["Other species", "Several species",
-                                                  "Not annotated"]),
-                 italic=SPECIES_SHOWN)
-
-    stacked_barh(axes[3], df, "family",
-                 by_count(df["family"], last=["Orbitrap, model not given", "Several"]))
-
-    stacked_barh(axes[4], df, "acquisition",
-                 ["DDA, label-free", "DDA, TMT", "DDA, TMT and label-free", "DIA",
-                  "DDA and DIA", "Not annotated"])
+    stacked_barh(axes[2], df, "organism", orders["organism"], bar_mm, italic=SPECIES_SHOWN)
+    stacked_barh(axes[3], df, "family", orders["family"], bar_mm)
+    stacked_barh(axes[4], df, "acquisition", orders["acquisition"], bar_mm)
 
     ax = axes[5]
     route_strip(ax, {r: g["run_count"] for r, g in df.groupby("route")})

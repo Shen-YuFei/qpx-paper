@@ -11,6 +11,7 @@ from pathlib import Path
 
 import matplotlib as mpl
 import numpy as np
+from matplotlib.text import Text
 from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +30,8 @@ MUTED = "#595959"
 RULE = "#bfbfbf"
 PANEL_FILL = "#f2f2f2"
 LABEL_SIZE = 6.5  # panel letters and panel titles
+MIN_TEXT = 5  # smallest type size the journal accepts
+MONO = "Liberation Mono"  # column and file names
 
 mpl.rcParams.update({
     "font.family": "sans-serif",
@@ -65,14 +68,19 @@ mpl.rcParams.update({
 
 
 def label_panels(fig, axes, titles, letters="abcdefgh"):
-    """Put a bold panel label and a title above each axes, flush with the panel's left edge
-    (tick labels included)."""
+    """Put a bold panel label and a title above each axes. Panels that share a grid column
+    start their labels at the same x, the leftmost edge of the column (tick labels included)."""
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
     inv = fig.transFigure.inverted()
     width, height = fig.get_size_inches() * 25.4
-    for ax, letter, title in zip(axes, letters, titles):
+    left = {}
+    for ax in axes:
+        column = round(ax.get_position().x0, 3)
         x0 = inv.transform(ax.get_tightbbox(renderer).p0)[0]
+        left[column] = min(left.get(column, x0), x0)
+    for ax, letter, title in zip(axes, letters, titles):
+        x0 = left[round(ax.get_position().x0, 3)]
         y = ax.get_position().y1 + 2.5 / height
         fig.text(x0, y, letter, fontsize=LABEL_SIZE, fontweight="bold", va="baseline")
         fig.text(x0 + 2.8 / width, y, title, fontsize=LABEL_SIZE, va="baseline")
@@ -115,8 +123,37 @@ def log_axis(ax, values):
     ax.xaxis.set_minor_formatter(NullFormatter())
 
 
+def check_text(fig):
+    """Fail if any drawn text is smaller than the journal minimum or reaches outside the
+    canvas. Texts are collected while drawing, which skips tick labels outside the axis limits."""
+    drawn = []
+    draw = Text.draw
+
+    def record(text, renderer):
+        drawn.append(text)
+        return draw(text, renderer)
+
+    Text.draw = record
+    try:
+        fig.canvas.draw()
+    finally:
+        Text.draw = draw
+    renderer = fig.canvas.get_renderer()
+    canvas = fig.bbox
+    for text in drawn:
+        if not text.get_visible() or not text.get_text().strip():
+            continue
+        if text.get_fontsize() < MIN_TEXT:
+            raise SystemExit(f"text {text.get_text()!r} is {text.get_fontsize()} pt")
+        box = text.get_window_extent(renderer)
+        if (box.x0 < canvas.x0 - 1 or box.y0 < canvas.y0 - 1 or box.x1 > canvas.x1 + 1
+                or box.y1 > canvas.y1 + 1):
+            raise SystemExit(f"text {text.get_text()!r} reaches outside the figure")
+
+
 def save(fig, name):
     """Write the PDF used by the LaTeX build and a 450 dpi PNG used by the docx build."""
+    check_text(fig)
     FIGURES.mkdir(exist_ok=True)
     fig.savefig(FIGURES / f"{name}.pdf")
     fig.savefig(FIGURES / f"{name}.png", dpi=450)
