@@ -10,6 +10,7 @@ Run: python scripts/figures/fig1_overview.py
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.colors import to_rgb
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Polygon, Rectangle
 
 from fig2_corpus import SNAPSHOT, check, load
@@ -17,9 +18,14 @@ from figS2_coverage import presence
 from qpxfig import DOUBLE, INK, MM, MONO, MUTED, PANEL_FILL, ROUTE_COLOURS, ROUTES, RULE, save
 
 W, H = 183, 90  # mm
-DATA_HEAD = "#3d3d3d"
-META_HEAD = "#8a8a8a"
-STRIPE = "#e3e3e3"
+DATA_HEAD = "#4d4d4d"
+META_HEAD = "#a6a6a6"
+STRIPE = "#e6e6e6"
+
+
+def tint(colour, share):
+    """The colour mixed with white, share being the part of the colour."""
+    return tuple(1 - share * (1 - c) for c in to_rgb(colour))
 
 
 def box(ax, x, y, w, h, fill="white", edge=RULE, lw=0.5, dashed=False, r=1.0):
@@ -60,8 +66,8 @@ def table(ax, x, y, w, h, name, head, present=True):
     hh = 2.6
     box(ax, x, y, w, h, fill="white", edge=head, r=0.6)
     ax.add_patch(Rectangle((x, y + h - hh), w, hh, fc=head, ec=head, lw=0.5))
-    text(ax, x + w / 2, y + h - hh / 2, name, size=5.5, ha="center", color="white",
-         weight="bold", family=MONO)
+    text(ax, x + w / 2, y + h - hh / 2, name, size=5.5, ha="center",
+         color="white" if head == DATA_HEAD else INK, weight="bold", family=MONO)
     n = 5
     cw = (w - 1.2) / n
     for i in range(n):
@@ -105,7 +111,7 @@ def window(ax, x, y, w, h, kind):
 
 
 def code(ax, x, y, w, h, s):
-    box(ax, x, y, w, h, fill=INK, edge=INK, r=0.5)
+    box(ax, x, y, w, h, fill=DATA_HEAD, edge=DATA_HEAD, r=0.5)
     text(ax, x + w / 2, y + h / 2, s, size=5, ha="center", color="white", family=MONO)
 
 
@@ -177,10 +183,10 @@ def main():
     ys = [top - rh, (top + bottom - rh) / 2, bottom]
     for route, y in zip(ROUTES, ys):
         name, sub = routes[route]
-        box(ax, x, y, w, rh)
-        ax.add_patch(Rectangle((x, y), 1.6, rh, fc=ROUTE_COLOURS[route], ec="none"))
-        text(ax, x + 4, y + 10.6, name, weight="bold")
-        text(ax, x + 4, y + 5.6, sub, size=5.5, color=MUTED)
+        fill = tint(ROUTE_COLOURS[route], 0.22)
+        box(ax, x, y, w, rh, fill=fill, edge=fill)
+        text(ax, x + 3, y + 10.6, name, weight="bold")
+        text(ax, x + 3, y + 5.6, sub, size=5.5, color=MUTED)
         text(ax, x + w - 2.5, y + 10.6, f"{c['routes'][route]}", size=7, weight="bold",
              ha="right")
         text(ax, x + w - 2.5, y + 5.6, "datasets", size=5, color=MUTED, ha="right")
