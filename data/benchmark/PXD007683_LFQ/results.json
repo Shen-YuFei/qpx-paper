@@ -1,0 +1,261 @@
+{
+  "hardware": {
+    "cpu": "Intel(R) Core(TM) Ultra 7 270K Plus",
+    "logical_cpus": 24,
+    "memory_gib": 122.9,
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "python": "3.13.9",
+    "qpx": "1.1.4+local.22d2eb9",
+    "qpx_commit": "2dadc0e1",
+    "duckdb": "2.0.0",
+    "pandas": "2.3.3",
+    "pyarrow": "24.0.0",
+    "load_average": [
+      4.01171875,
+      1.8916015625,
+      1.01513671875
+    ]
+  },
+  "results": [
+    {
+      "query": "count_psms",
+      "format": "mztab",
+      "engine": "pandas",
+      "median_seconds": 2.4310551467351615,
+      "median_peak_mib": 1518.55078125,
+      "result_rows": 1,
+      "answer": 542403,
+      "repeats": 5
+    },
+    {
+      "query": "distinct_proteins",
+      "format": "mztab",
+      "engine": "pandas",
+      "median_seconds": 2.878346427809447,
+      "median_peak_mib": 1518.5625,
+      "result_rows": 1,
+      "answer": 9716,
+      "repeats": 5
+    },
+    {
+      "query": "filter_charge",
+      "format": "mztab",
+      "engine": "pandas",
+      "median_seconds": 2.462362578138709,
+      "median_peak_mib": 1518.6875,
+      "result_rows": 1,
+      "answer": 382341,
+      "repeats": 5
+    },
+    {
+      "query": "select_two_columns",
+      "format": "mztab",
+      "engine": "pandas",
+      "median_seconds": 2.469575700815767,
+      "median_peak_mib": 1518.53125,
+      "result_rows": 542403,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_features",
+      "format": "csv",
+      "engine": "pandas",
+      "median_seconds": 0.27470879908651114,
+      "median_peak_mib": 166.265625,
+      "result_rows": 1,
+      "answer": 518248,
+      "repeats": 5
+    },
+    {
+      "query": "top10_proteins",
+      "format": "csv",
+      "engine": "pandas",
+      "median_seconds": 0.2945838184095919,
+      "median_peak_mib": 166.42578125,
+      "result_rows": 10,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "one_protein",
+      "format": "csv",
+      "engine": "pandas",
+      "median_seconds": 0.28924024710431695,
+      "median_peak_mib": 166.2109375,
+      "result_rows": 104,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_features",
+      "format": "csv",
+      "engine": "duckdb",
+      "median_seconds": 0.29260547598823905,
+      "median_peak_mib": 115.921875,
+      "result_rows": 1,
+      "answer": 518248,
+      "repeats": 5
+    },
+    {
+      "query": "top10_proteins",
+      "format": "csv",
+      "engine": "duckdb",
+      "median_seconds": 0.30280208494514227,
+      "median_peak_mib": 120.50390625,
+      "result_rows": 10,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "one_protein",
+      "format": "csv",
+      "engine": "duckdb",
+      "median_seconds": 0.3098442470654845,
+      "median_peak_mib": 117.3359375,
+      "result_rows": 104,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_psms",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.01483617490157485,
+      "median_peak_mib": 40.3203125,
+      "result_rows": 1,
+      "answer": 542403,
+      "repeats": 5
+    },
+    {
+      "query": "distinct_proteins",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.022448397241532803,
+      "median_peak_mib": 59.796875,
+      "result_rows": 1,
+      "answer": 9716,
+      "repeats": 5
+    },
+    {
+      "query": "filter_charge",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.01668286696076393,
+      "median_peak_mib": 42.31640625,
+      "result_rows": 1,
+      "answer": 382341,
+      "repeats": 5
+    },
+    {
+      "query": "select_two_columns",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.046120289247483015,
+      "median_peak_mib": 108.7421875,
+      "result_rows": 542403,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_features",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.015275768004357815,
+      "median_peak_mib": 40.53515625,
+      "result_rows": 1,
+      "answer": 573203,
+      "repeats": 5
+    },
+    {
+      "query": "top10_proteins",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.021613281220197678,
+      "median_peak_mib": 61.984375,
+      "result_rows": 10,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "one_protein",
+      "format": "qpx",
+      "engine": "duckdb",
+      "median_seconds": 0.02053554216399789,
+      "median_peak_mib": 57.8203125,
+      "result_rows": 111,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_psms",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.014772787224501371,
+      "median_peak_mib": 40.421875,
+      "result_rows": 1,
+      "answer": 542403,
+      "repeats": 5
+    },
+    {
+      "query": "distinct_proteins",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.022951167076826096,
+      "median_peak_mib": 57.9453125,
+      "result_rows": 1,
+      "answer": 9716,
+      "repeats": 5
+    },
+    {
+      "query": "filter_charge",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.01623526867479086,
+      "median_peak_mib": 41.90625,
+      "result_rows": 1,
+      "answer": 382341,
+      "repeats": 5
+    },
+    {
+      "query": "select_two_columns",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.04503930592909455,
+      "median_peak_mib": 107.234375,
+      "result_rows": 542403,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "count_features",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.014726358000189066,
+      "median_peak_mib": 40.72265625,
+      "result_rows": 1,
+      "answer": 573203,
+      "repeats": 5
+    },
+    {
+      "query": "top10_proteins",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.024103709962219,
+      "median_peak_mib": 58.16015625,
+      "result_rows": 10,
+      "answer": null,
+      "repeats": 5
+    },
+    {
+      "query": "one_protein",
+      "format": "qpx-relayout",
+      "engine": "duckdb",
+      "median_seconds": 0.018967831041663885,
+      "median_peak_mib": 44.03515625,
+      "result_rows": 111,
+      "answer": null,
+      "repeats": 5
+    }
+  ]
+}

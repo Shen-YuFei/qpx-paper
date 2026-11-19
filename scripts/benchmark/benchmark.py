@@ -2,8 +2,9 @@
 
 The text side is the gzip-compressed mzTab (PSM queries) and MSstats input table (feature
 queries) of one quantms/OpenMS analysis; the QPX side is the same analysis converted with
-`qpxc convert openms-consensus`. Every measurement runs in a fresh Python process, so peak
-memory is per query; times are medians over repeated runs on a warm page cache.
+`qpxc convert openms-consensus`, both as written (`qpx`) and after `qpxc transform relayout`
+(`qpx-relayout`). Every measurement runs in a fresh Python process, so peak memory is per
+query; times are medians over repeated runs on a warm page cache.
 
     python benchmark.py prepare --workdir DIR --consensusxml X --msstats CSV --mztab MZTAB --sdrf SDRF
     python benchmark.py run --workdir DIR --repeats 5
@@ -29,7 +30,9 @@ from pathlib import Path
 
 PREFIX = "bench"
 
-# (query, text format, text engine) — every query also runs on QPX with DuckDB.
+QPX_LAYOUTS = ("qpx", "qpx-relayout")
+
+# (query, text format, text engine) — every query also runs on both QPX layouts with DuckDB.
 QUERIES = [
     ("count_psms", "mztab", "pandas"),
     ("distinct_proteins", "mztab", "pandas"),
@@ -37,9 +40,14 @@ QUERIES = [
     ("select_two_columns", "mztab", "pandas"),
     ("count_features", "csv", "pandas"),
     ("top10_proteins", "csv", "pandas"),
+    ("one_protein", "csv", "pandas"),
     ("count_features", "csv", "duckdb"),
     ("top10_proteins", "csv", "duckdb"),
+    ("one_protein", "csv", "duckdb"),
 ]
+
+# A protein quantified in every run of PXD007683, as QPX and the MSstats table name it.
+PROTEIN = ("P55011", "sp|P55011|S12A2_HUMAN")
 
 QPX_SQL = {
     "count_psms": "SELECT count(*) FROM '{psm}'",
@@ -51,6 +59,9 @@ QPX_SQL = {
         "SELECT anchor_protein, sum(i.intensity) AS total FROM '{feature}', unnest(intensities) AS t(i) "
         "WHERE anchor_protein IS NOT NULL GROUP BY anchor_protein ORDER BY total DESC LIMIT 10"
     ),
+    "one_protein": (
+        f"SELECT peptidoform, charge, run_file_name, intensities FROM '{{feature}}' WHERE anchor_protein = '{PROTEIN[0]}'"
+    ),
 }
 
 CSV_SQL = {
@@ -59,6 +70,7 @@ CSV_SQL = {
         "SELECT ProteinName, sum(Intensity) AS total FROM read_csv('{csv}') "
         "GROUP BY ProteinName ORDER BY total DESC LIMIT 10"
     ),
+    "one_protein": f"SELECT PeptideSequence, PrecursorCharge, Run, Intensity FROM read_csv('{{csv}}') WHERE ProteinName = '{PROTEIN[1]}'",
 }
 
 
@@ -74,16 +86,19 @@ def read_mztab_psms(path: Path):
 def run_text_pandas(query: str, workdir: Path):
     import pandas as pd
 
-    if query in ("count_features", "top10_proteins"):
+    if query in ("count_features", "top10_proteins", "one_protein"):
         table = pd.read_csv(workdir / f"{PREFIX}.msstats.csv.gz")
         if query == "count_features":
             return len(table)
+        if query == "one_protein":
+            return table.loc[table["ProteinName"] == PROTEIN[1], ["PeptideSequence", "PrecursorCharge", "Run", "Intensity"]]
         return table.groupby("ProteinName")["Intensity"].sum().nlargest(10)
     psms = read_mztab_psms(workdir / f"{PREFIX}.mzTab.gz")
     if query == "count_psms":
         return len(psms)
     if query == "distinct_proteins":
-        return psms["accession"].nunique()
+        # mzTab joins the proteins of a PSM with commas, each as db|accession|entry name.
+        return psms["accession"].str.split(",").explode().str.split("|").str[1].nunique()
     if query == "filter_charge":
         return int((psms["charge"] == 2).sum())
     return psms[["sequence", "charge"]]
@@ -100,12 +115,12 @@ def measure_one(fmt: str, engine: str, query: str, workdir: Path) -> dict:
     import duckdb  # noqa: F401  (import cost is outside the measurement)
     import pandas  # noqa: F401
 
+    folder = workdir / fmt
+    sql = QPX_SQL[query].format(psm=folder / f"{PREFIX}.psm.parquet", feature=folder / f"{PREFIX}.feature.parquet")
     baseline = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     start = time.perf_counter()
-    if fmt == "qpx":
-        result = run_duckdb(
-            QPX_SQL[query].format(psm=workdir / f"qpx/{PREFIX}.psm.parquet", feature=workdir / f"qpx/{PREFIX}.feature.parquet")
-        )
+    if fmt in QPX_LAYOUTS:
+        result = run_duckdb(sql)
     elif engine == "duckdb":
         result = run_duckdb(CSV_SQL[query].format(csv=workdir / f"{PREFIX}.msstats.csv.gz"))
     else:
@@ -119,14 +134,33 @@ def measure_one(fmt: str, engine: str, query: str, workdir: Path) -> dict:
     return {"seconds": seconds, "peak_mib": (peak - baseline) / 1024, "result_rows": rows, "answer": answer}
 
 
-def file_sizes(workdir: Path) -> dict:
-    qpx = sorted((workdir / "qpx").glob(f"{PREFIX}.*.parquet"))
+def parquet_layout(path: Path) -> dict:
+    """Size, rows, row groups, codecs and recorded sort order of one Parquet file."""
+    import pyarrow.parquet as pq
+
+    meta = pq.ParquetFile(path).metadata
+    groups = [meta.row_group(i) for i in range(meta.num_row_groups)]
     return {
+        "bytes": path.stat().st_size,
+        "rows": meta.num_rows,
+        "row_groups": meta.num_row_groups,
+        "max_rows_per_group": max(g.num_rows for g in groups),
+        "codecs": sorted({g.column(j).compression for g in groups for j in range(g.num_columns)}),
+        "sorting_columns": [meta.schema.column(c.column_index).path for c in groups[0].sorting_columns],
+    }
+
+
+def file_sizes(workdir: Path, consensusxml: Path) -> dict:
+    return {
+        "consensusxml_bytes": consensusxml.stat().st_size,
         "mztab_bytes": (workdir / f"{PREFIX}.mzTab").stat().st_size,
         "mztab_gz_bytes": (workdir / f"{PREFIX}.mzTab.gz").stat().st_size,
         "msstats_bytes": (workdir / f"{PREFIX}.msstats.csv").stat().st_size,
         "msstats_gz_bytes": (workdir / f"{PREFIX}.msstats.csv.gz").stat().st_size,
-        "qpx_bytes": {p.name.split(".")[1]: p.stat().st_size for p in qpx},
+        **{
+            layout: {p.name.split(".")[1]: parquet_layout(p) for p in sorted((workdir / layout).glob(f"{PREFIX}.*.parquet"))}
+            for layout in QPX_LAYOUTS
+        },
     }
 
 
@@ -157,7 +191,14 @@ def prepare(args) -> None:
         check=True,
     )
     convert_seconds = time.perf_counter() - start
-    (workdir / "sizes.json").write_text(json.dumps({**file_sizes(workdir), "convert_seconds": convert_seconds}, indent=2))
+    relayout = workdir / "qpx-relayout"
+    shutil.rmtree(relayout, ignore_errors=True)
+    start = time.perf_counter()
+    subprocess.run(["qpxc", "transform", "relayout", "--dataset", str(out), "--output-folder", str(relayout)], check=True)
+    relayout_seconds = time.perf_counter() - start
+    sizes = file_sizes(workdir, Path(args.consensusxml))
+    timing = {"convert_seconds": convert_seconds, "relayout_seconds": relayout_seconds, "hardware": hardware()}
+    (workdir / "sizes.json").write_text(json.dumps({**sizes, **timing}, indent=2))
 
 
 def storage(args) -> None:
@@ -188,6 +229,8 @@ def storage(args) -> None:
 
 
 def hardware() -> dict:
+    import qpx
+
     cpu = next(
         (line.split(":", 1)[1].strip() for line in Path("/proc/cpuinfo").read_text().splitlines() if line.startswith("model name")),
         platform.processor(),
@@ -200,6 +243,11 @@ def hardware() -> dict:
         "os": platform.platform(),
         "python": platform.python_version(),
         "qpx": version("qpx"),
+        # An editable install reports the version of its last install; the commit pins the code.
+        "qpx_commit": subprocess.run(
+            ["git", "-C", str(Path(qpx.__file__).parents[1]), "describe", "--always", "--dirty"],
+            capture_output=True, text=True,
+        ).stdout.strip(),
         "duckdb": version("duckdb"),
         "pandas": version("pandas"),
         "pyarrow": version("pyarrow"),
@@ -209,7 +257,7 @@ def hardware() -> dict:
 
 def run(args) -> None:
     workdir = Path(args.workdir)
-    cases = [(q, fmt, eng) for q, fmt, eng in QUERIES] + [(q, "qpx", "duckdb") for q in QPX_SQL]
+    cases = list(QUERIES) + [(q, layout, "duckdb") for layout in QPX_LAYOUTS for q in QPX_SQL]
     results = []
     for query, fmt, engine in cases:
         runs = []

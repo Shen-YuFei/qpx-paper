@@ -124,4 +124,8 @@ and the documentation lists where each field comes from.
 
 ## Ethics statement
 
-[TBD: ethics statement]
+This study reanalysed only data that the original studies had deposited in public
+repositories; it collected no new samples and performed no experiments on humans or animals.
+Ethical approval and informed consent for the human samples, and approval of the animal
+experiments, are those of the original studies, which describe them in their publications.
+[TBD: approvals and consent for HuiYan-E480 and HuiYanAstralMouse, which have no repository record]

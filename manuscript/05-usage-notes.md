@@ -3,14 +3,20 @@
 ## Accessing the files
 
 QPX files are plain Parquet files and can be read by any Parquet reader, including DuckDB,
-pandas and PyArrow, Polars, Apache Spark and the R arrow package. [TBD: reading of nested columns in Polars, Spark and R] Files
-rewritten by `qpxc transform relayout` may store a score or parameter list as a structure
-with one field per name, which a generic reader sees as a structure (in DuckDB, for example,
-`additional_scores.diann_cscore`); the `qpx` package reads them back as lists, and the file
-metadata lists the columns stored this way. For
-anything beyond the small metadata views, we recommend downloading a dataset folder first:
-queries over HTTP work, but each read pays the network latency. The query below counts the
-confidently identified protein groups per run in one DIA dataset:
+pandas and PyArrow, Polars, Apache Spark and the R arrow package. We read every view of the
+benchmark dataset of Supplementary Fig. S1, as written and after relayout, with Polars 2.1.0,
+PySpark 4.2.1 and R 4.5.3 with arrow 25.0.0, and obtained the same values as with PyArrow
+25.0.0, nested columns included, with two exceptions. Spark reads files with byte-stream-split
+encoded columns, which QPX writes where that encoding is smallest for floating-point values,
+only with its vectorized Parquet reader turned off
+(`spark.sql.parquet.enableVectorizedReader=false`), and R reads a missing structure as a
+structure with missing fields. Files rewritten by `qpxc transform relayout` may store a score or
+parameter list as a structure with one field per name, which a generic reader sees as a
+structure (in DuckDB, for example, `additional_scores.diann_cscore`); the `qpx` package reads
+them back as lists, and the file metadata lists the columns stored this way. For anything beyond
+the small metadata views, we recommend downloading a dataset folder first: queries over HTTP
+work, but each read pays the network latency. The query below counts the confidently identified
+protein groups per run in one DIA dataset:
 
 ```sql
 SELECT r.run_file_name, count(*) AS protein_groups
@@ -65,7 +71,16 @@ quantities can therefore exist for the same row, and analyses should state which
 peptide or protein group was identified in that run or channel but not quantified; a missing row
 means that it was neither identified nor quantified there, as the converters add no zero or null
 placeholders; and a null in any other column means that the source did not report the value.
-[TBD: meaning of zero intensities in TMT datasets]
+Zeros occur in the TMT datasets, which OpenMS quantified: a channel receives an intensity
+of zero when no reporter ion peak lies within the mass tolerance of its reporter m/z, or when the
+correction for isotopic impurities, solved as a non-negative least-squares problem, assigns its
+signal to neighbouring channels. A zero therefore marks a channel without detected signal rather
+than a measured abundance, and analyses should treat it as missing before a log transformation.
+The feature view keeps these zeros as the tool reported them. In PXD014145, 269,710 of the
+1,391,060 feature channel intensities (19%) are zero both in the MSstats input table and in the
+feature view, and they concentrate in the three channels without an annotated sample in its SDRF (99%, 75%
+and 33% of the intensities of TMT126, TMT127N and TMT127C, against less than 1% in each of the
+eight channels of A549 cell samples). [TBD: zeros in the pg view of TMT datasets]
 
 ## Numerical precision and identifiers
 
@@ -113,10 +128,16 @@ datasets does not preserve these error rates.
 
 The workflows read the enzyme, modifications and labels of each dataset from its SDRF but apply
 one search and quantification strategy per route. Studies whose design calls for a specialised
-analysis, such as cross-linking, glycoproteomics, open modification searches or non-specific
-digestion, are represented only by what this strategy finds, which can differ from the results of
-the original publication; the SDRF allows such datasets to be reprocessed with other settings.
-[TBD: datasets to which this applies]
+analysis are represented only by what this strategy finds, which can differ from the results of
+the original publication; the SDRF allows such datasets to be reprocessed with other settings. In
+the corpus, these are the human leukocyte antigen (HLA) ligands of PXD019643 and PXD021013, which
+need non-specific digestion; PXD030983, whose authors also ran an open modification search;
+PXD009449, PXD013231 and PXD062529, whose authors searched for modifications outside the
+standard set; PDC000127, PXD000561, PXD010154, PXD010899, PXD018450 and PXD024364, whose authors
+searched sample-specific or variant protein sequence databases; and the metaproteomes PXD016986,
+PXD046290, PXD046320 and PXD054415, whose authors searched databases built for their microbial
+communities. No dataset in the corpus was designed for cross-linking or intact glycopeptide
+analysis. [TBD: study design of HuiYan-E480 and HuiYanAstralMouse]
 
 ## Known issues
 

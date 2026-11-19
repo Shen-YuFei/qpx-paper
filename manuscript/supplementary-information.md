@@ -46,9 +46,38 @@ Sample and Data Relationship Format.
 \endgroup
 ```
 
-# Figure S1: Query time and storage of QPX compared with mzTab and CSV outputs
+# Figure S1: Storage, query time and memory of QPX compared with the mzTab and MSstats tables
 
-[TBD: figure]
+![](figures/figS1){width=100%}
+
+One label-free analysis outside the corpus, of the 11 runs of PRIDE PXD007683
+[@OConnell_2018; @ds_PXD007683] processed with quantms [@Dai_2024], read from its text outputs
+(mzTab [@Griss_2014] and the MSstats input table) and from the same analysis converted from its
+OpenMS consensusXML with `qpxc convert openms-consensus`, both as written and after
+`qpxc transform relayout`. Colour marks what is read; open circles mark pandas and filled
+circles DuckDB [@Raasveldt_2019]. **a**, File sizes, with the text files as written and
+gzip-compressed (level 6). QPX files are Parquet with Zstandard compression. As written, the
+views keep the order of the source in row groups of 100,000 rows; relayout sorts the psm view by
+peptidoform, charge, run and scan and the feature view by protein, peptidoform, charge and run,
+writes row groups of about 120,000 rows with a page index, and rounds intensities and mass
+errors to 12 mantissa bits and retention times to 16, leaving scores, q-values and m/z
+unchanged. All results compares the consensusXML with every view written from it (psm, feature,
+pg, dataset, ontology and provenance). **b**, **c**, Median wall time and increase in peak
+resident memory over five runs of each query, each in a new Python process after the libraries
+are loaded, on a warm page cache. PSM queries read the PSM section of the mzTab into pandas or
+the psm view; feature queries read the MSstats table or the feature view. The queries count the
+PSMs, the proteins they name and the PSMs of charge 2, read the sequence and charge of every PSM,
+count the features, rank the ten proteins with the largest summed intensity and read the
+features of one protein (UniProt P55011). Both sides return 542,403 PSMs, 9,716 proteins,
+382,341 PSMs of charge 2 and the same ten proteins. Feature counts differ by design: the MSstats
+table has one row per peptidoform, charge and run among the features assigned to a protein
+(518,248 rows, 104 of them for P55011), whereas the feature view keeps all 573,203 consensus
+features (111 for P55011), including 37,746 without an assigned protein. Conversion took 70 s
+and relayout 3 s on one machine (Intel Core Ultra 7 270K Plus, 24 logical CPUs, 123 GiB memory,
+Linux) with Python 3.13.9, DuckDB 2.0.0, pandas 2.3.3 and PyArrow 24.0.0; the benchmark script
+is `scripts/benchmark/benchmark.py` in the paper repository. [TBD: rerun with the QPX 1.4.0
+release; this run used QPX development commit 2dadc0e1.] MB, 10^6^ bytes; MiB, 2^20^ bytes;
+PSM, peptide-spectrum match.
 
 # Figure S2: Views and files held by each dataset
 
