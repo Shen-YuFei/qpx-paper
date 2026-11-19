@@ -9,7 +9,9 @@ DDA with quantms) and written as one QPX folder per dataset, holding the Parquet
 expression files; lines between views name the columns that join them, and dashed outlines mark
 views and files that no dataset holds. The data are read with the QPX Explorer of the quantms
 portal, the QPX UI desktop viewer, SQL engines such as DuckDB or the `qpx` Python package.
-Colours mark the processing routes, as in Fig. 2. [TBD: numbers]
+Colours mark the processing routes, as in Fig. 2. DDA, data-dependent acquisition; DIA, data-independent acquisition; MS, mass spectrometry;
+PDC, Proteomic Data Commons; PSM, peptide-spectrum match; SDRF, Sample and Data Relationship
+Format; TMT, tandem mass tag. [TBD: numbers]
 
 ![](figures/fig2){width=100%}
 
@@ -19,7 +21,9 @@ in the SDRF (e) and number of runs (f), coloured by processing route. Release da
 of the first announcement in ProteomeCentral or of the release by MassIVE or the PDC; five
 datasets have none. Datasets with several organisms or instrument families are counted once,
 under Several. In f, each point is a dataset and the vertical bars mark the route medians.
-[TBD: numbers]
+ID only, identification only; DDA, data-dependent acquisition; DIA, data-independent
+acquisition; PDC, Proteomic Data Commons; SDRF, Sample and Data Relationship Format; TMT,
+tandem mass tag. [TBD: numbers]
 
 Figure 3: Identification and quantification statistics per dataset. a, Distinct target
 peptidoforms per run, from the psm view, or from the feature view for DIA-NN, which writes no

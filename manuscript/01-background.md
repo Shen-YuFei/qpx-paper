@@ -16,15 +16,15 @@ without reprocessing the raw data.
 Reprocessing public data with a uniform workflow removes much of this heterogeneity. Earlier
 efforts reanalysed public datasets to build baseline protein expression resources and
 integrate them into Expression Atlas [@Jarnuczak_2021; @Walzer_2022], and the quantms
-workflow made such reanalysis practical at scale by running DDA and DIA analyses
+workflow made such reanalysis practical at scale by running data-dependent acquisition (DDA) and data-independent acquisition (DIA) analyses
 reproducibly on high-performance and cloud infrastructure [@Dai_2024]. Other resources released
 reprocessed results for particular uses, such as a nine-species benchmark of annotated spectra
 for machine learning [@Wen_2024] and the MaxQuant results of 7,444 HeLa control runs
 [@Webel_2024], each in the output files of its own pipeline. Sample metadata
-annotated in the SDRF-Proteomics format link each MS run to its biological sample and
+annotated in the Sample and Data Relationship Format for proteomics (SDRF-Proteomics) link each MS run to its biological sample and
 experimental design [@Dai_2021]. The remaining bottleneck is the representation of the
 results. The community standard for reporting final results, mzTab [@Griss_2014], is a
-tab-separated text file that interleaves protein, peptide and PSM sections. It was designed
+tab-separated text file that interleaves protein, peptide and peptide-spectrum match (PSM) sections. It was designed
 for exchanging and reading results of a single study, not for querying hundreds of millions
 of records across many studies: every query requires decompressing and parsing the whole
 file, and files grow quickly with the number of runs.
@@ -35,7 +35,7 @@ Parquet table with a typed schema: PSMs, quantified peptide features, protein gr
 peptide-to-protein map and protein annotations, modification sites and proteoforms, and
 fragment ion quantities and chromatograms of DIA analyses, together with sample, run, dataset,
 ontology and provenance metadata. Peptidoforms are written in ProForma notation [@LeDuc_2022],
-metadata fields are mapped to PSI-MS and other controlled vocabulary terms [@Mayer_2013], and
+metadata fields are mapped to terms of the Proteomics Standards Initiative mass spectrometry controlled vocabulary (PSI-MS) [@Mayer_2013] and of other controlled vocabularies, and
 the original SDRF is kept alongside the Parquet files. Expression results are exported as
 AnnData and MuData objects for use with single-cell and multi-omics analysis tools
 [@Virshup_2024; @Bredikhin_2022]. Because Parquet is a columnar format with per-column
@@ -43,12 +43,12 @@ statistics, analytical engines such as DuckDB [@Raasveldt_2019] can answer typic
 reading only the columns and row groups they need. Converters write QPX from the outputs of the
 main DDA and DIA tools. QPX does not replace mzTab; it is a performance-oriented layer for
 integrating results across tools and studies, in the spirit of community data structures such
-as BIDS in neuroimaging [@Gorgolewski_2016] and of the FAIR principles [@Wilkinson_2016].
+as the Brain Imaging Data Structure in neuroimaging [@Gorgolewski_2016] and of the FAIR (findable, accessible, interoperable and reusable) principles [@Wilkinson_2016].
 
 The corpus contains 103 public datasets with 23,204 samples and 51,023 MS runs
 [TBD: numbers]. Forty-six datasets carry full quantification results: 27
-processed with DIA-NN and 19 (10 label-free and 9 TMT) processed with the OpenMS-based
-quantms workflows for DDA data. The remaining 57 datasets provide identification results
+processed with DIA-NN and 19 processed with the OpenMS-based
+quantms workflows for DDA data, 10 of them label-free and 9 labelled with tandem mass tags (TMT). The remaining 57 datasets provide identification results
 only, about 500 million PSM records. All files are available over HTTP and can be explored in
 the browser with the QPX Explorer of the quantms portal, opened in the QPX UI desktop
 application or queried directly with SQL (Fig. 1). We

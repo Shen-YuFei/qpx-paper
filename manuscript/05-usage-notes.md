@@ -59,7 +59,7 @@ package do this for PSMs and features. [TBD: export threshold and decoys of each
 
 A feature row holds one primary intensity per label channel (`intensities`), and a `pg` row one
 primary `intensity` for its label; further quantities reported by the tool, such as normalised,
-LFQ or iBAQ values, are kept under their tool names in `additional_intensities`. Several
+label-free quantification (LFQ) or intensity-based absolute quantification (iBAQ) values, are kept under their tool names in `additional_intensities`. Several
 quantities can therefore exist for the same row, and analyses should state which one they used.
 [TBD: source of the primary quantities of each subset] Missing values take three forms. A null intensity in an existing row means that the
 peptide or protein group was identified in that run or channel but not quantified; a missing row
@@ -120,8 +120,8 @@ the original publication; the SDRF allows such datasets to be reprocessed with o
 
 ## Known issues
 
-Known issues of individual datasets are listed in the `known_issues` column of Supplementary
-Table 1. [TBD: known issues and where to report them]
+Known issues of individual datasets are listed in the `known_issues` column of
+`datasets.csv`. [TBD: known issues and where to report them]
 
 ## Versions and citation
 
@@ -129,5 +129,5 @@ Each processed version of a dataset is a folder named by its content hash, added
 earlier versions rather than replacing them, and each file records its specification version
 (`qpx_version`). Users should report the accession and version folder of every dataset they
 use, cite this paper and the deposited record [TBD: DOI and versioning of the deposited record],
-and cite the original data of each dataset, given in Supplementary Table 1, since the results
+and cite the original data of each dataset, given in `datasets.csv`, since the results
 derive from the submitters' raw files.

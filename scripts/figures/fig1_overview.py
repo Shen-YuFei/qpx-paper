@@ -15,7 +15,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Polygon, Rectang
 
 from fig2_corpus import SNAPSHOT, check, load
 from figS2_coverage import presence
-from qpxfig import DOUBLE, INK, MM, MONO, MUTED, ROUTE_COLOURS, ROUTES, RULE, save
+from qpxfig import DOUBLE, INK, MM, MUTED, ROUTE_COLOURS, ROUTES, RULE, save
 
 W, H = 183, 90  # mm
 # Colour marks what a part is: the routes keep their Fig. 2 colours, the QPX views take the
@@ -41,9 +41,9 @@ def box(ax, x, y, w, h, fill="white", edge=RULE, lw=0.5, dashed=False, r=1.0):
                                 fc=fill, ec=edge, lw=lw, ls=(0, (2, 1.2)) if dashed else "-"))
 
 
-def text(ax, x, y, s, size=6, weight="normal", ha="left", va="center", color=INK, family=None):
+def text(ax, x, y, s, size=6, weight="normal", ha="left", va="center", color=INK):
     ax.text(x, y, s, fontsize=size, fontweight=weight, ha=ha, va=va, color=color,
-            linespacing=1.25, family=family)
+            linespacing=1.25)
 
 
 def line(ax, xs, ys, arrow=False):
@@ -69,13 +69,13 @@ def table(ax, x, y, w, h, name, head, present=True):
     """A Parquet view: a header with the view name over column stripes."""
     if not present:
         box(ax, x, y, w, h, fill="none", edge=MUTED, dashed=True, r=0.6)
-        text(ax, x + w / 2, y + h / 2, name, size=5.5, ha="center", color=MUTED, family=MONO)
+        text(ax, x + w / 2, y + h / 2, name, size=5.5, ha="center", color=MUTED)
         return
     hh = 2.6
     box(ax, x, y, w, h, fill="white", edge=head, r=0.6)
     ax.add_patch(Rectangle((x, y + h - hh), w, hh, fc=head, ec=head, lw=0.5))
     text(ax, x + w / 2, y + h - hh / 2, name, size=5.5, ha="center",
-         color="white" if head == DATA_HEAD else INK, weight="bold", family=MONO)
+         color="white" if head == DATA_HEAD else INK, weight="bold")
     n = 5
     cw = (w - 1.2) / n
     for i in range(n):
@@ -94,8 +94,7 @@ def page(ax, x, y, w, h, label, present=True):
     if present:
         ax.add_patch(Polygon([(x + w - c, y + h), (x + w - c, y + h - c), (x + w, y + h - c)],
                              closed=True, fc=RULE, ec=INK, lw=0.5))
-    text(ax, x + w + 1, y + h / 2, label, size=5.5, color=INK if present else MUTED,
-         family=MONO)
+    text(ax, x + w + 1, y + h / 2, label, size=5.5, color=INK if present else MUTED)
 
 
 def window(ax, x, y, w, h, kind):
@@ -120,7 +119,7 @@ def window(ax, x, y, w, h, kind):
 
 def code(ax, x, y, w, h, s):
     box(ax, x, y, w, h, fill=ICON, edge=ICON, r=0.5)
-    text(ax, x + w / 2, y + h / 2, s, size=5, ha="center", color="white", family=MONO)
+    text(ax, x + w / 2, y + h / 2, s, size=5.5, ha="center", color="white")
 
 
 def corpus():
@@ -148,7 +147,7 @@ def main():
     cols = [(2, 35), (43, 37), (86, 60), (150, 31)]
     heads = ["Public datasets", "Reprocessing", "QPX dataset", "Access"]
     for (x, w), head in zip(cols, heads):
-        text(ax, x, H - 2.5, head, size=7, weight="bold", va="top")
+        text(ax, x, H - 2.5, head, size=6.5, weight="bold", va="top")
         ax.plot([x, x + w], [H - 7.5, H - 7.5], color=RULE, lw=0.5)
     top, bottom = 80, 10  # extent of the boxes below the column headers
 
@@ -160,19 +159,19 @@ def main():
         cx, cy = x + 2 + (i % 2) * 16, 68 - (i // 2) * 5.8
         box(ax, cx, cy, 15, 4.6, r=0.8)
         text(ax, cx + 7.5, cy + 2.3, name, size=5.5, ha="center")
-    text(ax, x + 2, 59.6, "and other public studies", size=5.5, color=MUTED)
+    text(ax, x + 2, 59.6, "Other public studies", size=5.5, color=MUTED)
     for i in range(3):
         px = x + 2 + i * 1.3
         pts = [(px, 51), (px + 4.5, 51), (px + 4.5, 55.6), (px + 3.3, 56.8), (px, 56.8)]
         ax.add_patch(Polygon(pts, closed=True, fc="white", ec=INK, lw=0.5))
-    text(ax, x + 11, 53.9, "raw MS files", size=5.5)
+    text(ax, x + 11, 53.9, "Raw MS files", size=5.5)
 
     box(ax, x, bottom, w, 45 - bottom, fill=INPUT_FILL, edge=INPUT_FILL)
     text(ax, x + 2, 42.5, "Sample annotation", weight="bold", va="top")
     tx, ty, tw, th = x + 2, 24, 20, 14
     ax.add_patch(Rectangle((tx, ty), tw, th, fc="white", ec=INK, lw=0.5))
     ax.add_patch(Rectangle((tx, ty + th - 2.6), tw, 2.6, fc=INPUT_HEAD, ec=INK, lw=0.5))
-    text(ax, tx + tw / 2, ty + th - 1.3, "SDRF-Proteomics", size=5, ha="center", color="white",
+    text(ax, tx + tw / 2, ty + th - 1.3, "SDRF-Proteomics", size=5.5, ha="center", color="white",
          weight="bold")
     for i in range(1, 4):
         ax.plot([tx + i * tw / 4] * 2, [ty, ty + th - 2.6], color=RULE, lw=0.4)
@@ -195,9 +194,9 @@ def main():
         box(ax, x, y, w, rh, fill=fill, edge=fill)
         text(ax, x + 3, y + 10.6, name, weight="bold")
         text(ax, x + 3, y + 5.6, sub, size=5.5, color=MUTED)
-        text(ax, x + w - 2.5, y + 10.6, f"{c['routes'][route]}", size=7, weight="bold",
+        text(ax, x + w - 2.5, y + 10.6, f"{c['routes'][route]}", size=6.5, weight="bold",
              ha="right")
-        text(ax, x + w - 2.5, y + 5.6, "datasets", size=5, color=MUTED, ha="right")
+        text(ax, x + w - 2.5, y + 5.6, "datasets", size=5.5, color=MUTED, ha="right")
     bus(ax, cols[0][0] + cols[0][1], [64.5, 27.5], x - 3, x, [y + rh / 2 for y in ys])
 
     # Column 3: the dataset folder, its Parquet views and the columns that join them.
@@ -205,8 +204,8 @@ def main():
     fy, fh = bottom + 6, top - bottom - 9.5
     ax.add_patch(Polygon([(x, fy + fh), (x, fy + fh + 3.2), (x + 18, fy + fh + 3.2),
                           (x + 20, fy + fh)], closed=True, fc=QPX_FILL, ec=QPX_FILL))
-    text(ax, x + 2, fy + fh + 1.6, "{PREFIX}/", size=5.5, family=MONO)
-    text(ax, x + w, fy + fh + 1.6, "one folder per dataset", size=5, color=MUTED, ha="right")
+    text(ax, x + 2, fy + fh + 1.6, "{PREFIX}/", size=5.5)
+    text(ax, x + w, fy + fh + 1.6, "One folder per dataset", size=5.5, color=MUTED, ha="right")
     box(ax, x, fy, w, fh, fill=QPX_FILL, edge=QPX_FILL)
     hub = ys[1] + rh / 2  # the middle route's centre, so the bus enters the folder straight
     bus(ax, cols[1][0] + cols[1][1], [y + rh / 2 for y in ys], x - 3, x, [hub])
@@ -221,15 +220,13 @@ def main():
         line(ax, [gxi + tw / 2] * 2, [row_a, trunk])
     line(ax, [gx[0] + tw / 2, gx[2] + tw / 2], [trunk, trunk])
     for a, b, label in [(0, 1, "run_file_name"), (1, 2, "grouped_runs")]:
-        text(ax, (gx[a] + gx[b] + tw) / 2, trunk + 1.8, label, size=5, ha="center",
-             family=MONO, color=MUTED)
+        text(ax, (gx[a] + gx[b] + tw) / 2, trunk + 1.8, label, size=5.5, ha="center", color=MUTED)
     row_b = trunk - 4 - th
     line(ax, [gx[1] + tw / 2] * 2, [trunk, row_b + th], arrow=True)
     table(ax, gx[1], row_b, tw, th, "run", META_HEAD)
     table(ax, gx[2], row_b, tw, th, "sample", META_HEAD)
     line(ax, [gx[1] + tw, gx[2]], [row_b + th / 2] * 2, arrow=True)
-    text(ax, (gx[1] + tw + gx[2]) / 2, row_b - 1.8, "sample_accession", size=5, ha="center",
-         family=MONO, color=MUTED)
+    text(ax, (gx[1] + tw + gx[2]) / 2, row_b - 1.8, "sample_accession", size=5.5, ha="center", color=MUTED)
     row_c = row_b - 4 - 7
     for name, gxi in zip(["dataset", "ontology", "provenance"], gx):
         table(ax, gxi, row_c, tw, 7, name, META_HEAD)
@@ -247,14 +244,14 @@ def main():
     # Key and corpus totals under the folder.
     ky = bottom + 2.6
     kx = x
-    for kind, label in [("data", "data view"), ("meta", "metadata view"),
-                        ("absent", "not in this corpus")]:
+    for kind, label in [("data", "Data view"), ("meta", "Metadata view"),
+                        ("absent", "Not in this corpus")]:
         if kind == "absent":
             box(ax, kx, ky - 1, 4, 2, fill="none", edge=MUTED, dashed=True, r=0.3)
         else:
             ax.add_patch(Rectangle((kx, ky - 1), 4, 2,
                                    fc=DATA_HEAD if kind == "data" else META_HEAD, ec="none"))
-        text(ax, kx + 5, ky, label, size=5, color=MUTED)
+        text(ax, kx + 5, ky, label, size=5.5, color=MUTED)
         kx += 5 + 1.06 * len(label) + 3
     text(ax, x + w / 2, bottom - 4.5,
          f"{c['datasets']} datasets · {c['samples']:,} samples · {c['runs']:,} runs · "
@@ -262,7 +259,7 @@ def main():
 
     # Column 4: ways to read the data.
     x, w = cols[3]
-    access = [("QPX Explorer", "quantms portal", "browser"), ("QPX UI", "desktop viewer", "app"),
+    access = [("QPX Explorer", "quantms portal", "browser"), ("QPX UI", "Desktop viewer", "app"),
               ("SQL", "DuckDB and others", "sql"), ("Python", "qpx package", "python")]
     ah = 13
     step = (top - bottom - ah) / 3

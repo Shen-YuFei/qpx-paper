@@ -14,7 +14,7 @@ Seven datasets of the corpus were reanalysed or released as resources in earlier
 reports identification and quantification results: PXD000672, PXD003497 and PXD003539 in the DIA
 reanalysis of Walzer et al. [@Walzer_2022], PXD002395 and PXD004452 in the cancer cell line
 reanalysis of Jarnuczak et al. [@Jarnuczak_2021], PXD042233 in the HeLa resource of Webel et al.
-[@Webel_2024] and PXD028735 in the LFQ benchmark of Van Puyvelde et al. [@Van_Puyvelde_2022].
+[@Webel_2024] and PXD028735 in the label-free quantification benchmark of Van Puyvelde et al. [@Van_Puyvelde_2022].
 For the five of them processed with DIA-NN or OpenMS we compare the protein groups and peptides
 identified at 1% FDR with the numbers reported there and in the original publications and,
 following Walzer et al., the coefficient of variation and the correlation of protein-group

@@ -12,5 +12,16 @@ https://github.com/bigbio/quantms and https://github.com/bigbio/quantmsdiann [TB
 pmultiqc is available at https://github.com/bigbio/pmultiqc, the quantms portal,
 including the QPX Explorer, at https://github.com/bigbio/quantms-portal, and the QPX UI
 desktop viewer at https://github.com/bigbio/qpxui under the Apache 2.0 licence [TBD: version cited]. The scripts that build the figures, the
-supplementary tables and the benchmark, the validation scripts and an example Python script for
+dataset and data dictionary tables and the benchmark, the validation scripts and an example Python script for
 reading the corpus are at https://github.com/Shen-YuFei/qpx-paper [TBD: public repository and Zenodo DOI].
+
+```{=openxml}
+<w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t>References</w:t></w:r></w:p>
+```
+
+::: {#refs}
+:::
+
+```{=latex}
+\bibliography{references,dataset_citations}
+```

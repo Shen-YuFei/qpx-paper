@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.patches import Patch, Rectangle
 
-from qpxfig import DOUBLE, INK, MM, MONO, MUTED, PANEL_FILL, ROOT, ROUTE_COLOURS, ROUTES, save
+from qpxfig import DOUBLE, INK, MM, MUTED, PANEL_FILL, ROOT, ROUTE_COLOURS, ROUTES, save
 
 SNAPSHOT = ROOT / "data" / "portal-snapshot-2026-10-29"
 ROUTE = {"MSNet": "ID only", "DIA-NN": "DIA-NN", "OpenMS/quantms": "OpenMS"}
@@ -87,7 +87,7 @@ def main():
             ax.plot([gx0 + 0.2, gx1 - 0.2], [top - 19.8] * 2, color=INK, lw=0.5)
         for i, column in enumerate(COLUMNS):
             ax.text(x0 + col_x[i] + cw / 2, top - 1, column, rotation=90, ha="center",
-                    va="bottom", fontsize=5.5, family=MONO)
+                    va="bottom", fontsize=5.5)
         y = top
         for r in block:
             sub = table[route == r]
@@ -98,7 +98,7 @@ def main():
             y += rh
             for dataset, present in sub.iterrows():
                 ax.text(x0 + label_w - 1, y + rh / 2, dataset, ha="right", va="center",
-                        fontsize=5)
+                        fontsize=5.5)
                 for i, column in enumerate(COLUMNS):
                     ax.add_patch(Rectangle((x0 + col_x[i] + 0.15, y + 0.15), cw - 0.3,
                                            rh - 0.3, ec="none",
@@ -106,16 +106,16 @@ def main():
                                            else PANEL_FILL))
                 y += rh
             ax.text(x0 + label_w - 1, y + rh / 2, "Datasets", ha="right", va="center",
-                    fontsize=5, color=MUTED)
+                    fontsize=5.5, color=MUTED)
             for i, count in enumerate(sub.sum().to_numpy()):
                 ax.text(x0 + col_x[i] + cw / 2, y + rh / 2, str(count), ha="center",
-                        va="center", fontsize=5, color=MUTED)
+                        va="center", fontsize=5.5, color=MUTED)
             y += rh + route_gap
     ax.text(x0 + label_w - 1, y + rh / 2, f"All {len(table)} datasets", ha="right",
-            va="center", fontsize=5, fontweight="bold")
+            va="center", fontsize=5.5, fontweight="bold")
     for i, count in enumerate(table.sum().to_numpy()):
         ax.text(x0 + col_x[i] + cw / 2, y + rh / 2, str(count), ha="center", va="center",
-                fontsize=5, fontweight="bold")
+                fontsize=5.5, fontweight="bold")
     save(fig, "figS2")
 
 

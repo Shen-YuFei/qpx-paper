@@ -41,6 +41,25 @@ Table 2: Folder and file names in the corpus.
 | `{PREFIX}.sdrf.tsv` | `PXD048538.sdrf.tsv` | SDRF-Proteomics annotation of the samples and runs |
 | `provenance.json` | | How and when the version was produced |
 
+Each data view has one row per entity: one PSM in `psm`; one peptide feature per run in
+`feature`, with the intensities of its label channels nested in the row; and, in `pg`, one
+protein group per quantification unit (a run or a group of fractionated runs) and label. Table
+1 lists the views and their key columns. The views join through shared columns: `run_file_name`
+links `psm`, `feature` and `mz` to the run view, whose sample entries resolve a run and label
+channel to a `sample_accession`; `pg.grouped_runs` lists the runs of a quantification unit;
+`psm.feature_id`, where present, points to the feature of a PSM; `psm` and `feature` share the
+`peptidoform` with `pepmap`; and a feature links to the pg row with the same set of
+`pg_accessions` whose `grouped_runs` contain the feature's run and whose label matches. Every
+`psm`, `feature` and `pg` row carries an `is_decoy` flag, and the q-value columns, null where
+the source does not report them, let users apply their own FDR threshold [TBD: decoy records, q-value levels and primary quantities of each subset]. The metadata views are small (one row per sample, run
+or dataset) and can be read in full; the data views are split into row groups with per-column
+statistics, so that readers can skip the parts a query does not touch (Supplementary Fig. S1).
+
+[TBD: views in each subset and whether the files were rewritten with relayout]
+Supplementary Fig. S2 shows which views each dataset holds.
+
+# Data Overview
+
 Table 3 summarises the corpus [TBD: numbers]. In total it holds 23,204
 samples, 51,023 MS runs, 568 million PSM records, 435 million peptide feature records and 47
 million protein-group quantity records, in 1.54 TB of files. Within each dataset, the
@@ -61,20 +80,3 @@ PSMs, Features and PGs (protein-group records) in millions; GB, total file size.
 | DIA-NN | 27 | 3,024 | 8,422 | 4.8 | 398.0 | 35.4 | 84 |
 | OpenMS | 19 | 1,653 | 4,147 | 63.8 | 37.2 | 11.8 | 12 |
 | Total | 103 | 23,204 | 51,023 | 568.0 | 435.3 | 47.2 | 1,538 |
-
-Each data view has one row per entity: one PSM in `psm`; one peptide feature per run in
-`feature`, with the intensities of its label channels nested in the row; and, in `pg`, one
-protein group per quantification unit (a run or a group of fractionated runs) and label. Table
-1 lists the views and their key columns. The views join through shared columns: `run_file_name`
-links `psm`, `feature` and `mz` to the run view, whose sample entries resolve a run and label
-channel to a `sample_accession`; `pg.grouped_runs` lists the runs of a quantification unit;
-`psm.feature_id`, where present, points to the feature of a PSM; `psm` and `feature` share the
-`peptidoform` with `pepmap`; and a feature links to the pg row with the same set of
-`pg_accessions` whose `grouped_runs` contain the feature's run and whose label matches. Every
-`psm`, `feature` and `pg` row carries an `is_decoy` flag, and the q-value columns, null where
-the source does not report them, let users apply their own FDR threshold [TBD: decoy records, q-value levels and primary quantities of each subset]. The metadata views are small (one row per sample, run
-or dataset) and can be read in full; the data views are split into row groups with per-column
-statistics, so that readers can skip the parts a query does not touch (Supplementary Fig. 1).
-
-[TBD: views in each subset and whether the files were rewritten with relayout]
-Supplementary Fig. 2 shows which views each dataset holds.

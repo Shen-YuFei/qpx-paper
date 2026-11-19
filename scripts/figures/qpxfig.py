@@ -1,9 +1,10 @@
 """Shared style for the QPX paper figures.
 
-Scientific Data / Nature figure rules: sans-serif type (Arial metrics via Liberation Sans),
-5-7 pt text, bold lower-case panel letters in the type size of the panel titles (Scientific
-Data: "in the same type-size as used elsewhere in the figure"), white background, editable
-embedded fonts,
+Scientific Data / Nature figure rules: one sans-serif typeface (Arial metrics via Liberation
+Sans) and one set of type sizes in every figure (5.5 pt ticks and notes, 6 pt text, 6.5 pt
+panel letters and titles), bold lower-case panel letters in the type size of the panel titles
+(Scientific Data: "in the same type-size as used elsewhere in the figure"), white background,
+editable embedded fonts,
 an accessible palette (Okabe-Ito, Wong 2011), axis lines with ticks and units in parentheses.
 """
 
@@ -30,8 +31,8 @@ MUTED = "#595959"
 RULE = "#bfbfbf"
 PANEL_FILL = "#f2f2f2"
 LABEL_SIZE = 6.5  # panel letters and panel titles
-MIN_TEXT = 5  # smallest type size the journal accepts
-MONO = "Liberation Mono"  # column and file names
+SIZES = (5.5, 6, LABEL_SIZE)  # the only type sizes, shared by all figures
+FONT = "Liberation Sans"
 
 mpl.rcParams.update({
     "font.family": "sans-serif",
@@ -124,7 +125,7 @@ def log_axis(ax, values):
 
 
 def check_text(fig):
-    """Fail if any drawn text is smaller than the journal minimum or reaches outside the
+    """Fail if any drawn text is not in the shared typeface and sizes or reaches outside the
     canvas. Texts are collected while drawing, which skips tick labels outside the axis limits."""
     drawn = []
     draw = Text.draw
@@ -143,8 +144,9 @@ def check_text(fig):
     for text in drawn:
         if not text.get_visible() or not text.get_text().strip():
             continue
-        if text.get_fontsize() < MIN_TEXT:
-            raise SystemExit(f"text {text.get_text()!r} is {text.get_fontsize()} pt")
+        if text.get_fontsize() not in SIZES or text.get_fontname() != FONT:
+            raise SystemExit(f"text {text.get_text()!r} is {text.get_fontname()} "
+                             f"{text.get_fontsize()} pt")
         box = text.get_window_extent(renderer)
         if (box.x0 < canvas.x0 - 1 or box.y0 < canvas.y0 - 1 or box.x1 > canvas.x1 + 1
                 or box.y1 > canvas.y1 + 1):

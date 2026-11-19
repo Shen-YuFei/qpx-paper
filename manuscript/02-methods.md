@@ -3,14 +3,14 @@
 ## Dataset selection
 
 The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions) [@Deutsch_2025], 8 from
-iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE, 1 named after the PubMed ID of its paper
+iProX [@Chen_2021], 2 from the Proteomic Data Commons (PDC) of the Clinical Proteomic Tumor Analysis Consortium (CPTAC) [@Thangudu_2024], 1 from MassIVE, 1 named after the PubMed ID of its paper
 (PMID23933261, whose runs are in the PRIDE projects PXD005942 and PXD005946) and 2 with no
 repository accession [TBD: source]. By hosting
 repository, 88 datasets are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TBD: dataset selection criteria] Eighty-two datasets include human
 samples and seven mouse samples; the others cover plants, yeast, *Drosophila*, zebrafish,
 other vertebrates, bacteria and viruses. The most common instruments are Orbitrap Fusion,
 Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X (Fig. 2c,d).
-Supplementary Table 1 lists every dataset with its accession, hosting repository and original
+The file `datasets.csv` of the deposited record [TBD: URL or data citation] lists every dataset with its accession, hosting repository and original
 publication, and the deposited data of each dataset are cited individually [@ds_IPX0000937000; @ds_MSV000085836; @ds_PDC000219; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD005942; @ds_PXD005946; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011821; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014404; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD031498; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TBD: data citations for three datasets]
 
 According to the acquisition method annotated in their SDRF files, 60 datasets were acquired
@@ -43,7 +43,7 @@ workflow (quantmsdiann) [@Demichev_2019]. [TBD: DIA-NN versions and search setti
 `quantms-msnet` recipe. [TBD: MSNet and how these datasets were searched] [TBD: immunopeptidomics datasets (nf-core/mhcquant [@Bichmann_2019; @Scheid_2025])]
 
 Each dataset records its processing chain in the QPX provenance view: the tools and, where
-the source provides them, their versions, parameters and FDR thresholds.
+the source provides them, their versions, parameters and false discovery rate (FDR) thresholds.
 
 ## The QPX format
 
@@ -55,8 +55,8 @@ between runs, or secondary, from a co-fragmenting peptide of a chimeric spectrum
 protein groups and their quantities; `pepmap` is a deduplicated peptide-to-protein map and
 `protein` annotates the proteins from the sequence database; `site` and `proteoform` hold
 modification-site and proteoform claims with their own error control; `fragment` and `xic` hold
-fragment ion quantities and extracted ion chromatograms of DIA analyses; and `mz` holds MS1 and
-MS2 spectra, for example from mzML files [@Martens_2011]. Metadata views describe the samples
+fragment ion quantities and extracted ion chromatograms of DIA analyses; and `mz` holds survey (MS1) and
+tandem (MS2) spectra, for example from mzML files [@Martens_2011]. Metadata views describe the samples
 (`sample`), the MS runs and their link to samples and channels (`run`), the project and its
 publication (`dataset`), the controlled vocabulary terms of its columns and scores (`ontology`)
 and the processing chain (`provenance`). Absolute and differential expression results are
@@ -78,7 +78,7 @@ must be present and, unless declared nullable, non-null, nullable columns must b
 columns may be left out of a file. Each Parquet file stores the specification version
 (`qpx_version`) and the writing software in its file-level metadata, and every column carries
 its description in the field metadata, so a file can be interpreted without the specification
-at hand. Supplementary Table 2, generated from the schemas, lists every column of every view with
+at hand. The file `data_dictionary.csv` of the deposited record [TBD: URL or data citation], generated from the schemas, lists every column of every view with
 its type, requirement and description.
 
 Converters write Parquet files compressed with Zstandard, in row groups of at most 131,072
@@ -107,7 +107,7 @@ identifiers again.
 
 [TBD: converter and QPX release of each subset] The `qpxc convert` commands of QPX 1.4.0 read the outputs of MaxQuant,
 FragPipe, DIA-NN, Spectronaut [@Bruderer_2015], Proteome Discoverer [@Orsburn_2021], OpenMS
-(consensusXML), CPTAC CDAP [@Rudnick_2016], mzIdentML [@Vizcaino_2017] and the quantms MSstats
+(consensusXML), the CPTAC Common Data Analysis Pipeline [@Rudnick_2016], mzIdentML [@Vizcaino_2017] and the quantms MSstats
 input table [@Kohler_2023]. Converters map each tool's columns to QPX fields, rewrite
 modification notation into the canonical ProForma form, convert units such as retention time in
 minutes to seconds, and take the sample and run metadata from an SDRF where one is given. When
@@ -115,9 +115,13 @@ the source does not report a value, the field is left null rather than estimated
 reports, for example, have no PSM-level table, so DIA-NN conversions have no `psm` view. Values
 that a converter derives are labelled as such: when a consensusXML file reports no protein
 abundance, the protein-group intensity is the sum of its unique peptides and is marked with
-that quantification method. Supplementary Table 3 lists the views that each converter writes,
+that quantification method. Supplementary Table S1 lists the views that each converter writes,
 and the documentation lists where each field comes from.
 
 ## Quality control
 
 [TBD: quality-control metrics from pmultiqc [@Yue_2026], a MultiQC [@Ewels_2016] plugin]
+
+## Ethics statement
+
+[TBD: ethics statement]
