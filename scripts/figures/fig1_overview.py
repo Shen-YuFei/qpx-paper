@@ -1,8 +1,9 @@
 """Figure 1: overview of how the corpus was built and how it is accessed.
 
-The counts per processing route and the corpus totals come from the same snapshot tables as
-Fig. 2 and are checked against Table 3; a view or file that no dataset holds is drawn dashed
-(Supplementary Fig. 2 shows the views per dataset).
+The counts per processing route and the dataset, sample and run totals come from the same
+snapshot tables as Fig. 2 and are checked against Table 3; the PSM total is summed from the
+same snapshot. A view or file that no dataset holds is drawn dashed (Supplementary Fig. 2 shows
+the views per dataset).
 
 Run: python scripts/figures/fig1_overview.py
 """
@@ -15,7 +16,7 @@ from fig2_corpus import SNAPSHOT, check, load
 from figS2_coverage import presence
 from qpxfig import DOUBLE, INK, MM, MONO, MUTED, PANEL_FILL, ROUTE_COLOURS, ROUTES, RULE, save
 
-W, H = 183, 88  # mm
+W, H = 183, 90  # mm
 DATA_HEAD = "#3d3d3d"
 META_HEAD = "#8a8a8a"
 STRIPE = "#e3e3e3"
@@ -193,7 +194,8 @@ def main():
     text(ax, x + 2, fy + fh + 1.6, "{PREFIX}/", size=5.5, family=MONO)
     text(ax, x + w, fy + fh + 1.6, "one folder per dataset", size=5, color=MUTED, ha="right")
     box(ax, x, fy, w, fh, fill=PANEL_FILL, edge=PANEL_FILL)
-    bus(ax, cols[1][0] + cols[1][1], [y + rh / 2 for y in ys], x - 3, x, [fy + fh / 2])
+    hub = ys[1] + rh / 2  # the middle route's centre, so the bus enters the folder straight
+    bus(ax, cols[1][0] + cols[1][1], [y + rh / 2 for y in ys], x - 3, x, [hub])
 
     tw, th, gap = 16, 8, 3
     gx = [x + gap + i * (tw + (w - 2 * gap - 3 * tw) / 2) for i in range(3)]
@@ -259,7 +261,7 @@ def main():
             code(ax, x + 2, y + 4.3, 8.5, 4.4, "SELECT" if kind == "sql" else ">>>")
         text(ax, x + 12.5, y + 8.2, name, weight="bold")
         text(ax, x + 12.5, y + 4.4, sub, size=5.5, color=MUTED)
-    bus(ax, cols[2][0] + cols[2][1], [fy + fh / 2], x - 3, x, [y + ah / 2 for y in ay])
+    bus(ax, cols[2][0] + cols[2][1], [hub], x - 3, x, [y + ah / 2 for y in ay])
 
     save(fig, "fig1")
 
