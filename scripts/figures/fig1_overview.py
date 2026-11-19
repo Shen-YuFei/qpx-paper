@@ -15,11 +15,19 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Polygon, Rectang
 
 from fig2_corpus import SNAPSHOT, check, load
 from figS2_coverage import presence
-from qpxfig import DOUBLE, INK, MM, MONO, MUTED, PANEL_FILL, ROUTE_COLOURS, ROUTES, RULE, save
+from qpxfig import DOUBLE, INK, MM, MONO, MUTED, ROUTE_COLOURS, ROUTES, RULE, save
 
 W, H = 183, 90  # mm
-DATA_HEAD = "#4d4d4d"
-META_HEAD = "#a6a6a6"
+# Colour marks what a part is: the routes keep their Fig. 2 colours, the QPX views take the
+# Okabe-Ito reddish purple (#CC79A7) in three shades, the inputs a warm sand and the access
+# glyphs dark grey.
+DATA_HEAD = "#7a4964"  # data views
+META_HEAD = "#e8c3d7"  # metadata views
+QPX_FILL = "#f9eff5"
+QPX_STRIPE = "#f3e2ec"
+INPUT_FILL = "#f4efe6"
+INPUT_HEAD = "#7a6a55"
+ICON = "#4d4d4d"
 STRIPE = "#e6e6e6"
 
 
@@ -72,7 +80,7 @@ def table(ax, x, y, w, h, name, head, present=True):
     cw = (w - 1.2) / n
     for i in range(n):
         if i % 2 == 0:
-            ax.add_patch(Rectangle((x + 0.6 + i * cw, y + 0.6), cw, h - hh - 1.2, fc=STRIPE,
+            ax.add_patch(Rectangle((x + 0.6 + i * cw, y + 0.6), cw, h - hh - 1.2, fc=QPX_STRIPE,
                                    ec="none"))
 
 
@@ -111,7 +119,7 @@ def window(ax, x, y, w, h, kind):
 
 
 def code(ax, x, y, w, h, s):
-    box(ax, x, y, w, h, fill=DATA_HEAD, edge=DATA_HEAD, r=0.5)
+    box(ax, x, y, w, h, fill=ICON, edge=ICON, r=0.5)
     text(ax, x + w / 2, y + h / 2, s, size=5, ha="center", color="white", family=MONO)
 
 
@@ -146,7 +154,7 @@ def main():
 
     # Column 1: repositories and sample annotation.
     x, w = cols[0]
-    box(ax, x, 49, w, top - 49, fill=PANEL_FILL, edge=PANEL_FILL)
+    box(ax, x, 49, w, top - 49, fill=INPUT_FILL, edge=INPUT_FILL)
     text(ax, x + 2, top - 2.5, "Repositories", weight="bold", va="top")
     for i, name in enumerate(["PRIDE", "iProX", "MassIVE", "PDC"]):
         cx, cy = x + 2 + (i % 2) * 16, 68 - (i // 2) * 5.8
@@ -159,11 +167,11 @@ def main():
         ax.add_patch(Polygon(pts, closed=True, fc="white", ec=INK, lw=0.5))
     text(ax, x + 11, 53.9, "raw MS files", size=5.5)
 
-    box(ax, x, bottom, w, 45 - bottom, fill=PANEL_FILL, edge=PANEL_FILL)
+    box(ax, x, bottom, w, 45 - bottom, fill=INPUT_FILL, edge=INPUT_FILL)
     text(ax, x + 2, 42.5, "Sample annotation", weight="bold", va="top")
     tx, ty, tw, th = x + 2, 24, 20, 14
     ax.add_patch(Rectangle((tx, ty), tw, th, fc="white", ec=INK, lw=0.5))
-    ax.add_patch(Rectangle((tx, ty + th - 2.6), tw, 2.6, fc=DATA_HEAD, ec=INK, lw=0.5))
+    ax.add_patch(Rectangle((tx, ty + th - 2.6), tw, 2.6, fc=INPUT_HEAD, ec=INK, lw=0.5))
     text(ax, tx + tw / 2, ty + th - 1.3, "SDRF-Proteomics", size=5, ha="center", color="white",
          weight="bold")
     for i in range(1, 4):
@@ -196,10 +204,10 @@ def main():
     x, w = cols[2]
     fy, fh = bottom + 6, top - bottom - 9.5
     ax.add_patch(Polygon([(x, fy + fh), (x, fy + fh + 3.2), (x + 18, fy + fh + 3.2),
-                          (x + 20, fy + fh)], closed=True, fc=PANEL_FILL, ec=PANEL_FILL))
+                          (x + 20, fy + fh)], closed=True, fc=QPX_FILL, ec=QPX_FILL))
     text(ax, x + 2, fy + fh + 1.6, "{PREFIX}/", size=5.5, family=MONO)
     text(ax, x + w, fy + fh + 1.6, "one folder per dataset", size=5, color=MUTED, ha="right")
-    box(ax, x, fy, w, fh, fill=PANEL_FILL, edge=PANEL_FILL)
+    box(ax, x, fy, w, fh, fill=QPX_FILL, edge=QPX_FILL)
     hub = ys[1] + rh / 2  # the middle route's centre, so the bus enters the folder straight
     bus(ax, cols[1][0] + cols[1][1], [y + rh / 2 for y in ys], x - 3, x, [hub])
 
