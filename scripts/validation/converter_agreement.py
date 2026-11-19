@@ -616,7 +616,7 @@ def check_fragpipe(audit, inputs, output):
         int(ions["peptidoform"].ne(ions["assigned_peptidoform"]).sum()),
         note=f"Counts native ion rows covering {len(omitted)} positive run-intensity observations. "
         "Some deposited rows have site modifications in Modified Sequence absent from Assigned Modifications. "
-        "QPX reads Assigned Modifications, which can collapse distinct ion identities. "
+        "QPX adds the Modified Sequence delta masses that Assigned Modifications leave out. "
         f"Examples {examples(omitted, [*FEATURE, 'assigned_peptidoform', 'M/Z', 'intensity'])}.",
     )
     feature_note = "One observation per positive experiment intensity in combined_ion.tsv, keyed by Modified Sequence."
@@ -624,19 +624,6 @@ def check_fragpipe(audit, inputs, output):
     audit.identities("feature", source, qpx)
     converted = channel_rows(qpx)
     audit.intensities("feature", source, converted, [*FEATURE, "label"], feature_note)
-    assigned = source.drop(columns="peptidoform").rename(
-        columns={"assigned_peptidoform": "peptidoform"}
-    )
-    # The deposited intensity can survive even when the assigned-modification key changes.
-    value_key = [*FEATURE, "label", "intensity_float32"]
-    audit.keys(
-        "feature",
-        "intensity_values_by_assigned_modifications",
-        assigned.assign(intensity_float32=assigned["intensity"].astype("float32")),
-        converted.assign(intensity_float32=converted["intensity"].astype("float32")),
-        value_key,
-        "Float32 intensity multisets under the Assigned Modifications key. This does not establish the ion's identity.",
-    )
 
     groups, source = fragpipe_groups(inputs["pg"], experiments)
     qpx = qpx_proteins(output)
@@ -904,8 +891,7 @@ def maxquant_features(audit, evidence, reporters, output):
     channel_key = [*key, "label"]
     reporter_note = (
         "Compare positive, uncorrected Reporter intensity. mqpar.xml gives eight channels in the order "
-        "TMT128N, TMT128C, TMT129N, TMT129C, TMT130N, TMT130C, TMT131N, TMT131C. "
-        "QPX applies positions in the complete 11-plex and emits the first five of those labels with values from columns 3–7."
+        "TMT128N, TMT128C, TMT129N, TMT129C, TMT130N, TMT130C, TMT131N, TMT131C."
     )
     audit.keys("feature", "reporter_keys", values, observed, channel_key, reporter_note)
     audit.intensities("feature", values, observed, channel_key, reporter_note)
