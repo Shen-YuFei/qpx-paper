@@ -18,7 +18,7 @@ in the SDRF (e) and number of runs (f), coloured by processing route. Release da
 of the first announcement in ProteomeCentral or of the release by MassIVE or the PDC; five
 datasets have none. Datasets with several organisms or instrument families are counted once,
 under Several. In f, each point is a dataset and the vertical bars mark the route medians.
-Numbers are from the 29 October 2026 snapshot and provisional until the corpus is regenerated.
+[TBD: numbers]
 
 Figure 3: Identification and quantification statistics per dataset. a, Distinct target
 peptidoforms per run, from the psm view, or from the feature view for DIA-NN, which writes no
@@ -26,12 +26,10 @@ psm view. b, Protein groups with a quantity per quantification unit (the runs co
 quantity, and the label for TMT). c, Completeness of the protein group by unit matrix. d,
 Median precursor mass error of the PSMs, from their observed and calculated m/z. Each point is
 the median over the runs or units of one dataset; vertical bars mark the route medians. Rows
-with a q-value above 0.01 are dropped where the views carry q-values. [TODO: figure from the regenerated corpus;
-the script has been run on four datasets only.]
+with a q-value above 0.01 are dropped where the views carry q-values. [TBD: figure]
 
 ![](figures/fig4){width=100%}
 
 Figure 4: One dataset in the two viewers. PXD048538, processed with DIA-NN, opened in the QPX
 Explorer of the quantms portal (a, overview page) and in the QPX UI desktop viewer (b, the
-sample view). [TODO: retake once the corpus is regenerated; the screenshots show dataset
-version e60b9e9aa4c8 and QPX UI commit fff2999.]
+sample view).

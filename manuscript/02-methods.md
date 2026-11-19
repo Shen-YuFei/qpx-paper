@@ -5,26 +5,18 @@
 The corpus comprises 103 datasets: 89 from ProteomeXchange (PXD accessions) [@Deutsch_2025], 8 from
 iProX [@Chen_2021], 2 from the CPTAC Proteomic Data Commons [@Thangudu_2024], 1 from MassIVE, 1 named after the PubMed ID of its paper
 (PMID23933261, whose runs are in the PRIDE projects PXD005942 and PXD005946) and 2 with no
-repository accession [TODO: name the source of the two HuiYan datasets]. By hosting
-repository, 88 datasets are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TODO (Yasset, Chengxin): the
-criteria used to select datasets for reprocessing, e.g. availability of raw files, an SDRF
-annotation, supported instrument and acquisition type.] Eighty-two datasets include human
+repository accession [TBD: source]. By hosting
+repository, 88 datasets are in PRIDE, 8 in iProX, 3 in MassIVE and 2 in the PDC (Fig. 2a). [TBD: dataset selection criteria] Eighty-two datasets include human
 samples and seven mouse samples; the others cover plants, yeast, *Drosophila*, zebrafish,
 other vertebrates, bacteria and viruses. The most common instruments are Orbitrap Fusion,
 Q Exactive HF, Q Exactive, Orbitrap Fusion Lumos and Q Exactive HF-X (Fig. 2c,d).
 Supplementary Table 1 lists every dataset with its accession, hosting repository and original
-publication, and the deposited data of each dataset are cited individually [@ds_IPX0000937000; @ds_MSV000085836; @ds_PDC000219; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD005942; @ds_PXD005946; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011821; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014404; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD031498; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TODO: data
-citations for three datasets: HuiYan-E480 and HuiYanAstralMouse have no repository accession,
-and the PDC gives no release year for PDC000127.]
+publication, and the deposited data of each dataset are cited individually [@ds_IPX0000937000; @ds_MSV000085836; @ds_PDC000219; @ds_PXD000561; @ds_PXD000612; @ds_PXD000672; @ds_PXD000865; @ds_PXD002137; @ds_PXD002395; @ds_PXD002767; @ds_PXD002854; @ds_PXD002899; @ds_PXD003497; @ds_PXD003539; @ds_PXD003903; @ds_PXD003947; @ds_PXD004242; @ds_PXD004452; @ds_PXD004683; @ds_PXD004684; @ds_PXD004701; @ds_PXD004732; @ds_PXD005526; @ds_PXD005942; @ds_PXD005946; @ds_PXD006225; @ds_PXD006675; @ds_PXD008333; @ds_PXD008722; @ds_PXD008840; @ds_PXD009348; @ds_PXD009449; @ds_PXD009737; @ds_PXD010154; @ds_PXD010429; @ds_PXD010595; @ds_PXD010899; @ds_PXD010957; @ds_PXD011821; @ds_PXD011896; @ds_PXD012131; @ds_PXD012174; @ds_PXD012574; @ds_PXD012636; @ds_PXD013231; @ds_PXD013658; @ds_PXD013868; @ds_PXD014145; @ds_PXD014404; @ds_PXD014414; @ds_PXD014525; @ds_PXD014877; @ds_PXD016986; @ds_PXD017199; @ds_PXD018450; @ds_PXD018830; @ds_PXD019483; @ds_PXD019643; @ds_PXD020109; @ds_PXD020192; @ds_PXD020248; @ds_PXD020252; @ds_PXD021013; @ds_PXD021394; @ds_PXD022469; @ds_PXD022992; @ds_PXD023508; @ds_PXD023662; @ds_PXD024364; @ds_PXD024742; @ds_PXD025864; @ds_PXD027008; @ds_PXD027817; @ds_PXD028251; @ds_PXD028618; @ds_PXD028735; @ds_PXD030304; @ds_PXD030348; @ds_PXD030671; @ds_PXD030983; @ds_PXD031498; @ds_PXD034656; @ds_PXD036643; @ds_PXD036826; @ds_PXD038732; @ds_PXD040266; @ds_PXD041047; @ds_PXD041268; @ds_PXD041421; @ds_PXD042233; @ds_PXD046290; @ds_PXD046320; @ds_PXD048538; @ds_PXD052856; @ds_PXD054415; @ds_PXD058009; @ds_PXD062529; @ds_PXD070780; @ds_PXD071155]. [TBD: data citations for three datasets]
 
 According to the acquisition method annotated in their SDRF files, 60 datasets were acquired
 in data-dependent mode (52 label-free, 7 TMT-labelled and 1 with both label-free and TMT
 runs) and 24 in data-independent mode; 4 datasets contain both DDA and DIA runs, and 15
-have no acquisition method annotated (Fig. 2e). None of the SDRF files describes an MHC enrichment,
-so the snapshot contains no dataset that can be identified as immunopeptidomics. [TODO:
-provisional counts from the 29 October 2026 snapshot; 8 datasets have conflicting
-annotations between SDRF versions or between the SDRF and the repository metadata, listed in
-`data/portal-snapshot-2026-10-29/acquisition_latest.csv`.]
+have no acquisition method annotated (Fig. 2e). [TBD: counts]
 
 ## Sample metadata annotation
 
@@ -33,8 +25,7 @@ run and label channel and records the organism, tissue or cell type, disease, in
 labelling, enzyme, modifications and other experimental factors using ontology terms. SDRF
 files are curated in the community repository of annotated datasets
 (https://github.com/bigbio/sdrf-annotated-datasets) and validated with sdrf-pipelines
-(https://github.com/bigbio/sdrf-pipelines). [TODO: confirm that every deposited dataset
-went through this route, and describe the curation and review process.] The SDRF drives
+(https://github.com/bigbio/sdrf-pipelines). [TBD: SDRF curation and review] The SDRF drives
 both the processing workflows, which read search parameters and the experimental design
 from it, and the QPX sample and run views, which keep the curated values as text; the run view also stores the
 ontology terms of run-level values such as the instrument, and the ontology view maps the
@@ -47,14 +38,9 @@ Datasets were processed with Nextflow workflows that follow nf-core practices
 software version of each step and lets the same workflow run on a laptop, a cluster or the cloud.
 
 DDA datasets were processed with quantms [@Dai_2024], which is built on OpenMS
-[@Pfeuffer_2024]. [TODO: search engines, rescoring, FDR thresholds and quantification
-methods used for label-free and TMT data, and the quantms versions; the provenance view
-records them per dataset.] DIA datasets were processed with the DIA-NN-based quantms
-workflow (quantmsdiann) [@Demichev_2019]. [TODO: DIA-NN versions and library-free or
-library-based search settings.] The identification-only datasets were produced with the
-`quantms-msnet` recipe. [TODO (Yasset, Chengxin): describe MSNet and how these datasets were
-searched.] [TODO (Jonas Scheid): immunopeptidomics datasets processed with nf-core/mhcquant
-[@Bichmann_2019; @Scheid_2025], including non-specific digestion searches and HLA annotation.]
+[@Pfeuffer_2024]. [TBD: search and quantification parameters and quantms versions] DIA datasets were processed with the DIA-NN-based quantms
+workflow (quantmsdiann) [@Demichev_2019]. [TBD: DIA-NN versions and search settings] The identification-only datasets were produced with the
+`quantms-msnet` recipe. [TBD: MSNet and how these datasets were searched] [TBD: immunopeptidomics datasets (nf-core/mhcquant [@Bichmann_2019; @Scheid_2025])]
 
 Each dataset records its processing chain in the QPX provenance view: the tools and, where
 the source provides them, their versions, parameters and FDR thresholds.
@@ -111,10 +97,7 @@ each file. This paper describes specification 1.3, written by QPX 1.4.0; all fil
 deposited record follow it. Specification 1.3 introduced the canonical peptidoform described
 above and derives row identifiers differently, so the peptidoform strings and row identifiers
 of the deposited files can differ from those of older versions of the same dataset on the
-quantms portal, and these columns cannot be used to join the two. [TODO: name the deposited
-datasets that were rewritten with `qpxc migrate` because their tool outputs are no longer
-available, and the information they lack; if every dataset was converted again, drop this and
-at most point users holding older files to `qpxc migrate` in Usage Notes.] The `qpxc validate`
+quantms portal, and these columns cannot be used to join the two. [TBD: migrated datasets and the information they lack] The `qpxc validate`
 command checks a dataset against the schemas: column presence and types, nulls in required
 columns and nested fields, primary-key uniqueness, value ranges, file metadata and references
 between views; on request it also checks consistency across views and derives the row
@@ -122,8 +105,7 @@ identifiers again.
 
 ## Conversion from third-party tools
 
-[TODO: name the converter or writer and the QPX release that produced each subset of the
-deposited record.] The `qpxc convert` commands of QPX 1.4.0 read the outputs of MaxQuant,
+[TBD: converter and QPX release of each subset] The `qpxc convert` commands of QPX 1.4.0 read the outputs of MaxQuant,
 FragPipe, DIA-NN, Spectronaut [@Bruderer_2015], Proteome Discoverer [@Orsburn_2021], OpenMS
 (consensusXML), CPTAC CDAP [@Rudnick_2016], mzIdentML [@Vizcaino_2017] and the quantms MSstats
 input table [@Kohler_2023]. Converters map each tool's columns to QPX fields, rewrite
@@ -138,7 +120,4 @@ and the documentation lists where each field comes from.
 
 ## Quality control
 
-[TODO: pmultiqc [@Yue_2026] (https://github.com/bigbio/pmultiqc), a MultiQC [@Ewels_2016] plugin,
-summarises identification rates, missing values, mass error and retention time per run.
-The dataset folders in the snapshot contain no pmultiqc reports; decide whether to generate
-them for every deposited dataset and describe the metrics here.]
+[TBD: quality-control metrics from pmultiqc [@Yue_2026], a MultiQC [@Ewels_2016] plugin]

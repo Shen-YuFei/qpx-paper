@@ -46,7 +46,7 @@ integrating results across tools and studies, in the spirit of community data st
 as BIDS in neuroimaging [@Gorgolewski_2016] and of the FAIR principles [@Wilkinson_2016].
 
 The corpus contains 103 public datasets with 23,204 samples and 51,023 MS runs
-[TODO: update after regeneration]. Forty-six datasets carry full quantification results: 27
+[TBD: numbers]. Forty-six datasets carry full quantification results: 27
 processed with DIA-NN and 19 (10 label-free and 9 TMT) processed with the OpenMS-based
 quantms workflows for DDA data. The remaining 57 datasets provide identification results
 only, about 500 million PSM records. All files are available over HTTP and can be explored in

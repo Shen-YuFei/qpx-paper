@@ -1,7 +1,6 @@
 # Data Records
 
-[TODO: repository and DOI of the deposited record, e.g. PRIDE or Zenodo, cited as a data
-citation, and its folder layout where it differs from the one described here.] The corpus is
+[TBD: repository, DOI and folder layout of the deposited record] The corpus is
 currently served at https://browse.quantms.org/quantms/datasets/, with one folder per dataset.
 Each dataset folder holds one or more subfolders named by a hash of their content, so a
 reprocessed version of a dataset appears as a new subfolder next to the earlier ones. A QPX
@@ -28,11 +27,7 @@ PXD048538/
     `-- provenance.json
 ```
 
-Table 2 explains the folder and file names. [TODO: decide which version of each dataset is
-deposited; 19 datasets currently have more than one QPX version. In the snapshot, the latest QPX
-folder holds the SDRF for 40 datasets, another subfolder holds it for 25, and 38 have none on the
-portal; 18 latest versions keep their views in a `qpx/` subfolder and 2 use the prefix
-`openms` instead of the accession.]
+Table 2 explains the folder and file names. [TBD: version of each dataset deposited]
 
 Table 2: Folder and file names in the corpus.
 
@@ -46,8 +41,7 @@ Table 2: Folder and file names in the corpus.
 | `{PREFIX}.sdrf.tsv` | `PXD048538.sdrf.tsv` | SDRF-Proteomics annotation of the samples and runs |
 | `provenance.json` | | How and when the version was produced |
 
-Table 3 summarises the corpus [TODO: provisional numbers from the 29 October 2026 snapshot,
-latest QPX version of each dataset; update after regeneration]. In total it holds 23,204
+Table 3 summarises the corpus [TBD: numbers]. In total it holds 23,204
 samples, 51,023 MS runs, 568 million PSM records, 435 million peptide feature records and 47
 million protein-group quantity records, in 1.54 TB of files. Within each dataset, the
 protein-group records correspond to 398,420 distinct protein groups. The 57
@@ -59,7 +53,7 @@ Table 3: Summary of the QPX corpus by processing workflow. ID only: identificati
 datasets from the `quantms-msnet` recipe; DIA-NN: DIA datasets processed with DIA-NN;
 OpenMS: label-free and TMT DDA datasets processed with the OpenMS-based quantms workflows.
 PSMs, Features and PGs (protein-group records) in millions; GB, total file size.
-Provisional: latest QPX version of each dataset on browse.quantms.org on 29 October 2026.
+[TBD: numbers]
 
 | Subset | Datasets | Samples | Runs | PSMs | Features | PGs | GB |
 |---|--:|--:|--:|--:|--:|--:|--:|
@@ -78,17 +72,9 @@ channel to a `sample_accession`; `pg.grouped_runs` lists the runs of a quantific
 `peptidoform` with `pepmap`; and a feature links to the pg row with the same set of
 `pg_accessions` whose `grouped_runs` contain the feature's run and whose label matches. Every
 `psm`, `feature` and `pg` row carries an `is_decoy` flag, and the q-value columns, null where
-the source does not report them, let users apply their own FDR threshold [TODO: state for each
-subset whether the data views keep decoy records and records above the FDR threshold of the
-workflow, the level (PSM, precursor, peptide or protein group) and scope (run or dataset) of
-each stored q-value, and which tool output fills the primary feature and protein-group
-quantities and whether it is normalised]. The metadata views are small (one row per sample, run
+the source does not report them, let users apply their own FDR threshold [TBD: decoy records, q-value levels and primary quantities of each subset]. The metadata views are small (one row per sample, run
 or dataset) and can be read in full; the data views are split into row groups with per-column
 statistics, so that readers can skip the parts a query does not touch (Supplementary Fig. 1).
 
-[TODO: state which views each subset holds, including peak arrays in `psm`, the `site`,
-`fragment`, `xic` and `mz` views and the `.h5ad` files, for example as columns of Table 3, and
-whether the deposited files were rewritten with `qpxc transform relayout`, which rounds
-intensities and renumbers identifiers. In the snapshot, the PSM records of the DIA-NN subset
-come from seven datasets whose psm view was written through the quantms route of qpx 1.0.2.]
-Supplementary Fig. 2 shows which views each dataset holds in the snapshot.
+[TBD: views in each subset and whether the files were rewritten with relayout]
+Supplementary Fig. 2 shows which views each dataset holds.

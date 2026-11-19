@@ -5,16 +5,14 @@ dataset: accession, hosting repository and data citation; processing route; acqu
 labelling as annotated in the SDRF; organisms and instruments; numbers of samples, runs, PSM,
 feature and protein-group records and size; specification version and version folder of the
 QPX files; whether the portal holds an SDRF; first public release; original publication; and
-known issues. Built by `scripts/tables/dataset_table.py`. [TODO: provisional, from the 29
-October 2026 snapshot (latest QPX version of each dataset); regenerate with the deposited
-record.]
+known issues. Built by `scripts/tables/dataset_table.py`. [TBD: data]
 
 Supplementary Table 2 (`supplementary/data_dictionary.csv`): Columns of the QPX views of
 specification 1.3, generated from the schema files of QPX 1.4.0 by
 `scripts/tables/data_dictionary.py`: view, column, type, whether the column is required (yes:
 present and non-null unless nullable; no: present and may be null; optional: may be left out of
 a file), value range and description, followed by the fields of the struct types that nested
-columns use. [TODO: regenerate from the 1.4.0 release; generated from QPX commit 2dadc0e1.]
+columns use. [TBD: data]
 
 Supplementary Table 3: Views written by the `qpxc convert` commands of QPX 1.4.0. Yes: written. In:
 written when the corresponding tool output is given (for MaxQuant `msms.txt`, `evidence.txt`
@@ -53,15 +51,9 @@ view; producers write it through the `qpx` Python API. OpenMS can also write QPX
 ```
 
 Supplementary Figure 1: Query time and storage of QPX compared with mzTab and CSV outputs.
-[TODO: figure from the rerun benchmark. Rerun `scripts/benchmark/benchmark.py` with QPX 1.4.0
-and a current DuckDB, on both the default converter output (Zstandard, per-column encodings)
-and the output of `qpxc transform relayout` (sorted, renumbered, rounded, structure lists),
-state for each the codec, row-group sizes and layout, add memory use and tool-native outputs,
-and report the hardware. The earlier numbers, from Snappy-compressed files written by an
-earlier QPX release, are in commit a82ea5f.]
+[TBD: figure]
 
 Supplementary Figure 2: Views and files held by each dataset. Each row is a dataset, grouped by
 processing route; a filled cell marks a view or file present in the latest QPX version of the
 dataset, except for the SDRF column, which marks an SDRF anywhere in the dataset folder. The
-bottom row gives the number of datasets holding each view or file. [TODO: provisional, from the
-29 October 2026 snapshot; redraw from the deposited record.]
+bottom row gives the number of datasets holding each view or file. [TBD: figure]

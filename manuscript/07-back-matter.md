@@ -1,17 +1,15 @@
 # Acknowledgements
 
-[TODO: infrastructure such as EMBL-EBI, de.NBI and ELIXIR; community contributors to QPX,
-quantms and the SDRF annotations.]
+[TBD]
 
 # Author Contributions
 
-[TODO: CRediT roles per author.]
+[TBD]
 
 # Competing Interests
 
-[TODO: statement.]
+[TBD]
 
 # Funding
 
-[TODO: funders and grant numbers. The journal requires a Funding section in the
-manuscript and does not accept funding in the Acknowledgements.]
+[TBD]
