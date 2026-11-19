@@ -7,32 +7,33 @@
 ## Consistency with the source tool outputs
 
 We checked that the converters carry the identifications and intensities of the tool outputs
-into the QPX views unchanged. For each of the three tools behind the corpus and for MaxQuant and
-FragPipe, we converted a complete output of a public dataset and compared the QPX views with the
-source tables, parsed independently of the `qpx` package. Rows were paired by peptidoform,
+into the QPX views unchanged. For each of the three output formats of the corpus workflows
+(DIA-NN reports, OpenMS consensusXML files and quantms MSstats input tables) and for MaxQuant
+and FragPipe, we converted a complete output of a public dataset and compared the QPX views with
+the source tables, parsed independently of the `qpx` package. Rows were paired by peptidoform,
 charge, run and label, and protein groups by their member accessions and run; intensities
 counted as equal when their relative difference was below 10^-6^
 (`scripts/validation/converter_agreement.py`; the results of every comparison are in
-`data/validation/converter_agreement.csv`). In the DIA-NN report of the 48 diaPASEF runs of
-PXD041421 [@ds_PXD041421], all 5,059,793 precursor rows, with 135,439 precursors and 114,824
-peptidoforms, and the 418,030 quantities of 10,285 protein groups matched; the five precursor
-quantities of zero, with which DIA-NN marks a precursor it did not quantify, are null in QPX. In
-the OpenMS consensusXML of the PXD007683 benchmark of Supplementary Fig. S1 [@ds_PXD007683], all
-542,403 PSMs, the 573,203 features with their intensities and the 9,424 protein groups matched;
-the consensusXML holds no protein-group abundance, so the protein-group intensities that the
-converter derives from the features have no source to compare with. In the quantms MSstats input
-tables, the 518,248 features of the same benchmark and the 1,391,060 channel intensities of the
-TMT dataset PXD014145 [@ds_PXD014145], including its 269,710 zeros, matched; the converter
-combines the channels of a precursor into one feature row, giving 126,460 rows for PXD014145. In
-the MaxQuant output deposited with PXD014145, the 95,187 PSMs and 107,260 features left after
-removing reverse and contaminant hits matched; the protein groups of this output sum the twelve
-fractions of the plex into one unnamed experiment, cannot be assigned to runs, and are rejected
-by the converter. [TBD: MaxQuant reporter intensities] In the FragPipe output deposited with
-PXD041421, the 67,775 PSMs of one complete run and the 253,323 intensities of 7,290 protein
-groups matched. [TBD: FragPipe feature identities] Where intensities matched, the largest
-relative difference between paired values was 6 × 10^-8^, the precision of the 32-bit
-floating-point values QPX stores. The conversions used QPX development commit 2dadc0e1. [TBD:
-rerun with the QPX 1.4.0 release]
+`data/validation/converter_agreement.csv`). In the DIA-NN report that the submitters of
+PXD041421 deposited for its 48 diaPASEF runs [@ds_PXD041421], all 5,059,793 precursor rows, with
+135,439 precursors and 114,824 peptidoforms, and the 418,030 quantities of 10,285 protein groups
+matched; the five precursor quantities of zero, with which DIA-NN marks a precursor it did not
+quantify, are null in QPX. In the OpenMS consensusXML of the PXD007683 benchmark of
+Supplementary Fig. S1 [@ds_PXD007683], all 542,403 PSMs, the 573,203 features with their
+intensities and the 9,424 protein groups matched; the consensusXML holds no protein-group
+abundance, so the protein-group intensities that the converter derives from the features have no
+source to compare with. In the quantms MSstats input tables, the 518,248 features of the same
+benchmark and the 1,391,060 channel intensities of the TMT dataset PXD014145 [@ds_PXD014145],
+including its 269,710 zeros, matched; the converter combines the channels of a precursor into
+one feature row, giving 126,460 rows for PXD014145. In the MaxQuant output deposited with
+PXD014145, the 95,187 PSMs and 107,260 features left after removing reverse and contaminant hits
+matched; the protein groups of this output sum the twelve fractions of the plex into one unnamed
+experiment, cannot be assigned to runs, and are rejected by the converter. [TBD: MaxQuant
+reporter intensities] In the FragPipe output deposited with PXD041421, the 67,775 PSMs of one
+complete run and the 253,323 intensities of 7,290 protein groups matched. [TBD: FragPipe feature
+identities] Where intensities matched, the largest relative difference between paired values was
+6 × 10^-8^, the precision of the 32-bit floating-point values QPX stores. The conversions used
+QPX development commit 2dadc0e1. [TBD: rerun with the QPX 1.4.0 release]
 
 ## Comparison with the originally reported results
 
