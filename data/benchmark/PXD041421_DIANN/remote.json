@@ -1,0 +1,196 @@
+{
+  "environment": {
+    "python": "3.13.9",
+    "duckdb": "2.0.0",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "logical_cpus": 24,
+    "latency_ms": 50.0,
+    "connect_ms": 100.0,
+    "bandwidth_mbit": 100.0,
+    "connection_mbit": null
+  },
+  "sizes": {
+    "qpx/feature": 546665726,
+    "qpx/pg": 12681712,
+    "qpx-relayout/feature": 372943779,
+    "qpx-relayout/pg": 6884128
+  },
+  "results": [
+    {
+      "query": "count_features",
+      "layout": "qpx",
+      "median_seconds": 0.38141804188489914,
+      "median_connections": 1,
+      "median_head": 1,
+      "median_get": 2,
+      "median_bytes": 500990,
+      "result_rows": 1,
+      "repeats": 3
+    },
+    {
+      "query": "one_protein",
+      "layout": "qpx",
+      "median_seconds": 4.297985578887165,
+      "median_connections": 96,
+      "median_head": 1,
+      "median_get": 199,
+      "median_bytes": 47650046,
+      "result_rows": 1516,
+      "repeats": 3
+    },
+    {
+      "query": "one_run",
+      "layout": "qpx",
+      "median_seconds": 1.2653555888682604,
+      "median_connections": 9,
+      "median_head": 1,
+      "median_get": 20,
+      "median_bytes": 9696510,
+      "result_rows": 1,
+      "repeats": 3
+    },
+    {
+      "query": "top10_proteins",
+      "layout": "qpx",
+      "median_seconds": 4.1047585075721145,
+      "median_connections": 41,
+      "median_head": 1,
+      "median_get": 84,
+      "median_bytes": 45180158,
+      "result_rows": 10,
+      "repeats": 3
+    },
+    {
+      "query": "pg_one_protein",
+      "layout": "qpx",
+      "median_seconds": 0.7972247647121549,
+      "median_connections": 8,
+      "median_head": 1,
+      "median_get": 18,
+      "median_bytes": 4153840,
+      "result_rows": 48,
+      "repeats": 3
+    },
+    {
+      "query": "pg_per_run",
+      "layout": "qpx",
+      "median_seconds": 0.8980366503819823,
+      "median_connections": 5,
+      "median_head": 1,
+      "median_get": 12,
+      "median_bytes": 4784624,
+      "result_rows": 48,
+      "repeats": 3
+    },
+    {
+      "query": "download_feature",
+      "layout": "qpx",
+      "median_seconds": 45.38344655837864,
+      "median_connections": 1,
+      "median_head": 0,
+      "median_get": 1,
+      "median_bytes": 546665726,
+      "result_rows": 0,
+      "repeats": 3
+    },
+    {
+      "query": "download_pg",
+      "layout": "qpx",
+      "median_seconds": 1.198079506866634,
+      "median_connections": 1,
+      "median_head": 0,
+      "median_get": 1,
+      "median_bytes": 12681712,
+      "result_rows": 0,
+      "repeats": 3
+    },
+    {
+      "query": "count_features",
+      "layout": "qpx-relayout",
+      "median_seconds": 0.39415036886930466,
+      "median_connections": 1,
+      "median_head": 1,
+      "median_get": 2,
+      "median_bytes": 605091,
+      "result_rows": 1,
+      "repeats": 3
+    },
+    {
+      "query": "one_protein",
+      "layout": "qpx-relayout",
+      "median_seconds": 0.7276394786313176,
+      "median_connections": 4,
+      "median_head": 1,
+      "median_get": 7,
+      "median_bytes": 1674147,
+      "result_rows": 1516,
+      "repeats": 3
+    },
+    {
+      "query": "one_run",
+      "layout": "qpx-relayout",
+      "median_seconds": 3.9840504229068756,
+      "median_connections": 42,
+      "median_head": 1,
+      "median_get": 86,
+      "median_bytes": 43678627,
+      "result_rows": 1,
+      "repeats": 3
+    },
+    {
+      "query": "top10_proteins",
+      "layout": "qpx-relayout",
+      "median_seconds": 3.931913847103715,
+      "median_connections": 42,
+      "median_head": 1,
+      "median_get": 86,
+      "median_bytes": 43010979,
+      "result_rows": 10,
+      "repeats": 3
+    },
+    {
+      "query": "pg_one_protein",
+      "layout": "qpx-relayout",
+      "median_seconds": 0.664726447314024,
+      "median_connections": 2,
+      "median_head": 1,
+      "median_get": 5,
+      "median_bytes": 1288992,
+      "result_rows": 48,
+      "repeats": 3
+    },
+    {
+      "query": "pg_per_run",
+      "layout": "qpx-relayout",
+      "median_seconds": 0.8600368406623602,
+      "median_connections": 4,
+      "median_head": 1,
+      "median_get": 10,
+      "median_bytes": 4266784,
+      "result_rows": 48,
+      "repeats": 3
+    },
+    {
+      "query": "download_feature",
+      "layout": "qpx-relayout",
+      "median_seconds": 31.03079215530306,
+      "median_connections": 1,
+      "median_head": 0,
+      "median_get": 1,
+      "median_bytes": 372943779,
+      "result_rows": 0,
+      "repeats": 3
+    },
+    {
+      "query": "download_pg",
+      "layout": "qpx-relayout",
+      "median_seconds": 0.7212022198364139,
+      "median_connections": 1,
+      "median_head": 0,
+      "median_get": 1,
+      "median_bytes": 6884128,
+      "result_rows": 0,
+      "repeats": 3
+    }
+  ]
+}

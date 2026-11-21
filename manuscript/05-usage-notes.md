@@ -13,9 +13,11 @@ only with its vectorized Parquet reader turned off
 structure with missing fields. Files rewritten by `qpxc transform relayout` may store a score or
 parameter list as a structure with one field per name, which a generic reader sees as a
 structure (in DuckDB, for example, `additional_scores.diann_cscore`); the `qpx` package reads
-them back as lists, and the file metadata lists the columns stored this way. For anything beyond
-the small metadata views, we recommend downloading a dataset folder first: queries over HTTP
-work, but each read pays the network latency. The query below counts the confidently identified
+them back as lists, and the file metadata lists the columns stored this way. Queries over HTTP
+read only the parts of a file they need: over a 100 Mbit/s link, the features of one protein in
+a feature view sorted by relayout took under a second, against 31 s to download the view
+(Supplementary Fig. S3). For analyses that read whole views, or many queries, we recommend
+downloading the dataset folder first. The query below counts the confidently identified
 protein groups per run in one DIA dataset:
 
 ```sql

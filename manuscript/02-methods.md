@@ -119,7 +119,9 @@ with one field per name, so that each score is a column of its own, and rounds m
 keeping 12 mantissa bits for intensities and mass errors and 16 for retention times, ion
 mobilities and collisional cross sections (a relative error of at most 2^-13^ and 2^-17^), while
 scores, q-values and m/z values are left untouched. Each step is recorded in the file metadata,
-and the `qpx` package reads such files back in the logical layout.
+and the `qpx` package reads such files back in the logical layout. Supplementary Fig. S1 compares
+the size, query times and memory use of the resulting files with those of the text outputs of the
+same analysis.
 
 ## Conversion from third-party tools
 

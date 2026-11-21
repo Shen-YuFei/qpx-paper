@@ -50,6 +50,22 @@ view and 0.27 to 0.31 s on the MSstats input table, with pandas or DuckDB. Relay
 dataset, read from a local disk, it changed the query times by less than 3 ms. The benchmark used
 QPX development commit 2dadc0e1. [TBD: rerun with the QPX 1.4.0 release]
 
+The layout matters when files are read over a network, where every row group read costs requests
+and transfer. We served the feature and pg views of the DIA-NN analysis of PXD041421 (5,059,793
+features in 41 row groups, 547 MB) over a simulated link with 50 ms latency and 100 Mbit/s
+bandwidth and queried them with DuckDB (Supplementary Fig. S3). Reading the 1,516 features of one
+protein transferred 47.7 MB in 199 requests and took 4.3 s as written; after relayout, which
+stores them in one row group, it transferred 1.7 MB in 7 requests and took 0.7 s. Queries that
+read whole columns, such as the ten proteins with the largest summed intensity, transferred 43 to
+45 MB and took about 4 s with either layout, and a lookup by a column that the sort order does not
+follow became slower: as written, the rows of one run lie in 9 of the 41 row groups and its
+intensities took 1.3 s, against 4.0 s after relayout. Downloading the whole feature view took
+45 s, or 31 s after relayout. On a file of the quantms portal, the simulated link read the same
+bytes as DuckDB did over the internet and, set to the latency and bandwidth measured for that
+connection, took 0.6 to 0.7 times as long, so the simulated times underestimate those of a real
+connection. The conversion used QPX development commit f8fde490 and relayout commit 0f39b844.
+[TBD: rerun with the QPX 1.4.0 release]
+
 ## Comparison with the originally reported results
 
 

@@ -89,3 +89,30 @@ dataset, except for the SDRF column, which marks an SDRF anywhere in the dataset
 row under each route gives the number of its datasets holding each view or file, and the last
 row the number over all datasets. ID only, identification only; SDRF, Sample and Data
 Relationship Format. [TBD: figure]
+
+# Figure S3: Remote reads of QPX over a network link
+
+![](figures/figS3){width=100%}
+
+The feature and pg views of the DIA-NN analysis of PXD041421 that its submitters deposited
+[@ds_PXD041421] (48 runs; 5,059,793 features in 41 row groups and 418,030 protein-group rows),
+converted as for the converter comparison, as written and after `qpxc transform relayout`, were
+served by a local HTTP server that answers range requests, delays each response by 50 ms and each
+new connection by 100 ms, and sends all responses through one 100 Mbit/s link. Each query ran
+three times with DuckDB 2.0.0 and its httpfs extension, in a new Python process each time. **a**,
+Bytes sent per query, and the size of each file, downloaded whole for comparison. **b**, Median
+wall time. Counting the features reads only the file footer; the other queries read the features
+of one protein (UniProt P04406, 1,516 features), the intensities of one run, the ten proteins with
+the largest summed intensity, the protein-group rows of the same protein and the confidently
+identified protein groups per run. Relayout sorts feature and pg by protein: the features of
+P04406 then lie in one row group, whereas the rows of one run, in 9 of the 41 row groups as
+written, lie in all 42 row groups after relayout. **c**, The first three queries on the PXD041421
+feature view of the quantms portal (an earlier specification, 6,644,477 features in 7 row
+groups), read over the internet, and on a local copy of the same file over a simulated link set
+to the latency (670 ms per request), connection setup time (1.65 s) and bandwidth (14 Mbit/s in
+total, 3.4 Mbit/s per connection) measured with curl for that connection. Both read the same
+bytes (0.27, 23.9 and 32.4 MB), with one request more on the portal; the simulated link took 0.58
+to 0.72 times as long. The benchmark ran on the machine of Supplementary Fig. S1; the script is
+`scripts/benchmark/remote_benchmark.py` in the paper repository. [TBD: rerun with the QPX 1.4.0
+release; the conversion used QPX development commit f8fde490 and relayout commit 0f39b844.] MB,
+10^6^ bytes.

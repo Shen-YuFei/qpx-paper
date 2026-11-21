@@ -1,0 +1,81 @@
+{
+  "environment": {
+    "python": "3.13.9",
+    "duckdb": "2.0.0",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "logical_cpus": 24,
+    "latency_ms": 670.0,
+    "connect_ms": 1650.0,
+    "bandwidth_mbit": 14.0,
+    "connection_mbit": 3.4
+  },
+  "url": "https://browse.quantms.org/quantms/datasets/PXD041421/aff39c0adcec/PXD041421.feature.parquet",
+  "results": [
+    {
+      "query": "count_features",
+      "side": "portal",
+      "median_seconds": 5.059081660583615,
+      "median_duckdb_bytes": 265523.2,
+      "median_duckdb_get": 2,
+      "result_rows": null,
+      "repeats": 3
+    },
+    {
+      "query": "one_protein",
+      "side": "portal",
+      "median_seconds": 42.55863381456584,
+      "median_duckdb_bytes": 23907532.8,
+      "median_duckdb_get": 50,
+      "result_rows": null,
+      "repeats": 3
+    },
+    {
+      "query": "one_run",
+      "side": "portal",
+      "median_seconds": 44.55547437444329,
+      "median_duckdb_bytes": 32400998.4,
+      "median_duckdb_get": 41,
+      "result_rows": null,
+      "repeats": 3
+    },
+    {
+      "query": "count_features",
+      "side": "simulated",
+      "median_seconds": 3.6215669540688396,
+      "median_connections": 1,
+      "median_head": 1,
+      "median_get": 1,
+      "median_bytes": 265570,
+      "median_duckdb_bytes": 265523.2,
+      "median_duckdb_get": 1,
+      "result_rows": null,
+      "repeats": 3
+    },
+    {
+      "query": "one_protein",
+      "side": "simulated",
+      "median_seconds": 25.6624918859452,
+      "median_connections": 28,
+      "median_head": 1,
+      "median_get": 49,
+      "median_bytes": 23940450,
+      "median_duckdb_bytes": 23907532.8,
+      "median_duckdb_get": 49,
+      "result_rows": null,
+      "repeats": 3
+    },
+    {
+      "query": "one_run",
+      "side": "simulated",
+      "median_seconds": 25.96334657818079,
+      "median_connections": 7,
+      "median_head": 1,
+      "median_get": 40,
+      "median_bytes": 32488802,
+      "median_duckdb_bytes": 32400998.4,
+      "median_duckdb_get": 40,
+      "result_rows": null,
+      "repeats": 3
+    }
+  ]
+}
