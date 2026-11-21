@@ -35,10 +35,10 @@ $(OUT).pdf: $(OUT).tex $(FIGS) templates/sn-jnl.cls templates/sn-nature.bst
 	cp -r figures build/
 	cd build && $(TECTONIC) --keep-logs qpx-paper.tex
 
-$(OUT)-si.pdf: $(SI) references.bib $(FIGS) templates/nature.csl
+$(OUT)-si.pdf: $(SI) $(BIB) $(FIGS) templates/nature.csl
 	@mkdir -p build
 	$(PANDOC) $(SI) --resource-path=.:figures --default-image-extension=pdf --citeproc \
-		--bibliography=references.bib --csl=templates/nature.csl --toc \
+		$(addprefix --bibliography=,$(BIB)) --csl=templates/nature.csl --toc \
 		--pdf-engine=$(TECTONIC) -o $@
 
 clean:
