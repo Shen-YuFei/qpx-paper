@@ -62,8 +62,8 @@ follow became slower: as written, the rows of one run lie in 9 of the 41 row gro
 intensities took 1.3 s, against 4.0 s after relayout. Downloading the whole feature view took
 45 s, or 31 s after relayout. On a file of the quantms portal, the simulated link read the same
 bytes as DuckDB did over the internet and, set to the latency and bandwidth measured for that
-connection, took 0.6 to 0.7 times as long, so the simulated times underestimate those of a real
-connection. The conversion used QPX development commit f8fde490 and relayout commit 0f39b844.
+connection, took 0.6 to 0.7 times as long; on that connection, the simulation underestimated the
+query times. The conversion used QPX development commit f8fde490 and relayout commit 0f39b844.
 [TBD: rerun with the QPX 1.4.0 release]
 
 ## Comparison with the originally reported results
