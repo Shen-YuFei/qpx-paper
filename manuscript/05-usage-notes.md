@@ -30,6 +30,11 @@ GROUP BY r.run_file_name
 ORDER BY protein_groups DESC;
 ```
 
+With DuckDB 2.0.0, a filter in a query that unnests a list in its `FROM` clause, as above, is not
+passed to the Parquet scan, so every row group is read; for a selective lookup, such as the
+protein groups of one protein, unnesting the list in the `SELECT` clause instead lets DuckDB skip
+the row groups that cannot match.
+
 The `qpx` Python package (`pip install qpx`; this paper cites version 1.4.0, also available as
 the container image `ghcr.io/bigbio/qpx:1.4.0` [TBD: container image]) opens a dataset
 folder as a single object, runs SQL across its views with DuckDB, converts tool outputs,
