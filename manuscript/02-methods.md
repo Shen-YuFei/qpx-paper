@@ -81,16 +81,6 @@ its description in the field metadata, so a file can be interpreted without the 
 at hand. The file `data_dictionary.csv` of the deposited record [TBD: URL or data citation], generated from the schemas, lists every column of every view with
 its type, requirement and description.
 
-Converters write Parquet files compressed with Zstandard, in row groups of at most 131,072
-rows. Before publication, `qpxc transform relayout` can rewrite a dataset for faster selective
-reads: it stores the rows of one peptide or protein together, numbers the feature,
-protein-group and PSM identifiers in the new row order, stores score and parameter lists whose
-entries have the same names in every row as structures with one field per name, and rounds
-measured values, keeping 12 mantissa bits for intensities and mass errors and 16 for retention
-times, ion mobilities and collisional cross sections (a relative error of at most 2^-13^ and
-2^-17^), while scores, q-values and m/z values are left untouched. Each step is recorded in the
-file metadata, and the `qpx` package reads such files back in the logical layout.
-
 The specification uses a `{major}.{minor}` version. During the current stabilisation period on
 the 1.x line, a minor version may change the data model; readers check the `qpx_version` of
 each file. This paper describes specification 1.3, written by QPX 1.4.0; all files in the
@@ -102,6 +92,34 @@ command checks a dataset against the schemas: column presence and types, nulls i
 columns and nested fields, primary-key uniqueness, value ranges, file metadata and references
 between views; on request it also checks consistency across views and derives the row
 identifiers again.
+
+## Storage layout and query performance
+
+QPX files are laid out so that a query reads only the parts it needs. Parquet stores each column
+separately, so counting PSMs by charge reads the charge column and none of the peptidoforms or
+scores. Converters write row groups of at most 131,072 rows, fewer when rows are large so that a
+row group takes at most 256 MiB in memory, and the statistics of each row group and the page
+index record the minimum and maximum of every column, so that a reader skips the row groups and
+pages whose values cannot match a filter. Columns are compressed with Zstandard at level 9, and
+each takes the encoding that is smallest on its first row group (dictionary, plain,
+byte-stream-split for floating-point values or delta for integers), since the smallest encoding
+depends on the data and not only on the column. Lists keep in one row what is read together,
+such as the channel intensities of a feature and the runs of a quantification unit.
+
+Statistics let a reader skip data only where similar values are stored together. Before
+publication, `qpxc transform relayout` can therefore sort the views by the columns of common
+lookups (`feature` by anchor protein, peptidoform, charge and run; `psm` by peptidoform,
+charge, run and scan; `pg` by anchor protein, runs and label), recording the order in the file
+metadata. Neighbouring rows then share peptidoforms and proteins, which also
+makes the files smaller. Relayout numbers the feature, protein-group and PSM identifiers in the
+new row order: converters derive them as 64-bit hashes of the identity columns, which no
+encoding compresses, whereas consecutive numbers take almost no space under delta encoding. It
+stores score and parameter lists whose entries have the same names in every row as structures
+with one field per name, so that each score is a column of its own, and rounds measured values,
+keeping 12 mantissa bits for intensities and mass errors and 16 for retention times, ion
+mobilities and collisional cross sections (a relative error of at most 2^-13^ and 2^-17^), while
+scores, q-values and m/z values are left untouched. Each step is recorded in the file metadata,
+and the `qpx` package reads such files back in the logical layout.
 
 ## Conversion from third-party tools
 

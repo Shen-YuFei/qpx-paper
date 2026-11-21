@@ -39,7 +39,19 @@ takes it from `Modified Sequence`. Where intensities matched, the largest relati
 between paired values was 6 × 10^-8^, the precision of the 32-bit floating-point values QPX
 stores. The conversions used QPX development commit f8fde490. [TBD: rerun with the QPX 1.4.0 release]
 
+## Storage and query performance
+
+On the label-free analysis of Supplementary Fig. S1 (11 runs, 542,403 PSMs), DuckDB answered
+each of four PSM queries on the `psm` view in 15 to 46 ms, with peak resident memory rising by at
+most 109 MiB, whereas pandas took 2.4 to 2.9 s and 1.5 GiB to answer them from the PSM section of
+the mzTab, with the same answers. The three feature queries took 15 to 22 ms on the `feature`
+view and 0.27 to 0.31 s on the MSstats input table, with pandas or DuckDB. Relayout reduced the
+`psm` view from 22.6 to 12.1 MB and the `feature` view from 19.8 to 12.1 MB; on this small
+dataset, read from a local disk, it changed the query times by less than 3 ms. The benchmark used
+QPX development commit 2dadc0e1. [TBD: rerun with the QPX 1.4.0 release]
+
 ## Comparison with the originally reported results
+
 
 Seven datasets of the corpus were reanalysed or released as resources in earlier work that
 reports identification and quantification results: PXD000672, PXD003497 and PXD003539 in the DIA

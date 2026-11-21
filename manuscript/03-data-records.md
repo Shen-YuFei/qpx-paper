@@ -52,8 +52,7 @@ channel to a `sample_accession`; `pg.grouped_runs` lists the runs of a quantific
 `pg_accessions` whose `grouped_runs` contain the feature's run and whose label matches. Every
 `psm`, `feature` and `pg` row carries an `is_decoy` flag, and the q-value columns, null where
 the source does not report them, let users apply their own FDR threshold [TBD: decoy records, q-value levels and primary quantities of each subset]. The metadata views are small (one row per sample, run
-or dataset) and can be read in full; the data views are split into row groups with per-column
-statistics, so that readers can skip the parts a query does not touch (Supplementary Fig. S1).
+or dataset) and can be read in full; the data views are laid out for selective reads (see Methods).
 
 [TBD: views in each subset and whether the files were rewritten with relayout]
 Supplementary Fig. S2 shows which views each dataset holds.

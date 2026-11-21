@@ -59,7 +59,7 @@ circles DuckDB [@Raasveldt_2019]. **a**, File sizes, with the text files as writ
 gzip-compressed (level 6). QPX files are Parquet with Zstandard compression. As written, the
 views keep the order of the source in row groups of 100,000 rows; relayout sorts the psm view by
 peptidoform, charge, run and scan and the feature view by protein, peptidoform, charge and run,
-writes row groups of about 120,000 rows with a page index, and rounds intensities and mass
+writes row groups of about 120,000 rows and rounds intensities and mass
 errors to 12 mantissa bits and retention times to 16, leaving scores, q-values and m/z
 unchanged. All results compares the consensusXML with every view written from it (psm, feature,
 pg, dataset, ontology and provenance). **b**, **c**, Median wall time and increase in peak
