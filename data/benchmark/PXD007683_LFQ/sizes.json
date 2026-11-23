@@ -6,7 +6,7 @@
   "msstats_gz_bytes": 6537624,
   "qpx": {
     "dataset": {
-      "bytes": 7464,
+      "bytes": 7477,
       "rows": 1,
       "row_groups": 1,
       "max_rows_per_group": 1,
@@ -16,7 +16,7 @@
       "sorting_columns": []
     },
     "feature": {
-      "bytes": 19827647,
+      "bytes": 19814625,
       "rows": 573203,
       "row_groups": 6,
       "max_rows_per_group": 100000,
@@ -26,7 +26,7 @@
       "sorting_columns": []
     },
     "ontology": {
-      "bytes": 5820,
+      "bytes": 5833,
       "rows": 25,
       "row_groups": 1,
       "max_rows_per_group": 25,
@@ -36,7 +36,7 @@
       "sorting_columns": []
     },
     "pg": {
-      "bytes": 1605025,
+      "bytes": 1604925,
       "rows": 87266,
       "row_groups": 1,
       "max_rows_per_group": 87266,
@@ -46,7 +46,7 @@
       "sorting_columns": []
     },
     "provenance": {
-      "bytes": 8754,
+      "bytes": 8756,
       "rows": 5,
       "row_groups": 1,
       "max_rows_per_group": 5,
@@ -56,7 +56,7 @@
       "sorting_columns": []
     },
     "psm": {
-      "bytes": 22546393,
+      "bytes": 22546391,
       "rows": 542403,
       "row_groups": 6,
       "max_rows_per_group": 100000,
@@ -68,7 +68,7 @@
   },
   "qpx-relayout": {
     "dataset": {
-      "bytes": 7464,
+      "bytes": 7477,
       "rows": 1,
       "row_groups": 1,
       "max_rows_per_group": 1,
@@ -78,7 +78,7 @@
       "sorting_columns": []
     },
     "feature": {
-      "bytes": 12071581,
+      "bytes": 12060687,
       "rows": 573203,
       "row_groups": 5,
       "max_rows_per_group": 122880,
@@ -93,7 +93,7 @@
       ]
     },
     "ontology": {
-      "bytes": 5820,
+      "bytes": 5833,
       "rows": 25,
       "row_groups": 1,
       "max_rows_per_group": 25,
@@ -103,7 +103,7 @@
       "sorting_columns": []
     },
     "pg": {
-      "bytes": 732892,
+      "bytes": 732905,
       "rows": 87266,
       "row_groups": 1,
       "max_rows_per_group": 87266,
@@ -115,7 +115,7 @@
       ]
     },
     "provenance": {
-      "bytes": 8754,
+      "bytes": 8756,
       "rows": 5,
       "row_groups": 1,
       "max_rows_per_group": 5,
@@ -125,7 +125,7 @@
       "sorting_columns": []
     },
     "psm": {
-      "bytes": 12117934,
+      "bytes": 12117940,
       "rows": 542403,
       "row_groups": 5,
       "max_rows_per_group": 122880,
@@ -139,23 +139,23 @@
       ]
     }
   },
-  "convert_seconds": 69.7380364886485,
-  "relayout_seconds": 3.092633063904941,
+  "convert_seconds": 69.26136859413236,
+  "relayout_seconds": 3.104370770044625,
   "hardware": {
     "cpu": "Intel(R) Core(TM) Ultra 7 270K Plus",
     "logical_cpus": 24,
     "memory_gib": 122.9,
     "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
     "python": "3.13.9",
-    "qpx": "1.1.4+local.22d2eb9",
-    "qpx_commit": "2dadc0e1",
+    "qpx": "1.3.0+local.0f39b844",
+    "qpx_commit": "0f39b844",
     "duckdb": "2.0.0",
     "pandas": "2.3.3",
     "pyarrow": "24.0.0",
     "load_average": [
-      2.3623046875,
-      0.91064453125,
-      0.484375
+      1.6689453125,
+      1.3583984375,
+      0.79931640625
     ]
   }
 }

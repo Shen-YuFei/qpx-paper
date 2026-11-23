@@ -72,11 +72,11 @@ features of one protein (UniProt P55011). Both sides return 542,403 PSMs, 9,716 
 382,341 PSMs of charge 2 and the same ten proteins. Feature counts differ by design: the MSstats
 table has one row per peptidoform, charge and run among the features assigned to a protein
 (518,248 rows, 104 of them for P55011), whereas the feature view keeps all 573,203 consensus
-features (111 for P55011), including 37,746 without an assigned protein. Conversion took 70 s
+features (111 for P55011), including 37,746 without an assigned protein. Conversion took 69 s
 and relayout 3 s on one machine (Intel Core Ultra 7 270K Plus, 24 logical CPUs, 123 GiB memory,
 Linux) with Python 3.13.9, DuckDB 2.0.0, pandas 2.3.3 and PyArrow 24.0.0; the benchmark script
 is `scripts/benchmark/benchmark.py` in the paper repository. [TBD: rerun with the QPX 1.4.0
-release; this run used QPX development commit 2dadc0e1.] MB, 10^6^ bytes; MiB, 2^20^ bytes;
+release; this run used QPX development commit 0f39b844.] MB, 10^6^ bytes; MiB, 2^20^ bytes;
 PSM, peptide-spectrum match.
 
 # Figure S2: Views and files held by each dataset
@@ -114,5 +114,5 @@ total, 3.4 Mbit/s per connection) measured with curl for that connection. Both r
 bytes (0.27, 23.9 and 32.4 MB), with one request more on the portal; the simulated link took 0.58
 to 0.72 times as long. The benchmark ran on the machine of Supplementary Fig. S1; the script is
 `scripts/benchmark/remote_benchmark.py` in the paper repository. [TBD: rerun with the QPX 1.4.0
-release; the conversion used QPX development commit f8fde490 and relayout commit 0f39b844.] MB,
+release; the conversion and relayout used QPX development commit 0f39b844.] MB,
 10^6^ bytes.

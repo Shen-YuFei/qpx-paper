@@ -37,18 +37,18 @@ the 253,323 intensities of 7,290 protein groups matched; for the 5,141 of the 10
 `Assigned Modifications` leave out a modification given in `Modified Sequence`, the converter
 takes it from `Modified Sequence`. Where intensities matched, the largest relative difference
 between paired values was 6 × 10^-8^, the precision of the 32-bit floating-point values QPX
-stores. The conversions used QPX development commit f8fde490. [TBD: rerun with the QPX 1.4.0 release]
+stores. The conversions used QPX development commit 0f39b844. [TBD: rerun with the QPX 1.4.0 release]
 
 ## Storage and query performance
 
 On the label-free analysis of Supplementary Fig. S1 (11 runs, 542,403 PSMs), DuckDB answered
-each of four PSM queries on the `psm` view in 15 to 46 ms, with peak resident memory rising by at
-most 109 MiB, whereas pandas took 2.4 to 2.9 s and 1.5 GiB to answer them from the PSM section of
-the mzTab, with the same answers. The three feature queries took 15 to 22 ms on the `feature`
-view and 0.27 to 0.31 s on the MSstats input table, with pandas or DuckDB. Relayout reduced the
-`psm` view from 22.6 to 12.1 MB and the `feature` view from 19.8 to 12.1 MB; on this small
+each of four PSM queries on the `psm` view in 15 to 44 ms, with peak resident memory rising by at
+most 106 MiB, whereas pandas took 2.3 to 2.7 s and 1.5 GiB to answer them from the PSM section of
+the mzTab, with the same answers. The three feature queries took 15 to 21 ms on the `feature`
+view and 0.26 to 0.29 s on the MSstats input table, with pandas or DuckDB. Relayout reduced the
+`psm` view from 22.5 to 12.1 MB and the `feature` view from 19.8 to 12.1 MB; on this small
 dataset, read from a local disk, it changed the query times by less than 3 ms. The benchmark used
-QPX development commit 2dadc0e1. [TBD: rerun with the QPX 1.4.0 release]
+QPX development commit 0f39b844. [TBD: rerun with the QPX 1.4.0 release]
 
 The layout matters when files are read over a network, where every row group read costs requests
 and transfer. We served the feature and pg views of the DIA-NN analysis of PXD041421 (5,059,793
@@ -63,7 +63,7 @@ intensities took 1.3 s, against 4.0 s after relayout. Downloading the whole feat
 45 s, or 31 s after relayout. On a file of the quantms portal, the simulated link read the same
 bytes as DuckDB did over the internet and, set to the latency and bandwidth measured for that
 connection, took 0.6 to 0.7 times as long; on that connection, the simulation underestimated the
-query times. The conversion used QPX development commit f8fde490 and relayout commit 0f39b844.
+query times. The conversion and relayout used QPX development commit 0f39b844.
 [TBD: rerun with the QPX 1.4.0 release]
 
 ## Comparison with the originally reported results
