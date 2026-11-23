@@ -185,7 +185,7 @@ def prepare(args) -> None:
             "--sdrf-file", args.sdrf,
             "--output-folder", str(out),
             "--output-prefix", PREFIX,
-            "--structures", "psm,feature,pg",
+            "--view", "psm", "--view", "feature", "--view", "pg",
             "--no-mudata",
         ],
         check=True,

@@ -1034,7 +1034,7 @@ def convert(converter, accession, inputs, output):
     if converter in {"diann", "openms-consensus"}:
         command.append("--no-mudata")
     if converter == "openms-consensus":
-        command.extend(["--structures", "psm,feature,pg"])
+        command.extend(["--view", "psm", "--view", "feature", "--view", "pg"])
     if converter == "diann":
         command.extend(["--qvalue-threshold", str(DIANN_QVALUE)])
     print(" ".join(command), flush=True)
